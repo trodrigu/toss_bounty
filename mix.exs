@@ -52,7 +52,8 @@ defmodule TossBounty.Mixfile do
      {:guardian, "~> 0.13"},
      {:ja_serializer, "~> 0.11.0"}, # JSON API
      {:bamboo, github: "thoughtbot/bamboo"},
-     {:ja_resource, "~> 0.2"}]
+     {:ja_resource, "~> 0.2"},
+     {:distillery, "~> 1.4", runtime: false}]
   end
 
   # Aliases are shortcuts or tasks specific to the current project.
