@@ -28,6 +28,10 @@ defmodule TossBounty.Mixfile do
                     :postgrex,
                     :ja_resource,
                     :comeonin,
+                    :bamboo,
+                    :guardian,
+                    :ja_serializer,
+                    :joken,
                     :postgrex]]
   end
 
