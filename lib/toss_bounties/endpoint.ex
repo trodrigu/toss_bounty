@@ -38,5 +38,6 @@ defmodule TossBounty.Endpoint do
     key: "_toss_bounty_key",
     signing_salt: "AcqydKM3"
 
+  plug CORSPlug
   plug TossBounty.Router
 end
