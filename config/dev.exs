@@ -41,6 +41,3 @@ config :toss_bounty, TossBounty.Repo,
   database: "toss_bounty_dev",
   hostname: "localhost",
   pool_size: 10
-
-# CORS allowed origins
-config :toss_bounty, allowed_origins: ["http://localhost:4200"]
