@@ -3,7 +3,7 @@ defmodule TossBounty.Mixfile do
 
   def project do
     [app: :toss_bounty,
-     version: "0.0.3",
+     version: "0.0.4",
      elixir: "~> 1.2",
      elixirc_paths: elixirc_paths(Mix.env),
      compilers: [:phoenix, :gettext] ++ Mix.compilers,
