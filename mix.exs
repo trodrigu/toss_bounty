@@ -32,6 +32,7 @@ defmodule TossBounty.Mixfile do
                     :guardian,
                     :ja_serializer,
                     :joken,
+                    :corsica,
                     :postgrex]]
   end
 
@@ -57,7 +58,7 @@ defmodule TossBounty.Mixfile do
      {:ja_serializer, "~> 0.11.0"}, # JSON API
      {:bamboo, github: "thoughtbot/bamboo"},
      {:ja_resource, "~> 0.2"},
-     {:cors_plug, "~> 1.2"},
+     {:corsica, "~> 1.0"},
      {:distillery, "~> 1.4", runtime: false}]
   end
 
