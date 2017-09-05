@@ -32,6 +32,7 @@ defmodule TossBounty.Mixfile do
                     :guardian,
                     :ja_serializer,
                     :joken,
+                    :cors_plug,
                     :postgrex]]
   end
 
