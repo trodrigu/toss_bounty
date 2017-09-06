@@ -66,13 +66,13 @@ defmodule TossBounty.ApiCase do
   end
 
   defp add_authentication_headers(conn, true) do
-    user = insert_user(username: "testuser", email: "test@test.com")
+    user = insert_user(email: "test@test.com")
     conn = conn |> TossBounty.AuthenticationTestHelpers.authenticate(user)
     {conn, user}
   end
 
   defp add_authentication_headers(conn) do
-    user = insert_user(username: "testuser", email: "test@test.com")
+    user = insert_user(email: "test@test.com")
     conn = conn |> TossBounty.AuthenticationTestHelpers.authenticate
     {conn}
   end

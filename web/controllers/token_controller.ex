@@ -5,7 +5,7 @@ defmodule TossBounty.TokenController do
   alias TossBounty.Repo
   alias TossBounty.User
 
-  def create(conn, params = %{"username" => _, "password" => _}) do
+  def create(conn, params = %{"email" => _, "password" => _}) do
     case login_by_email_and_password(params) do
       {:ok, user} ->
         {:ok, token, _claims} =
@@ -19,7 +19,7 @@ defmodule TossBounty.TokenController do
       {:error, reason} -> handle_unauthenticated(conn, reason)
     end
   end
-  def create(conn, %{"username" => ""}) do
+  def create(conn, %{"email" => ""}) do
     handle_unauthenticated(conn, "Please enter your email and password.")
   end
   def create(conn, _) do
@@ -45,7 +45,7 @@ defmodule TossBounty.TokenController do
     |> render("401.json", message: reason)
   end
 
-  defp login_by_email_and_password(%{"username" => email, "password" => password}) do
+  defp login_by_email_and_password(%{"email" => email, "password" => password}) do
     user = Repo.get_by(User, email: email)
     cond do
       user && checkpw(password, user.password_hash) ->

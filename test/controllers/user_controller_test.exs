@@ -5,13 +5,11 @@ defmodule TossBounty.UserControllerTest do
   @valid_attrs %{
     name: "Test User",
     email: "test@user.com",
-    username: "testuser"
   }
 
   @invalid_attrs %{
     name: "",
     email: "",
-    username: ""
   }
 
   describe "create" do

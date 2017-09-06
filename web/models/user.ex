@@ -3,7 +3,6 @@ defmodule TossBounty.User do
 
   schema "users" do
     field :name, :string
-    field :username, :string
     field :email, :string
     field :password, :string, virtual: true
     field :password_hash, :string
@@ -12,10 +11,8 @@ defmodule TossBounty.User do
 
   def changeset(model, params \\ %{}) do
     model
-    |> cast(params, [:name, :username, :email])
-    |> validate_required([:name, :username, :email])
-    |> validate_length(:username, min: 1, max: 20)
-    |> unique_constraint(:username)
+    |> cast(params, [:name, :email])
+    |> validate_required([:name, :email])
   end
 
   def registration_changeset(model, params) do

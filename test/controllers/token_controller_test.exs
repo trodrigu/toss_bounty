@@ -2,8 +2,8 @@ defmodule TossBounty.TokenControllerTest do
   use TossBounty.ConnCase
 
   setup config = %{conn: conn} do
-    if username = config[:login_as] do
-      user = insert_user(username: username, email: "test@test.com")
+    if email = config[:login_as] do
+      user = insert_user(email: "test@test.com")
       conn =
         %{build_conn() | host: "api."}
         |> put_req_header("accept", "application/vnd.api+json")
@@ -18,7 +18,7 @@ defmodule TossBounty.TokenControllerTest do
   end
 
   defp create_payload(email, password) do
-    %{ "username" => email, "password" => password }
+    %{ "email" => email, "password" => password }
   end
 
   describe "create" do
@@ -34,7 +34,7 @@ defmodule TossBounty.TokenControllerTest do
 
     @tag login_as: "max"
     test "does not authenticate and renders errors when the email and password are missing", %{conn: conn, user: _user} do
-      conn = post conn, token_path(conn, :create), %{"username" => ""}
+      conn = post conn, token_path(conn, :create), %{"email" => ""}
 
       response = json_response(conn, 401)
       [error | _] = response["errors"]
@@ -45,7 +45,7 @@ defmodule TossBounty.TokenControllerTest do
 
     @tag login_as: "max"
     test "does not authenticate and renders errors when only the password is missing", %{conn: conn, user: _user} do
-      conn = post conn, token_path(conn, :create), %{"username" => "test@email.com"}
+      conn = post conn, token_path(conn, :create), %{"email" => "test@email.com"}
       response = json_response(conn, 401)
       [error | _] = response["errors"]
       assert error["detail"] == "Please enter your password."
