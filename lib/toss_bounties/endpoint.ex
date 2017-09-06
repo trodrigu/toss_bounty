@@ -38,6 +38,6 @@ defmodule TossBounty.Endpoint do
     key: "_toss_bounty_key",
     signing_salt: "AcqydKM3"
 
-  plug Corsica, origins: "http://localhost:8000"
+  plug Corsica
   plug TossBounty.Router
 end
