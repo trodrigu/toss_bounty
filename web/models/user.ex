@@ -13,17 +13,20 @@ defmodule TossBounty.User do
     model
     |> cast(params, [:name, :email])
     |> validate_required([:name, :email])
+    |> unique_constraint(:email)
   end
 
   def registration_changeset(model, params) do
     model
     |> changeset(params)
-    |> cast(params, [:password])
+    |> cast(params, [:password, :email])
     |> validate_required(:password)
     |> validate_length(:password, min: 6, max: 100)
     |> validate_confirmation(:password, message: "does not match password!")
+    |> unique_constraint(:email)
     |> put_pass_hash()
   end
+
 
   def put_pass_hash(changeset) do
     case changeset do
