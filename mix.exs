@@ -33,7 +33,8 @@ defmodule TossBounty.Mixfile do
                     :ja_serializer,
                     :joken,
                     :corsica,
-                    :postgrex]]
+                    :postgrex,
+                    :oauth2]]
   end
 
   # Specifies which paths to compile per environment.
@@ -59,7 +60,8 @@ defmodule TossBounty.Mixfile do
      {:bamboo, github: "thoughtbot/bamboo"},
      {:ja_resource, "~> 0.2"},
      {:corsica, "~> 1.0"},
-     {:distillery, "~> 1.4", runtime: false}]
+     {:distillery, "~> 1.4", runtime: false},
+     {:oauth2, "~> 0.9"}]
   end
 
   # Aliases are shortcuts or tasks specific to the current project.
