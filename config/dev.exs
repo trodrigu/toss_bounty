@@ -41,3 +41,8 @@ config :toss_bounty, TossBounty.Repo,
   database: "toss_bounty_dev",
   hostname: "localhost",
   pool_size: 10
+
+config :toss_bounty, GitHub,
+  client_id: System.get_env("GITHUB_CLIENT_ID"),
+  client_secret: System.get_env("GITHUB_CLIENT_SECRET"),
+  redirect_uri: System.get_env("GITHUB_REDIRECT_URI")
