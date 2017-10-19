@@ -30,11 +30,11 @@ defmodule TossBounty.Router do
   end
 
   scope "/", TossBounty do
-    pipe_through [:api, :bearer_auth, :current_user]
+    pipe_through [:api, :current_user]
 
     post "/token", TokenController, :create
     post "/token/refresh", TokenController, :refresh
-
+    get "/github_oauth_url", GitHubOauthUrlController, :show
   end
 
   scope "/", TossBounty do
