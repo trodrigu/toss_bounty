@@ -11,8 +11,8 @@ defmodule TossBounty.User do
 
   def changeset(model, params \\ %{}) do
     model
-    |> cast(params, [:name, :email])
-    |> validate_required([:name, :email])
+    |> cast(params, [:email])
+    |> validate_required([:email])
     |> unique_constraint(:email)
   end
 
