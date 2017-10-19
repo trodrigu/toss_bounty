@@ -36,7 +36,7 @@ config :phoenix, :stacktrace_depth, 20
 # Configure your database
 config :toss_bounty, TossBounty.Repo,
   adapter: Ecto.Adapters.Postgres,
-  username: "trodrigu",
+  username: "postgres",
   database: "toss_bounty_dev",
   hostname: "localhost",
   pool_size: 10
