@@ -1,5 +1,6 @@
 defmodule TossBounty.AuthController do
   use TossBounty.Web, :controller
+  alias TossBounty.User
 
   @doc """
   This action is reached via `/auth/:provider/callback` is the the callback URL that
@@ -11,8 +12,15 @@ defmodule TossBounty.AuthController do
     # Exchange an auth code for an access token
     client = get_token!(provider, code)
 
-    # Request the user's data with the access token
-    user = get_user!(provider, client)
+    user_data_from_response = get_user!(provider, client)
+
+    email = user_data_from_response[:email]
+
+    user_from_db = Repo.get_by(User, email: email)
+    user = sign_up_or_return_user(user_from_db, email)
+    IO.inspect "##############################"
+    IO.inspect user
+    IO.inspect "##############################"
 
     # Check to see if user exists
     # if not create a new one do
@@ -21,9 +29,13 @@ defmodule TossBounty.AuthController do
       |> Guardian.encode_and_sign(:token)
     conn
     |> Plug.Conn.assign(:current_user, user)
-    |> put_status(:created)
-    |> render("show.json", token: token)
+    |> redirect(external: "http://localhost:8000/#/save-session/?token=#{token}&email=#{email}")
   end
+
+  defp sign_up_or_return_user(user, email) when is_nil(user) do
+    with {:ok, user} <- Repo.insert!(%User{email: email}), do: user
+  end
+  defp sign_up_or_return_user(user, _email), do: user
 
   defp authorize_url!("github"), do: GitHub.authorize_url!
 
@@ -31,6 +43,6 @@ defmodule TossBounty.AuthController do
 
   defp get_user!("github", client) do
     %{body: user} = OAuth2.Client.get!(client, "/user")
-    %{name: user["name"], avatar: user["avatar_url"]}
+    %{name: user["name"], avatar: user["avatar_url"], email: user["email"]}
   end
 end

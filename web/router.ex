@@ -30,6 +30,12 @@ defmodule TossBounty.Router do
   end
 
   scope "/", TossBounty do
+    pipe_through [:browser, :current_user]
+
+    get "/auth/:provider/callback", AuthController, :callback
+  end
+
+  scope "/", TossBounty do
     pipe_through [:api, :bearer_auth, :current_user]
 
     post "/token", TokenController, :create
