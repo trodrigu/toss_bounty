@@ -28,7 +28,6 @@ defmodule TossBounty.Mixfile do
                     :postgrex,
                     :ja_resource,
                     :comeonin,
-                    :bamboo,
                     :guardian,
                     :ja_serializer,
                     :joken,
@@ -45,7 +44,7 @@ defmodule TossBounty.Mixfile do
   #
   # Type `mix help deps` for examples and options.
   defp deps do
-    [{:phoenix, "~> 1.2.1"},
+    [{:phoenix, "~> 1.3.0"},
      {:phoenix_pubsub, "~> 1.0"},
      {:phoenix_ecto, "~> 3.0"},
      {:postgrex, ">= 0.0.0"},
@@ -56,11 +55,11 @@ defmodule TossBounty.Mixfile do
      {:comeonin, "~> 2.0"},
      {:joken, "~> 1.1"},
      {:guardian, "~> 0.13"},
-     {:ja_serializer, "~> 0.11.0"}, # JSON API
-     {:bamboo, github: "thoughtbot/bamboo"},
-     {:ja_resource, "~> 0.2"},
+     {:ja_serializer, "~> 0.12.0"}, # JSON API
+     {:ja_resource, "~> 0.3.0"},
      {:corsica, "~> 1.0"},
      {:distillery, "~> 1.4", runtime: false},
+     {:pay_pal, "~> 0.0.4", github: "dsignr/PayPal"},
      {:oauth2, "~> 0.9"}]
   end
 
