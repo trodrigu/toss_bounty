@@ -18,12 +18,7 @@ defmodule TossBounty.AuthController do
 
     user_from_db = Repo.get_by(User, email: email)
     user = sign_up_or_return_user(user_from_db, email)
-    IO.inspect "##############################"
-    IO.inspect user
-    IO.inspect "##############################"
 
-    # Check to see if user exists
-    # if not create a new one do
     {:ok, token, _claims} =
       user
       |> Guardian.encode_and_sign(:token)
