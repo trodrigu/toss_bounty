@@ -59,7 +59,6 @@ defmodule TossBounty.Mixfile do
      {:ja_resource, "~> 0.3.0"},
      {:corsica, "~> 1.0"},
      {:distillery, "~> 1.4", runtime: false},
-     {:pay_pal, "~> 0.0.4", github: "dsignr/PayPal"},
      {:oauth2, "~> 0.9"}]
   end
 
