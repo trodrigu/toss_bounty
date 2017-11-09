@@ -6,7 +6,15 @@ defmodule TossBounty.User do
     field :email, :string
     field :password, :string, virtual: true
     field :password_hash, :string
+    field :github_token, :string
     timestamps()
+  end
+
+  def github_registration_changeset(model, params \\ %{}) do
+    model
+    |> cast(params, [:email, :github_token])
+    |> validate_required([:email])
+    |> unique_constraint(:email)
   end
 
   def changeset(model, params \\ %{}) do
