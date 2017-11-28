@@ -1,4 +1,4 @@
-defmodule TossBounty.SellableRepos.MockRepoGrabber do
+defmodule TossBounty.SellableRepos.MockReposGrabber do
   @behaviour TossBounty.SellableRepos.Behaviour
 
   def start_link do

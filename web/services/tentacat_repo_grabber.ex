@@ -1,4 +1,4 @@
-defmodule TossBounty.SellableRepos.TentacatRepoGrabber do
+defmodule TossBounty.SellableRepos.TentacatReposGrabber do
   @behaviour TossBounty.SellableRepos.Behaviour
 
   def list_mine(user) do
