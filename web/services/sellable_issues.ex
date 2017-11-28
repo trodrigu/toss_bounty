@@ -8,6 +8,6 @@ defmodule TossBounty.SellableIssues do
   def call(owner, repo_name, user) do
     @sellable_issues_impl.filter(owner, repo_name, user)
     |> Enum.filter( fn x -> x["reactions"]["total_count"] > 2 end )
-    |> Enum.map( fn x -> x["body"] end)
+    |> Enum.map( fn x -> %{ title: x["title"], body: x["body"], avatar_url: x["user"]["avatar_url"], login: x["user"]["login"] } end)
   end
 end
