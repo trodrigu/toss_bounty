@@ -15,16 +15,24 @@ defmodule TossBounty.AuthController do
     user_data_from_response = get_user!(provider, client)
 
     email = user_data_from_response[:email]
+    github_token = client.token.access_token
 
     user_from_db = Repo.get_by(User, email: email)
     user = sign_up_or_return_user(user_from_db, email)
 
+    user_with_updated_github_token = update_user_with_github_token(user, github_token)
+
     {:ok, token, _claims} =
-      user
+      user_with_updated_github_token
       |> Guardian.encode_and_sign(:token)
     conn
-    |> Plug.Conn.assign(:current_user, user)
+    |> Plug.Conn.assign(:current_user, user_with_updated_github_token)
     |> redirect(external: "http://localhost:8000/#/save-session/?token=#{token}&email=#{email}")
+  end
+
+  defp update_user_with_github_token(user, github_token) do
+    user = Ecto.Changeset.change user, github_token: github_token
+    with {:ok, user} <- Repo.update(user), do: user
   end
 
   defp sign_up_or_return_user(user, email) when is_nil(user) do
