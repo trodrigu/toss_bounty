@@ -1,11 +1,11 @@
 defmodule TossBounty.GithubStrategy do
   @behaviour TossBounty.Github
 
-  def authorize_url!(params \\ []) do
-    OAuth2.Client.authorize_url!(client(), params)
+  def authorize_url!(client, params \\ []) do
+    OAuth2.Client.authorize_url!(client, params)
   end
 
-  def get_token!(params \\ []) do
+  def get_token!(client, params \\ []) do
     OAuth2.Client.get_token!(client(), Keyword.merge(params, client_secret: client().client_secret))
   end
 
