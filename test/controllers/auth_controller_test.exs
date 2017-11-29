@@ -40,10 +40,20 @@ defmodule TossBounty.AuthControllerTest do
 
     test "creates github repos in the db", %{conn: conn} do
       MockReposGrabber.clear
-      MockReposGrabber.insert_repo(%{ "name": "Barter", "open_issues_count": 3 })
+      MockReposGrabber.insert_repo(%{ "name" => "Barter", "open_issues_count" => 3 })
       conn = get conn, "/auth/github/callback?code=stuff"
       repo_count = Repo.one(from r in GitHubRepo, select: count("*"))
       assert repo_count == 1
+    end
+
+    test "associates the github repo with a user", %{conn: conn} do
+      MockReposGrabber.clear
+      MockReposGrabber.insert_repo(%{ "name" => "Barter", "open_issues_count" => 3 })
+      conn = get conn, "/auth/github/callback?code=stuff"
+      repo = Repo.one(GitHubRepo)
+      user = Repo.one(User)
+      preloaded_repo = Repo.preload(repo, [ :user ])
+      assert preloaded_repo.user == user
     end
   end
 end
