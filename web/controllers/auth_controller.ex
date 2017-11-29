@@ -1,6 +1,7 @@
 defmodule TossBounty.AuthController do
   use TossBounty.Web, :controller
   alias TossBounty.User
+  alias TossBounty.SellableRepos
 
   @doc """
   This action is reached via `/auth/:provider/callback` is the the callback URL that
@@ -21,6 +22,8 @@ defmodule TossBounty.AuthController do
     user = sign_up_or_return_user(user_from_db, email)
 
     user_with_updated_github_token = update_user_with_github_token(user, github_token)
+
+    sellable_repos = SellableRepos.call(user)
 
     {:ok, token, _claims} =
       user_with_updated_github_token
@@ -44,8 +47,5 @@ defmodule TossBounty.AuthController do
 
   defp get_token!("github", code), do: GitHub.get_token!(code: code)
 
-  defp get_user!("github", client) do
-    %{body: user} = OAuth2.Client.get!(client, "/user")
-    %{name: user["name"], avatar: user["avatar_url"], email: user["email"]}
-  end
+  defp get_user!("github", client), do: GitHub.get_user!(client)
 end
