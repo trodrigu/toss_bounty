@@ -62,7 +62,8 @@ defmodule TossBounty.AuthController do
   end
 
   defp save_or_return_github_repo(github_repo, name) when is_nil(github_repo) do
-    with {:ok, github_repo} <- Repo.insert!(%GitHubRepo{name: name}), do: github_repo
+    changeset = GitHubRepo.changeset(%GitHubRepo{}, %{name: name})
+    Repo.insert!(changeset)
   end
   defp save_or_return_github_repo(github_repo, _name), do: github_repo
 end
