@@ -4,7 +4,7 @@ defmodule TossBounty.GitHubRepoModelTest do
 
   describe "repo changeset" do
 
-    @valid_attrs %{name: "toss_bounty"}
+    @valid_attrs %{name: "toss_bounty", owner: "trodrigu"}
     @invalid_attrs %{}
     test "changeset with valid attributes" do
       changeset = GitHubRepo.changeset(%GitHubRepo{}, @valid_attrs)
