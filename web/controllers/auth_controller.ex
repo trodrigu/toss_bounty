@@ -24,8 +24,8 @@ defmodule TossBounty.AuthController do
 
     user_with_updated_github_token = update_user_with_github_token(user, github_token)
 
-    sellable_repo_names = SellableRepos.call(user)
-    save_new_repos(sellable_repo_names, user)
+    sellable_repos = SellableRepos.call(user)
+    save_new_repos(sellable_repos, user)
 
     {:ok, token, _claims} =
       user_with_updated_github_token
@@ -51,19 +51,19 @@ defmodule TossBounty.AuthController do
 
   defp get_user!("github", client), do: GitHub.get_user!(client)
 
-  defp save_new_repos(names, user) do
-    names
-    |> Enum.each(fn name -> save_repo_if_new(name, user) end)
+  defp save_new_repos(repos, user) do
+    repos
+    |> Enum.each(fn repo -> save_repo_if_new(repo, user) end)
   end
 
-  defp save_repo_if_new(name, user) do
-    repo_from_db = Repo.get_by(GitHubRepo, name: name, user_id: user.id)
-    save_or_return_github_repo(repo_from_db, name, user)
+  defp save_repo_if_new(repo, user) do
+    repo_from_db = Repo.get_by(GitHubRepo, name: repo[:name], owner: repo[:owner], user_id: user.id)
+    save_or_return_github_repo(repo_from_db, repo, user)
   end
 
-  defp save_or_return_github_repo(github_repo, name, user) when is_nil(github_repo) do
-    changeset = GitHubRepo.changeset(%GitHubRepo{}, %{name: name, user_id: user.id})
+  defp save_or_return_github_repo(repo_from_db, repo_from_service, user) when is_nil(repo_from_db) do
+    changeset = GitHubRepo.changeset(%GitHubRepo{}, %{name: repo_from_service[:name], owner: repo_from_service[:owner], user_id: user.id})
     Repo.insert!(changeset)
   end
-  defp save_or_return_github_repo(github_repo, _name, _user), do: github_repo
+  defp save_or_return_github_repo(repo_from_db, _repo_from_service, _user), do: repo_from_db
 end
