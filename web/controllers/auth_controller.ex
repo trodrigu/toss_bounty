@@ -2,7 +2,7 @@ defmodule TossBounty.AuthController do
   use TossBounty.Web, :controller
   alias TossBounty.User
   alias TossBounty.SellableRepos
-  alias TossBounty.GithubRepo
+  alias TossBounty.GitHubRepo
 
   @doc """
   This action is reached via `/auth/:provider/callback` is the the callback URL that
@@ -57,12 +57,12 @@ defmodule TossBounty.AuthController do
   end
 
   defp save_repo_if_new(github_repo_name) do
-    github_repo_from_db = Repo.get_by(GithubRepo, name: github_repo_name)
+    github_repo_from_db = Repo.get_by(GitHubRepo, name: github_repo_name)
     save_or_return_github_repo(github_repo_from_db, github_repo_name)
   end
 
   defp save_or_return_github_repo(github_repo, name) when is_nil(github_repo) do
-    with {:ok, github_repo} <- Repo.insert!(%GithubRepo{name: name}), do: github_repo
+    with {:ok, github_repo} <- Repo.insert!(%GitHubRepo{name: name}), do: github_repo
   end
   defp save_or_return_github_repo(github_repo, _name), do: github_repo
 end

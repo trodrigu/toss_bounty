@@ -1,4 +1,4 @@
-defmodule TossBounty.GithubRepo do
+defmodule TossBounty.GitHubRepo do
   use TossBounty.Web, :model
 
   schema "github_repos" do

@@ -1,4 +1,4 @@
-defmodule TossBounty.GithubRepoView do
+defmodule TossBounty.GitHubRepoView do
   use TossBounty.Web, :view
   use JaSerializer.PhoenixView
 

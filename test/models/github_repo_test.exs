@@ -1,18 +1,18 @@
-defmodule TossBounty.GithubRepoModelTest do
+defmodule TossBounty.GitHubRepoModelTest do
   use TossBounty.ModelCase, async: true
-  alias TossBounty.GithubRepo
+  alias TossBounty.GitHubRepo
 
   describe "repo changeset" do
 
     @valid_attrs %{name: "toss_bounty"}
     @invalid_attrs %{}
     test "changeset with valid attributes" do
-      changeset = GithubRepo.changeset(%GithubRepo{}, @valid_attrs)
+      changeset = GitHubRepo.changeset(%GitHubRepo{}, @valid_attrs)
       assert changeset.valid?
     end
 
     test "changeset with invalid attributes" do
-      changeset = GithubRepo.changeset(%GithubRepo{}, @valid_attrs)
+      changeset = GitHubRepo.changeset(%GitHubRepo{}, @valid_attrs)
       assert changeset.valid?
     end
   end

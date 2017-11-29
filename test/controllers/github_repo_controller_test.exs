@@ -1,4 +1,4 @@
-defmodule TossBounty.GithubRepoControllerTest do
+defmodule TossBounty.GitHubRepoControllerTest do
   use TossBounty.ApiCase
   import TossBounty.AuthenticationTestHelpers
   setup config = %{conn: conn} do

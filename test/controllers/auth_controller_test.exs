@@ -5,7 +5,7 @@ defmodule TossBounty.AuthControllerTest do
   alias TossBounty.Repo
   alias TossBounty.SellableRepos
   alias TossBounty.SellableRepos.MockReposGrabber
-  alias TossBounty.GithubRepo
+  alias TossBounty.GitHubRepo
 
   setup do
     conn = build_conn()
@@ -42,7 +42,7 @@ defmodule TossBounty.AuthControllerTest do
       MockReposGrabber.clear
       MockReposGrabber.insert_repo(%{ "name": "Barter", "open_issues_count": 3 })
       conn = get conn, "/auth/github/callback?code=stuff"
-      repo_count = Repo.one(from r in GithubRepo, select: count("*"))
+      repo_count = Repo.one(from r in GitHubRepo, select: count("*"))
       assert repo_count == 1
     end
   end

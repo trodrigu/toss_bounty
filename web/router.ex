@@ -47,6 +47,6 @@ defmodule TossBounty.Router do
     pipe_through [:api, :bearer_auth, :current_user]
 
     resources "/users", UserController, only: [:create, :show]
-    resources "/github_repos", GithubRepoController, only: [:index]
+    resources "/github_repos", GitHubRepoController, only: [:index]
   end
 end
