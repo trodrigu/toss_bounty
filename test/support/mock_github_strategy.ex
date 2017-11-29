@@ -12,7 +12,7 @@ defmodule TossBounty.MockGithubStrategy do
   def client, do: %Client{}
 
   def get_token!(_provider, _code) do
-    Map.put(client, :token, %AccessToken{})
+    Map.put(client, :token, %AccessToken{access_token: "open-sesame"})
   end
 
   def authorize_url!(_params), do: "https://authorize-url.com"
