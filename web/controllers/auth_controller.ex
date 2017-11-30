@@ -2,7 +2,9 @@ defmodule TossBounty.AuthController do
   use TossBounty.Web, :controller
   alias TossBounty.User
   alias TossBounty.SellableRepos
+  alias TossBounty.SellableIssues
   alias TossBounty.GitHubRepo
+  alias TossBounty.GitHubIssue
 
   @doc """
   This action is reached via `/auth/:provider/callback` is the the callback URL that
@@ -26,6 +28,9 @@ defmodule TossBounty.AuthController do
 
     sellable_repos = SellableRepos.call(user)
     save_new_repos(sellable_repos, user)
+
+    repos_and_sellable_issues = find_sellable_issues(sellable_repos, user)
+    save_new_issues(repos_and_sellable_issues)
 
     {:ok, token, _claims} =
       user_with_updated_github_token
@@ -66,4 +71,24 @@ defmodule TossBounty.AuthController do
     Repo.insert!(changeset)
   end
   defp save_or_return_github_repo(repo_from_db, _repo_from_service, _user), do: repo_from_db
+
+  defp find_sellable_issues(sellable_repos, user) do
+    Enum.map(sellable_repos, fn repo -> %{ name: repo[:name], issues: SellableIssues.call(repo[:name], repo[:owner], user) } end)
+  end
+
+  defp save_new_issues(repos_and_sellable_issues) do
+    Enum.each(repos_and_sellable_issues, fn repo_and_sellable_issues -> save_or_return_issues(repo_and_sellable_issues) end)
+  end
+
+  defp save_or_return_issues(repo_and_sellable_issues) do
+    name = repo_and_sellable_issues[:name]
+    repo = Repo.get_by(GitHubRepo, name: name)
+    issues = repo_and_sellable_issues[:issues]
+    |> Enum.each(fn issue -> save_or_return_issue(issue, repo) end)
+  end
+
+  defp save_or_return_issue(issue, repo) do
+    changeset = GitHubIssue.changeset(%GitHubIssue{}, %{title: issue[:title], body: issue[:owner], github_repo_id: repo.id})
+    Repo.insert!(changeset)
+  end
 end
