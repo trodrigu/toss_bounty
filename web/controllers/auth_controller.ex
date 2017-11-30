@@ -7,7 +7,7 @@ defmodule TossBounty.AuthController do
   alias TossBounty.GitHubIssue
 
   @doc """
-  This action is reached via `/auth/:provider/callback` is the the callback URL that
+  This action is reached via `/auth/:provider/callback` is the callback URL that
   the OAuth2 provider will redirect the user back to with a `code` that will
   be used to request an access token. The access token will then be used to
   access protected resources on behalf of the user.
