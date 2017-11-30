@@ -84,11 +84,17 @@ defmodule TossBounty.AuthController do
     name = repo_and_sellable_issues[:name]
     repo = Repo.get_by(GitHubRepo, name: name)
     issues = repo_and_sellable_issues[:issues]
-    |> Enum.each(fn issue -> save_or_return_issue(issue, repo) end)
+    |> Enum.each(fn issue -> run_through_issues(issue, repo) end)
   end
 
-  defp save_or_return_issue(issue, repo) do
-    changeset = GitHubIssue.changeset(%GitHubIssue{}, %{title: issue[:title], body: issue[:owner], github_repo_id: repo.id})
+  defp run_through_issues(issue, repo_from_db) do
+    issue_from_db = Repo.get_by(GitHubIssue, title: issue[:title], body: issue[:body], github_repo_id: repo_from_db.id)
+    save_or_return_issue(issue_from_db, issue, repo_from_db)
+  end
+
+  defp save_or_return_issue(issue_from_db, issue, repo_from_db) when is_nil(issue_from_db) do
+    changeset = GitHubIssue.changeset(%GitHubIssue{}, %{title: issue[:title], body: issue[:body], github_repo_id: repo_from_db.id})
     Repo.insert!(changeset)
   end
+  defp save_or_return_issue(issue_from_db, _issue, _repo_from_db), do: issue_from_db
 end
