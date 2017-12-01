@@ -15,7 +15,7 @@ defmodule TossBounty.MockGithubStrategy do
     Map.put(client, :token, %AccessToken{access_token: "open-sesame"})
   end
 
-  def authorize_url!(_params), do: "https://authorize-url.com"
+  def authorize_url!(_client, _params), do: "https://github.com"
 
   def get_user!(_client) do
     %{name: "test_user", avatar: "https://avatar-url.com", email: "test@test.com"}
