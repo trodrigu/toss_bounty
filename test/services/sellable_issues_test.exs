@@ -68,6 +68,7 @@ defmodule TossBounty.SellableIssuesTest do
     end
 
     test "when there are 3 issues with more than 2 reactions it returns all three bodies" do
+      SellableIssues.MockIssuesGrabber.clear
       user = with {:ok, user} <- Repo.insert!(%User{email: "trodriguez91@icloud.com"}), do: user
       issues =
         [%{"assignee" => nil, "assignees" => [], "author_association" => "NONE",

@@ -5,7 +5,12 @@ defmodule TossBounty.SellableIssues.TentacatIssuesGrabber do
 
   def filter(owner, repo_name, user) do
     tentacat_client = create_tentacat_client(user)
-    Issues.filter(owner, repo_name, %{state: "open"}, tentacat_client)
+    filtered_issues_from_response = Issues.filter(owner, repo_name, %{state: "open"}, tentacat_client)
+    case filtered_issues_from_response do
+      {404, _} -> []
+
+      _ -> filtered_issues_from_response
+    end
   end
 
   defp create_tentacat_client(user) do
