@@ -67,4 +67,4 @@ config :toss_bounty, issue_grabber: TossBounty.SellableIssues.TentacatIssuesGrab
 config :toss_bounty, github_strategy: TossBounty.GithubStrategy
 
 config :reverse_proxy,
-  upstreams: %{ "tossbounty.com" => [System.get_env("FRONT_END_URL")] }
+  upstreams: %{ "https://tossbounty.com" => [System.get_env("FRONT_END_URL")] }
