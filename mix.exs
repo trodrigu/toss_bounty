@@ -33,6 +33,7 @@ defmodule TossBounty.Mixfile do
                     :joken,
                     :corsica,
                     :postgrex,
+                    :tentacat,
                     :oauth2]]
   end
 
@@ -59,6 +60,7 @@ defmodule TossBounty.Mixfile do
      {:ja_resource, "~> 0.3.0"},
      {:corsica, "~> 1.0"},
      {:distillery, "~> 1.4", runtime: false},
+     {:tentacat, github: "trodrigu/tentacat"},
      {:oauth2, "~> 0.9"}]
   end
 
