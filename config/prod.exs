@@ -65,6 +65,3 @@ import_config "prod.secret.exs"
 config :toss_bounty, repo_grabber: TossBounty.SellableRepos.TentacatReposGrabber
 config :toss_bounty, issue_grabber: TossBounty.SellableIssues.TentacatIssuesGrabber
 config :toss_bounty, github_strategy: TossBounty.GithubStrategy
-
-config :reverse_proxy,
-  upstreams: %{ "https://tossbounty.com" => [System.get_env("FRONT_END_URL")] }
