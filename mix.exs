@@ -61,6 +61,7 @@ defmodule TossBounty.Mixfile do
      {:corsica, "~> 1.0"},
      {:distillery, "~> 1.4", runtime: false},
      {:tentacat, github: "trodrigu/tentacat"},
+     {:conform, "~> 2.2"},
      {:oauth2, "~> 0.9"}]
   end
 
