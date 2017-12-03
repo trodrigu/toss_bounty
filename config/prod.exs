@@ -18,7 +18,7 @@ config :toss_bounty, TossBounty.Endpoint,
           otp_app: :toss_bounty,
           keyfile: System.get_env("PRIVKEY_PATH"),
           cacertfile: System.get_env("CHAIN_PATH"),
-          certfile: System.get_env("CERT_PATH"),
+          certfile: System.get_env("CERT_PATH")],
   server: true,
   root: ".",
   version: Application.spec(:toss_bounty, :vsn)
