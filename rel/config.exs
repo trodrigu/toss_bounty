@@ -37,6 +37,7 @@ environment :prod do
   set include_erts: true
   set include_src: false
   set cookie: :"oj[<^=2/dqi)!IKRUAJCGjUW5zQt(6/uHXCJHn$y}:HJsMtDQaT|4N]6?th92u2h"
+  plugin Conform.ReleasePlugin
 end
 
 # You may define one or more releases in this file.
@@ -50,4 +51,3 @@ release :toss_bounty do
     :runtime_tools
   ]
 end
-
