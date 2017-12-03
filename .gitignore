@@ -25,3 +25,6 @@ erl_crash.dump
 /config/dev.secret.exs
 
 /.env
+/config/*.conf
+/config/*.schema.exs
+sys.config
