@@ -38,6 +38,6 @@ defmodule TossBounty.Endpoint do
     key: "_toss_bounty_key",
     signing_salt: "AcqydKM3"
 
-  plug Corsica, [ origins: ["http://localhost:8000", ~r{^http?://(.*\.?)tossbounty\.com$}], allow_headers: ["accept", "authorization", "content-type", "origin", "cache-control"], log: false ]
+  plug Corsica, [ origins: ["http://localhost:8000", ~r{^https?://(.*\.?)tossbounty\.com$}], allow_headers: ["accept", "authorization", "content-type", "origin", "cache-control"], log: false ]
   plug TossBounty.Router
 end
