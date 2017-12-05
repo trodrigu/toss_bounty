@@ -365,7 +365,7 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
     ],
     "guardian.Elixir.Guardian.secret_key": [
       commented: false,
-      datatype: :atom,
+      datatype: :binary,
       doc: "Provide documentation for guardian.Elixir.Guardian.secret_key here.",
       hidden: false,
       to: "guardian.Elixir.Guardian.secret_key"
