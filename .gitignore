@@ -26,5 +26,4 @@ erl_crash.dump
 
 /.env
 /config/*.conf
-/config/*.schema.exs
 sys.config
