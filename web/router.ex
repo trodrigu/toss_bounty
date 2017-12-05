@@ -49,5 +49,6 @@ defmodule TossBounty.Router do
     resources "/users", UserController, only: [:create, :show]
     resources "/github_repos", GitHubRepoController, only: [:index]
     resources "/github_issues", GitHubIssueController, only: [:index]
+    resources "/projects", ProjectController, only: [:index, :show, :update, :create]
   end
 end

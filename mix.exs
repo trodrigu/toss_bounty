@@ -62,6 +62,7 @@ defmodule TossBounty.Mixfile do
      {:distillery, "~> 1.4", runtime: false},
      {:tentacat, github: "trodrigu/tentacat"},
      {:conform, "~> 2.2"},
+     {:phoenix_custom_generators, "~> 1.0.6"},
      {:oauth2, "~> 0.9"}]
   end
 
