@@ -363,14 +363,6 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
       hidden: false,
       to: "guardian.Elixir.Guardian.issuer"
     ],
-    "guardian.Elixir.Guardian.ttl": [
-      commented: false,
-      datatype: {:integer, :atom},
-      default: {30, :days},
-      doc: "Provide documentation for guardian.Elixir.Guardian.ttl here.",
-      hidden: false,
-      to: "guardian.Elixir.Guardian.ttl"
-    ],
     "guardian.Elixir.Guardian.secret_key": [
       commented: false,
       datatype: :atom,
