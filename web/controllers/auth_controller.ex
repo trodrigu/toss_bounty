@@ -32,12 +32,17 @@ defmodule TossBounty.AuthController do
     repos_and_sellable_issues = find_sellable_issues(sellable_repos, user)
     save_new_issues(repos_and_sellable_issues)
 
+
     {:ok, token, _claims} =
       user_with_updated_github_token
       |> Guardian.encode_and_sign(:token)
+
+    front_end_url = Application.fetch_env!(:toss_bounty, :front_end_url)
+    total_redirect_url = front_end_url <> "/#/save-session/?token=#{token}&email=#{email}"
+
     conn
     |> Plug.Conn.assign(:current_user, user_with_updated_github_token)
-    |> redirect(external: "http://localhost:8000/#/save-session/?token=#{token}&email=#{email}")
+    |> redirect(external: total_redirect_url)
   end
 
   defp update_user_with_github_token(user, github_token) do

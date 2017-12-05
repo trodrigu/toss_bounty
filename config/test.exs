@@ -26,3 +26,5 @@ config :oauth2, GitHub,
 config :toss_bounty, repo_grabber: TossBounty.SellableRepos.MockReposGrabber
 config :toss_bounty, issue_grabber: TossBounty.SellableIssues.MockIssuesGrabber
 config :toss_bounty, github_strategy: TossBounty.MockGithubStrategy
+
+config :toss_bounty, front_end_url: "http://localhost:8000"

@@ -51,3 +51,5 @@ config :tentacat, :extra_headers, [{"Accept", "application/vnd.github.squirrel-g
 config :toss_bounty, repo_grabber: TossBounty.SellableRepos.TentacatReposGrabber
 config :toss_bounty, issue_grabber: TossBounty.SellableIssues.TentacatIssuesGrabber
 config :toss_bounty, github_strategy: TossBounty.GithubStrategy
+
+config :toss_bounty, front_end_url: System.get_env("FRONT_END_URL")
