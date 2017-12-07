@@ -28,8 +28,9 @@ defmodule TossBounty.ProjectControllerTest do
     short_description: nil,
   }
 
-  def fixture(:project, user) do
-    attrs = Map.put(@valid_attrs, :user_id, user.id)
+  def fixture(:project) do
+    user = Repo.insert!(%TossBounty.User{})
+    attrs = Map.put(@create_attrs, :user_id, user.id)
     {:ok, project} = Projects.create_project(attrs)
     project
   end
@@ -57,7 +58,6 @@ defmodule TossBounty.ProjectControllerTest do
       |> put_req_header("accept", "application/vnd.api+json")
       |> put_req_header("content-type", "application/vnd.api+json")
 
-    user = with {:ok, user} <- Repo.insert!(%User{email: "test@test.com"}), do: user
     {:ok, conn: conn}
   end
 
@@ -166,8 +166,8 @@ defmodule TossBounty.ProjectControllerTest do
     end
   end
 
-  defp create_project(_, user) do
-    project = fixture(:project, user)
+  defp create_project(attrs) do
+    project = fixture(:project)
     {:ok, project: project}
   end
 end
