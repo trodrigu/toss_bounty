@@ -1,4 +1,4 @@
-defmodule TossBounty.TestHelpers do
+defmodule TossBountyWeb.TestHelpers do
   alias TossBounty.Repo
 
   def insert_user(attrs \\ %{}) do
@@ -7,8 +7,8 @@ defmodule TossBounty.TestHelpers do
                             password: "supersecret"},
       attrs)
 
-    %TossBounty.User{}
-    |> TossBounty.User.registration_changeset(changes)
+    %TossBountyWeb.User{}
+    |> TossBountyWeb.User.registration_changeset(changes)
     |> Repo.insert!()
   end
 end

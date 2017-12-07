@@ -1,5 +1,5 @@
-defmodule TossBounty.PageControllerTest do
-  use TossBounty.ConnCase
+defmodule TossBountyWeb.PageControllerTest do
+  use TossBountyWeb.ConnCase
 
   test "GET /", %{conn: conn} do
     conn = get conn, "/"

@@ -1,7 +1,7 @@
-defmodule TossBounty.Projects.Project do
+defmodule TossBountyWeb.Projects.Project do
   use Ecto.Schema
   import Ecto.Changeset
-  alias TossBounty.Projects.Project
+  alias TossBountyWeb.Projects.Project
 
 
   schema "projects" do
@@ -10,7 +10,7 @@ defmodule TossBounty.Projects.Project do
     field :funding_goal, :float
     field :long_description, :binary
     field :short_description, :string
-    belongs_to :user, TossBounty.User
+    belongs_to :user, TossBountyWeb.User
     # field :user_id, :id
 
     timestamps()

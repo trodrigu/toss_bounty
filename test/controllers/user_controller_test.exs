@@ -1,6 +1,6 @@
-defmodule TossBounty.UserControllerTest do
-  use TossBounty.ApiCase
-  import TossBounty.AuthenticationTestHelpers
+defmodule TossBountyWeb.UserControllerTest do
+  use TossBountyWeb.ApiCase
+  import TossBountyWeb.AuthenticationTestHelpers
 
   @valid_attrs %{
     name: "Test User",

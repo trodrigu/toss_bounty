@@ -1,4 +1,4 @@
-defmodule TossBounty.ChannelCase do
+defmodule TossBountyWeb.ChannelCase do
   @moduledoc """
   This module defines the test case to be used by
   channel tests.
@@ -27,7 +27,7 @@ defmodule TossBounty.ChannelCase do
 
 
       # The default endpoint for testing
-      @endpoint TossBounty.Endpoint
+      @endpoint TossBountyWeb.Endpoint
     end
   end
 

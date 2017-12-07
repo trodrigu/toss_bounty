@@ -1,5 +1,5 @@
-defmodule TossBounty.TokenControllerTest do
-  use TossBounty.ConnCase
+defmodule TossBountyWeb.TokenControllerTest do
+  use TossBountyWeb.ConnCase
 
   setup config = %{conn: conn} do
     if email = config[:login_as] do

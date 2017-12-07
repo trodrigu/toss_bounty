@@ -1,4 +1,4 @@
-defmodule TossBounty.Projects do
+defmodule TossBountyWeb.Projects do
   @moduledoc """
   The Projects context.
   """
@@ -6,7 +6,7 @@ defmodule TossBounty.Projects do
   import Ecto.Query, warn: false
   alias TossBounty.Repo
 
-  alias TossBounty.Projects.Project
+  alias TossBountyWeb.Projects.Project
 
   @doc """
   Returns the list of projects.

@@ -1,3 +1,3 @@
-defmodule TossBounty.PageViewTest do
-  use TossBounty.ConnCase, async: true
+defmodule TossBountyWeb.PageViewTest do
+  use TossBountyWeb.ConnCase, async: true
 end

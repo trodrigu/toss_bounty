@@ -1,4 +1,4 @@
-defmodule TossBounty.ConnCase do
+defmodule TossBountyWeb.ConnCase do
   @moduledoc """
   This module defines the test case to be used by
   tests that require setting up a connection.
@@ -25,11 +25,11 @@ defmodule TossBounty.ConnCase do
       import Ecto.Changeset
       import Ecto.Query
 
-      import TossBounty.Router.Helpers
-      import TossBounty.TestHelpers
+      import TossBountyWeb.Router.Helpers
+      import TossBountyWeb.TestHelpers
 
       # The default endpoint for testing
-      @endpoint TossBounty.Endpoint
+      @endpoint TossBountyWeb.Endpoint
     end
   end
 

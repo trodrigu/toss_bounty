@@ -1,7 +1,7 @@
-defmodule TossBounty.GitHubRepoModelTest do
-  use TossBounty.ModelCase, async: true
-  alias TossBounty.GitHubRepo
-  alias TossBounty.User
+defmodule TossBountyWeb.GitHubRepoModelTest do
+  use TossBountyWeb.ModelCase, async: true
+  alias TossBountyWeb.GitHubRepo
+  alias TossBountyWeb.User
 
   describe "repo changeset" do
     @valid_attrs %{name: "toss_bounty", owner: "trodrigu"}

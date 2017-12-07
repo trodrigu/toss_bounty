@@ -1,5 +1,5 @@
-defmodule TossBounty.ProjectView do
-  use TossBounty.Web, :view
+defmodule TossBountyWeb.ProjectView do
+  use TossBountyWeb.Web, :view
   use JaSerializer.PhoenixView
 
   attributes [:current_funding, :funding_end_date, :funding_goal, :long_description, :short_description, :inserted_at, :updated_at]

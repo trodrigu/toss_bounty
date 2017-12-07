@@ -1,7 +1,7 @@
-defmodule TossBounty.GitHubOauthUrlControllerTest do
-  use TossBounty.ConnCase
+defmodule TossBountyWeb.GitHubOauthUrlControllerTest do
+  use TossBountyWeb.ConnCase
 
-  alias TossBounty.GitHub
+  alias TossBountyWeb.GitHub
 
   setup do
     conn = build_conn()

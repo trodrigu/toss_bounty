@@ -1,10 +1,10 @@
-defmodule TossBounty.ApiCase do
+defmodule TossBountyWeb.ApiCase do
   @moduledoc """
   This module defines the test case to be used by
   tests that require setting up a connection, specificaly,
   those working with the API endpoints.
 
-  It's basically a clone of TossBounty.ConnCase, with some extras,
+  It's basically a clone of TossBountyWeb.ConnCase, with some extras,
   mainly authentication and proper headers, added.
 
   If provided with a :resource_name option, it dynamically
@@ -16,8 +16,8 @@ defmodule TossBounty.ApiCase do
     use ApiCase, resource_name: :comment
   """
 
-  import TossBounty.TestHelpers
-  import TossBounty.AuthenticationTestHelpers
+  import TossBountyWeb.TestHelpers
+  import TossBountyWeb.AuthenticationTestHelpers
   use ExUnit.CaseTemplate
   use Phoenix.ConnTest
 
@@ -32,14 +32,14 @@ defmodule TossBounty.ApiCase do
       import Ecto.Changeset
       import Ecto.Query
 
-      import TossBounty.AuthenticationTestHelpers
-      import TossBounty.Router.Helpers
-      import TossBounty.TestHelpers
+      import TossBountyWeb.AuthenticationTestHelpers
+      import TossBountyWeb.Router.Helpers
+      import TossBountyWeb.TestHelpers
 
       # The default endpoint for testing
-      @endpoint TossBounty.Endpoint
+      @endpoint TossBountyWeb.Endpoint
 
-      TossBounty.ApiCase.define_request_helper_methods(unquote(opts))
+      TossBountyWeb.ApiCase.define_request_helper_methods(unquote(opts))
     end
   end
 
@@ -67,13 +67,13 @@ defmodule TossBounty.ApiCase do
 
   defp add_authentication_headers(conn, true) do
     user = insert_user(email: "test@test.com")
-    conn = conn |> TossBounty.AuthenticationTestHelpers.authenticate(user)
+    conn = conn |> TossBountyWeb.AuthenticationTestHelpers.authenticate(user)
     {conn, user}
   end
 
   defp add_authentication_headers(conn) do
     user = insert_user(email: "test@test.com")
-    conn = conn |> TossBounty.AuthenticationTestHelpers.authenticate
+    conn = conn |> TossBountyWeb.AuthenticationTestHelpers.authenticate
     {conn}
   end
 
@@ -87,11 +87,11 @@ defmodule TossBounty.ApiCase do
       defp default_record, do: insert(unquote(resource_name))
 
       defp path_for(conn, action, resource_or_id) do
-        apply(TossBounty.Router.Helpers, path_helper_method(), [conn, action, resource_or_id])
+        apply(TossBountyWeb.Router.Helpers, path_helper_method(), [conn, action, resource_or_id])
       end
 
       defp path_for(conn, action) do
-        apply(TossBounty.Router.Helpers, path_helper_method(), [conn, action])
+        apply(TossBountyWeb.Router.Helpers, path_helper_method(), [conn, action])
       end
 
       def request_index(conn) do
@@ -107,7 +107,7 @@ defmodule TossBounty.ApiCase do
 
       def request_create(conn, attrs \\ %{}) do
         path = conn |> path_for(:create)
-        payload = TossBounty.JsonAPIHelpers.build_json_payload(attrs)
+        payload = TossBountyWeb.JsonAPIHelpers.build_json_payload(attrs)
         conn |> post(path, payload)
       end
 
@@ -115,7 +115,7 @@ defmodule TossBounty.ApiCase do
       def request_update(conn, :not_found), do: request_update(conn, -1, %{})
       def request_update(conn, attrs), do: request_update(conn, default_record(), attrs)
       def request_update(conn, resource_or_id, attrs) do
-        payload = TossBounty.JsonAPIHelpers.build_json_payload(attrs)
+        payload = TossBountyWeb.JsonAPIHelpers.build_json_payload(attrs)
         path = conn |> path_for(:update, resource_or_id)
         conn |> put(path, payload)
       end

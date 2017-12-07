@@ -1,4 +1,4 @@
-defmodule TossBounty.AuthenticationTestHelpers do
+defmodule TossBountyWeb.AuthenticationTestHelpers do
   use Phoenix.ConnTest
 
   def authenticate(conn, user) do

@@ -1,9 +1,9 @@
-defmodule TossBounty.GitHubRepoControllerTest do
-  use TossBounty.ApiCase
-  import TossBounty.AuthenticationTestHelpers
-  alias TossBounty.GitHubIssue
-  alias TossBounty.GitHubRepo
-  alias TossBounty.User
+defmodule TossBountyWeb.GitHubRepoControllerTest do
+  use TossBountyWeb.ApiCase
+  import TossBountyWeb.AuthenticationTestHelpers
+  alias TossBountyWeb.GitHubIssue
+  alias TossBountyWeb.GitHubRepo
+  alias TossBountyWeb.User
   setup config = %{conn: conn} do
     if email = config[:login_as] do
       user = insert_user(email: "test@test.com")

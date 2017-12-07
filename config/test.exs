@@ -2,7 +2,7 @@ use Mix.Config
 
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
-config :toss_bounty, TossBounty.Endpoint,
+config :toss_bounty, TossBountyWeb.Endpoint,
   http: [port: 4001],
   server: false
 
@@ -23,8 +23,8 @@ config :oauth2, GitHub,
   client_secret: System.get_env("GITHUB_CLIENT_SECRET"),
   redirect_uri: System.get_env("GITHUB_REDIRECT_URI")
 
-config :toss_bounty, repo_grabber: TossBounty.SellableRepos.MockReposGrabber
-config :toss_bounty, issue_grabber: TossBounty.SellableIssues.MockIssuesGrabber
-config :toss_bounty, github_strategy: TossBounty.MockGithubStrategy
+config :toss_bounty, repo_grabber: TossBountyWeb.SellableRepos.MockReposGrabber
+config :toss_bounty, issue_grabber: TossBountyWeb.SellableIssues.MockIssuesGrabber
+config :toss_bounty, github_strategy: TossBountyWeb.MockGithubStrategy
 
 config :toss_bounty, front_end_url: "http://localhost:8000"

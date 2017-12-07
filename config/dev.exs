@@ -6,23 +6,23 @@ use Mix.Config
 # The watchers configuration can be used to run external
 # watchers to your application. For example, we use it
 # with brunch.io to recompile .js and .css sources.
-config :toss_bounty, TossBounty.Endpoint,
+config :toss_bounty, TossBountyWeb.Endpoint,
   http: [port: 4000],
   debug_errors: true,
   code_reloader: true,
   check_origin: false,
   watchers: [node: ["node_modules/brunch/bin/brunch", "watch", "--stdin",
-                    cd: Path.expand("../", __DIR__)]]
+                    cd: Path.expand("../assets", __DIR__)]]
 
 
 # Watch static and templates for browser reloading.
-config :toss_bounty, TossBounty.Endpoint,
+config :toss_bounty, TossBountyWeb.Endpoint,
   live_reload: [
     patterns: [
       ~r{priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$},
       ~r{priv/gettext/.*(po)$},
-      ~r{web/views/.*(ex)$},
-      ~r{web/templates/.*(eex)$}
+      ~r{lib/toss_bounty/views/.*(ex)$},
+      ~r{lib/toss_bounty/templates/.*(eex)$}
     ]
   ]
 
@@ -48,8 +48,8 @@ config :oauth2, GitHub,
 
 config :tentacat, :extra_headers, [{"Accept", "application/vnd.github.squirrel-girl-preview"}]
 
-config :toss_bounty, repo_grabber: TossBounty.SellableRepos.TentacatReposGrabber
-config :toss_bounty, issue_grabber: TossBounty.SellableIssues.TentacatIssuesGrabber
-config :toss_bounty, github_strategy: TossBounty.GithubStrategy
+config :toss_bounty, repo_grabber: TossBountyWeb.SellableRepos.TentacatReposGrabber
+config :toss_bounty, issue_grabber: TossBountyWeb.SellableIssues.TentacatIssuesGrabber
+config :toss_bounty, github_strategy: TossBountyWeb.GithubStrategy
 
 config :toss_bounty, front_end_url: System.get_env("FRONT_END_URL")

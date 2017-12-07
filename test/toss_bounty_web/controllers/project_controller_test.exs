@@ -1,10 +1,10 @@
-defmodule TossBounty.ProjectControllerTest do
-  use TossBounty.ConnCase
+defmodule TossBountyWeb.ProjectControllerTest do
+  use TossBountyWeb.ConnCase
 
-  alias TossBounty.Projects
-  alias TossBounty.Projects.Project
+  alias TossBountyWeb.Projects
+  alias TossBountyWeb.Projects.Project
   alias TossBounty.Repo
-  alias TossBounty.User
+  alias TossBountyWeb.User
 
   @create_attrs %{
     current_funding: 120.5,
@@ -29,7 +29,7 @@ defmodule TossBounty.ProjectControllerTest do
   }
 
   def fixture(:project) do
-    user = Repo.insert!(%TossBounty.User{})
+    user = Repo.insert!(%TossBountyWeb.User{})
     attrs = Map.put(@create_attrs, :user_id, user.id)
     {:ok, project} = Projects.create_project(attrs)
     project
@@ -41,7 +41,7 @@ defmodule TossBounty.ProjectControllerTest do
   end
 
   defp relationships do
-    user = Repo.insert!(%TossBounty.User{})
+    user = Repo.insert!(%TossBountyWeb.User{})
 
     %{
       "user" => %{

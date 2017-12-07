@@ -1,5 +1,5 @@
-defmodule TossBounty.MockGithubStrategy do
-  @behaviour TossBounty.Github.Behaviour
+defmodule TossBountyWeb.MockGithubStrategy do
+  @behaviour TossBountyWeb.Github.Behaviour
 
   defmodule Client do
     defstruct token: nil, client_secret: "not-so-secret"

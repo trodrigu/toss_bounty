@@ -1,8 +1,8 @@
-defmodule TossBounty.GitHubIssueControllerTest do
-  use TossBounty.ApiCase
-  import TossBounty.AuthenticationTestHelpers
-  alias TossBounty.GitHubRepo
-  alias TossBounty.GitHubIssue
+defmodule TossBountyWeb.GitHubIssueControllerTest do
+  use TossBountyWeb.ApiCase
+  import TossBountyWeb.AuthenticationTestHelpers
+  alias TossBountyWeb.GitHubRepo
+  alias TossBountyWeb.GitHubIssue
   alias TossBounty.Repo
 
   setup %{conn: conn} do

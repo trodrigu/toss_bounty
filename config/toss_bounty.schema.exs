@@ -109,15 +109,15 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
       hidden: false,
       to: "toss_bounty.ecto_repos"
     ],
-    "toss_bounty.Elixir.TossBounty.Endpoint.render_errors.view": [
+    "toss_bounty.Elixir.TossBountyWeb.Endpoint.render_errors.view": [
       commented: false,
       datatype: :atom,
-      default: TossBounty.ErrorView,
-      doc: "Provide documentation for toss_bounty.Elixir.TossBounty.Endpoint.render_errors.view here.",
+      default: TossBountyWeb.ErrorView,
+      doc: "Provide documentation for toss_bounty.Elixir.TossBountyWeb.Endpoint.render_errors.view here.",
       hidden: false,
-      to: "toss_bounty.Elixir.TossBounty.Endpoint.render_errors.view"
+      to: "toss_bounty.Elixir.TossBountyWeb.Endpoint.render_errors.view"
     ],
-    "toss_bounty.Elixir.TossBounty.Endpoint.render_errors.accepts": [
+    "toss_bounty.Elixir.TossBountyWeb.Endpoint.render_errors.accepts": [
       commented: false,
       datatype: [
         list: :binary
@@ -126,116 +126,116 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
         "html",
         "json"
       ],
-      doc: "Provide documentation for toss_bounty.Elixir.TossBounty.Endpoint.render_errors.accepts here.",
+      doc: "Provide documentation for toss_bounty.Elixir.TossBountyWeb.Endpoint.render_errors.accepts here.",
       hidden: false,
-      to: "toss_bounty.Elixir.TossBounty.Endpoint.render_errors.accepts"
+      to: "toss_bounty.Elixir.TossBountyWeb.Endpoint.render_errors.accepts"
     ],
-    "toss_bounty.Elixir.TossBounty.Endpoint.pubsub.name": [
+    "toss_bounty.Elixir.TossBountyWeb.Endpoint.pubsub.name": [
       commented: false,
       datatype: :atom,
       default: TossBounty.PubSub,
-      doc: "Provide documentation for toss_bounty.Elixir.TossBounty.Endpoint.pubsub.name here.",
+      doc: "Provide documentation for toss_bounty.Elixir.TossBountyWeb.Endpoint.pubsub.name here.",
       hidden: false,
-      to: "toss_bounty.Elixir.TossBounty.Endpoint.pubsub.name"
+      to: "toss_bounty.Elixir.TossBountyWeb.Endpoint.pubsub.name"
     ],
-    "toss_bounty.Elixir.TossBounty.Endpoint.pubsub.adapter": [
+    "toss_bounty.Elixir.TossBountyWeb.Endpoint.pubsub.adapter": [
       commented: false,
       datatype: :atom,
       default: Phoenix.PubSub.PG2,
-      doc: "Provide documentation for toss_bounty.Elixir.TossBounty.Endpoint.pubsub.adapter here.",
+      doc: "Provide documentation for toss_bounty.Elixir.TossBountyWeb.Endpoint.pubsub.adapter here.",
       hidden: false,
-      to: "toss_bounty.Elixir.TossBounty.Endpoint.pubsub.adapter"
+      to: "toss_bounty.Elixir.TossBountyWeb.Endpoint.pubsub.adapter"
     ],
-    "toss_bounty.Elixir.TossBounty.Endpoint.url.host": [
+    "toss_bounty.Elixir.TossBountyWeb.Endpoint.url.host": [
       commented: false,
       datatype: :binary,
       default: "api.tossbounty.com",
-      doc: "Provide documentation for toss_bounty.Elixir.TossBounty.Endpoint.url.host here.",
+      doc: "Provide documentation for toss_bounty.Elixir.TossBountyWeb.Endpoint.url.host here.",
       hidden: false,
-      to: "toss_bounty.Elixir.TossBounty.Endpoint.url.host"
+      to: "toss_bounty.Elixir.TossBountyWeb.Endpoint.url.host"
     ],
-    "toss_bounty.Elixir.TossBounty.Endpoint.url.port": [
+    "toss_bounty.Elixir.TossBountyWeb.Endpoint.url.port": [
       commented: false,
       datatype: {:atom, :binary},
       default: {:system, "PORT"},
-      doc: "Provide documentation for toss_bounty.Elixir.TossBounty.Endpoint.url.port here.",
+      doc: "Provide documentation for toss_bounty.Elixir.TossBountyWeb.Endpoint.url.port here.",
       hidden: false,
-      to: "toss_bounty.Elixir.TossBounty.Endpoint.url.port"
+      to: "toss_bounty.Elixir.TossBountyWeb.Endpoint.url.port"
     ],
-    "toss_bounty.Elixir.TossBounty.Endpoint.http.port": [
+    "toss_bounty.Elixir.TossBountyWeb.Endpoint.http.port": [
       commented: false,
       datatype: :integer,
       default: 80,
-      doc: "Provide documentation for toss_bounty.Elixir.TossBounty.Endpoint.http.port here.",
+      doc: "Provide documentation for toss_bounty.Elixir.TossBountyWeb.Endpoint.http.port here.",
       hidden: false,
-      to: "toss_bounty.Elixir.TossBounty.Endpoint.http.port"
+      to: "toss_bounty.Elixir.TossBountyWeb.Endpoint.http.port"
     ],
-    "toss_bounty.Elixir.TossBounty.Endpoint.https.port": [
+    "toss_bounty.Elixir.TossBountyWeb.Endpoint.https.port": [
       commented: false,
       datatype: :integer,
       default: 443,
-      doc: "Provide documentation for toss_bounty.Elixir.TossBounty.Endpoint.https.port here.",
+      doc: "Provide documentation for toss_bounty.Elixir.TossBountyWeb.Endpoint.https.port here.",
       hidden: false,
-      to: "toss_bounty.Elixir.TossBounty.Endpoint.https.port"
+      to: "toss_bounty.Elixir.TossBountyWeb.Endpoint.https.port"
     ],
-    "toss_bounty.Elixir.TossBounty.Endpoint.https.otp_app": [
+    "toss_bounty.Elixir.TossBountyWeb.Endpoint.https.otp_app": [
       commented: false,
       datatype: :atom,
       default: :toss_bounty,
-      doc: "Provide documentation for toss_bounty.Elixir.TossBounty.Endpoint.https.otp_app here.",
+      doc: "Provide documentation for toss_bounty.Elixir.TossBountyWeb.Endpoint.https.otp_app here.",
       hidden: false,
-      to: "toss_bounty.Elixir.TossBounty.Endpoint.https.otp_app"
+      to: "toss_bounty.Elixir.TossBountyWeb.Endpoint.https.otp_app"
     ],
-    "toss_bounty.Elixir.TossBounty.Endpoint.https.keyfile": [
+    "toss_bounty.Elixir.TossBountyWeb.Endpoint.https.keyfile": [
       commented: false,
       datatype: :binary,
-      doc: "Provide documentation for toss_bounty.Elixir.TossBounty.Endpoint.https.keyfile here.",
+      doc: "Provide documentation for toss_bounty.Elixir.TossBountyWeb.Endpoint.https.keyfile here.",
       hidden: false,
-      to: "toss_bounty.Elixir.TossBounty.Endpoint.https.keyfile"
+      to: "toss_bounty.Elixir.TossBountyWeb.Endpoint.https.keyfile"
     ],
-    "toss_bounty.Elixir.TossBounty.Endpoint.https.cacertfile": [
+    "toss_bounty.Elixir.TossBountyWeb.Endpoint.https.cacertfile": [
       commented: false,
       datatype: :binary,
-      doc: "Provide documentation for toss_bounty.Elixir.TossBounty.Endpoint.https.cacertfile here.",
+      doc: "Provide documentation for toss_bounty.Elixir.TossBountyWeb.Endpoint.https.cacertfile here.",
       hidden: false,
-      to: "toss_bounty.Elixir.TossBounty.Endpoint.https.cacertfile"
+      to: "toss_bounty.Elixir.TossBountyWeb.Endpoint.https.cacertfile"
     ],
-    "toss_bounty.Elixir.TossBounty.Endpoint.https.certfile": [
+    "toss_bounty.Elixir.TossBountyWeb.Endpoint.https.certfile": [
       commented: false,
       datatype: :binary,
-      doc: "Provide documentation for toss_bounty.Elixir.TossBounty.Endpoint.https.certfile here.",
+      doc: "Provide documentation for toss_bounty.Elixir.TossBountyWeb.Endpoint.https.certfile here.",
       hidden: false,
-      to: "toss_bounty.Elixir.TossBounty.Endpoint.https.certfile"
+      to: "toss_bounty.Elixir.TossBountyWeb.Endpoint.https.certfile"
     ],
-    "toss_bounty.Elixir.TossBounty.Endpoint.server": [
+    "toss_bounty.Elixir.TossBountyWeb.Endpoint.server": [
       commented: false,
       datatype: :atom,
       default: true,
-      doc: "Provide documentation for toss_bounty.Elixir.TossBounty.Endpoint.server here.",
+      doc: "Provide documentation for toss_bounty.Elixir.TossBountyWeb.Endpoint.server here.",
       hidden: false,
-      to: "toss_bounty.Elixir.TossBounty.Endpoint.server"
+      to: "toss_bounty.Elixir.TossBountyWeb.Endpoint.server"
     ],
-    "toss_bounty.Elixir.TossBounty.Endpoint.root": [
+    "toss_bounty.Elixir.TossBountyWeb.Endpoint.root": [
       commented: false,
       datatype: :binary,
       default: ".",
-      doc: "Provide documentation for toss_bounty.Elixir.TossBounty.Endpoint.root here.",
+      doc: "Provide documentation for toss_bounty.Elixir.TossBountyWeb.Endpoint.root here.",
       hidden: false,
-      to: "toss_bounty.Elixir.TossBounty.Endpoint.root"
+      to: "toss_bounty.Elixir.TossBountyWeb.Endpoint.root"
     ],
-    "toss_bounty.Elixir.TossBounty.Endpoint.version": [
+    "toss_bounty.Elixir.TossBountyWeb.Endpoint.version": [
       commented: false,
       datatype: :atom,
-      doc: "Provide documentation for toss_bounty.Elixir.TossBounty.Endpoint.version here.",
+      doc: "Provide documentation for toss_bounty.Elixir.TossBountyWeb.Endpoint.version here.",
       hidden: false,
-      to: "toss_bounty.Elixir.TossBounty.Endpoint.version"
+      to: "toss_bounty.Elixir.TossBountyWeb.Endpoint.version"
     ],
-    "toss_bounty.Elixir.TossBounty.Endpoint.secret_key_base": [
+    "toss_bounty.Elixir.TossBountyWeb.Endpoint.secret_key_base": [
       commented: false,
       datatype: :binary,
-      doc: "Provide documentation for toss_bounty.Elixir.TossBounty.Endpoint.secret_key_base here.",
+      doc: "Provide documentation for toss_bounty.Elixir.TossBountyWeb.Endpoint.secret_key_base here.",
       hidden: false,
-      to: "toss_bounty.Elixir.TossBounty.Endpoint.secret_key_base"
+      to: "toss_bounty.Elixir.TossBountyWeb.Endpoint.secret_key_base"
     ],
     "toss_bounty.Elixir.TossBounty.Repo.adapter": [
       commented: false,
@@ -305,7 +305,7 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
     "toss_bounty.repo_grabber": [
       commented: false,
       datatype: :atom,
-      default: TossBounty.SellableRepos.TentacatReposGrabber,
+      default: TossBountyWeb.SellableRepos.TentacatReposGrabber,
       doc: "Provide documentation for toss_bounty.repo_grabber here.",
       hidden: false,
       to: "toss_bounty.repo_grabber"
@@ -313,7 +313,7 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
     "toss_bounty.issue_grabber": [
       commented: false,
       datatype: :atom,
-      default: TossBounty.SellableIssues.TentacatIssuesGrabber,
+      default: TossBountyWeb.SellableIssues.TentacatIssuesGrabber,
       doc: "Provide documentation for toss_bounty.issue_grabber here.",
       hidden: false,
       to: "toss_bounty.issue_grabber"
@@ -321,7 +321,7 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
     "toss_bounty.github_strategy": [
       commented: false,
       datatype: :atom,
-      default: TossBounty.GithubStrategy,
+      default: TossBountyWeb.GithubStrategy,
       doc: "Provide documentation for toss_bounty.github_strategy here.",
       hidden: false,
       to: "toss_bounty.github_strategy"
@@ -373,7 +373,7 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
     "guardian.Elixir.Guardian.serializer": [
       commented: false,
       datatype: :atom,
-      default: TossBounty.GuardianSerializer,
+      default: TossBountyWeb.GuardianSerializer,
       doc: "Provide documentation for guardian.Elixir.Guardian.serializer here.",
       hidden: false,
       to: "guardian.Elixir.Guardian.serializer"

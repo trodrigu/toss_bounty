@@ -1,14 +1,14 @@
-defmodule TossBounty.AuthControllerTest do
-  use TossBounty.ApiCase
-  import TossBounty.AuthenticationTestHelpers
-  alias TossBounty.User
+defmodule TossBountyWeb.AuthControllerTest do
+  use TossBountyWeb.ApiCase
+  import TossBountyWeb.AuthenticationTestHelpers
+  alias TossBountyWeb.User
   alias TossBounty.Repo
-  alias TossBounty.SellableRepos
-  alias TossBounty.SellableIssues
-  alias TossBounty.SellableRepos.MockReposGrabber
-  alias TossBounty.SellableIssues.MockIssuesGrabber
-  alias TossBounty.GitHubRepo
-  alias TossBounty.GitHubIssue
+  alias TossBountyWeb.SellableRepos
+  alias TossBountyWeb.SellableIssues
+  alias TossBountyWeb.SellableRepos.MockReposGrabber
+  alias TossBountyWeb.SellableIssues.MockIssuesGrabber
+  alias TossBountyWeb.GitHubRepo
+  alias TossBountyWeb.GitHubIssue
 
   setup do
     conn = build_conn()

@@ -11,7 +11,7 @@ defmodule TossBounty do
       # Start the Ecto repository
       supervisor(TossBounty.Repo, []),
       # Start the endpoint when the application starts
-      supervisor(TossBounty.Endpoint, []),
+      supervisor(TossBountyWeb.Endpoint, []),
       # Start your own worker by calling: TossBounty.Worker.start_link(arg1, arg2, arg3)
       # worker(TossBounty.Worker, [arg1, arg2, arg3]),
     ]
@@ -25,7 +25,7 @@ defmodule TossBounty do
   # Tell Phoenix to update the endpoint configuration
   # whenever the application is updated.
   def config_change(changed, _new, removed) do
-    TossBounty.Endpoint.config_change(changed, removed)
+    TossBountyWeb.Endpoint.config_change(changed, removed)
     :ok
   end
 end

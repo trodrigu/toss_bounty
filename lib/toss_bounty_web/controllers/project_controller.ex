@@ -1,11 +1,11 @@
-defmodule TossBounty.ProjectController do
-  use TossBounty.Web, :controller
+defmodule TossBountyWeb.ProjectController do
+  use TossBountyWeb.Web, :controller
 
-  alias TossBounty.Projects
-  alias TossBounty.Projects.Project
+  alias TossBountyWeb.Projects
+  alias TossBountyWeb.Projects.Project
   alias JaSerializer.Params
 
-  action_fallback TossBounty.FallbackController
+  action_fallback TossBountyWeb.FallbackController
 
   def index(conn, _params) do
     projects = Projects.list_projects()

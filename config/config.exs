@@ -16,10 +16,10 @@ config :toss_bounty,
   ecto_repos: [TossBounty.Repo]
 
 # Configures the endpoint
-config :toss_bounty, TossBounty.Endpoint,
+config :toss_bounty, TossBountyWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "MAjVtcm9+3sgx0N/rAUPlgtkkZ1fC8X5lWUaCrXFl9GxDz0HOlr3yKhoZ+DWggzz",
-  render_errors: [view: TossBounty.ErrorView, accepts: ~w(html json)],
+  render_errors: [view: TossBountyWeb.ErrorView, accepts: ~w(html json)],
   pubsub: [name: TossBounty.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
@@ -39,6 +39,6 @@ config :guardian, Guardian,
   issuer: "TossBounty",
   ttl: { 30, :days },
   secret_key: System.get_env("GUARDIAN_SECRET_KEY"),
-  serializer: TossBounty.GuardianSerializer
+  serializer: TossBountyWeb.GuardianSerializer
 
 config :tentacat, :extra_headers, [{"Accept", "application/vnd.github.squirrel-girl-preview"}]

@@ -1,8 +1,8 @@
-defmodule TossBounty.ProjectsTest do
-  use TossBounty.ModelCase
+defmodule TossBountyWeb.ProjectsTest do
+  use TossBountyWeb.ModelCase
 
-  alias TossBounty.Projects
-  alias TossBounty.User
+  alias TossBountyWeb.Projects
+  alias TossBountyWeb.User
 
   setup do
     user = with {:ok, user} <- Repo.insert!(%User{email: "test@test.com"}), do: user
@@ -10,7 +10,7 @@ defmodule TossBounty.ProjectsTest do
   end
 
   describe "projects" do
-    alias TossBounty.Projects.Project
+    alias TossBountyWeb.Projects.Project
 
     @valid_attrs %{
       current_funding: 120.5,
