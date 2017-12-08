@@ -1,5 +1,5 @@
 defmodule TossBountyWeb.CampaignControllerTest do
-  use TossBountyWeb.ConnCase
+  use TossBountyWeb.ApiCase, resource_name: :campaign
 
   alias TossBountyWeb.Campaigns
   alias TossBountyWeb.Campaigns.Campaign
@@ -62,13 +62,21 @@ defmodule TossBountyWeb.CampaignControllerTest do
   end
 
   describe "index" do
+    @tag :authenticated
     test "lists all campaigns", %{conn: conn} do
       conn = get conn, campaign_path(conn, :index)
       assert json_response(conn, 200)["data"] == []
     end
+
+    test "renders 401 when not authenticated", %{conn: conn} do
+      conn
+      |> request_index
+      |> json_response(401)
+    end
   end
 
   describe "create campaign" do
+    @tag :authenticated
     test "renders campaign when data is valid", %{conn: conn} do
       conn = post conn, campaign_path(conn, :create), %{
         "meta" => %{},
@@ -80,8 +88,14 @@ defmodule TossBountyWeb.CampaignControllerTest do
       }
       assert %{"id" => id} = json_response(conn, 201)["data"]
 
-      conn = get conn, campaign_path(conn, :show, id)
-      data = json_response(conn, 200)["data"]
+      user = Repo.one(from u in User, limit: 1)
+      {:ok, jwt, _} = Guardian.encode_and_sign(user)
+
+      conn()
+      |> put_req_header("authorization", "Bearer #{jwt}")
+      |> get campaign_path(conn, :show, id)
+
+      data = json_response(conn, 201)["data"]
       assert data["id"] == "#{id}"
       assert data["type"] == "campaign"
       assert data["attributes"]["current-funding"] == 120.5
@@ -92,6 +106,7 @@ defmodule TossBountyWeb.CampaignControllerTest do
 
     end
 
+    @tag :authenticated
     test "renders errors when data is invalid", %{conn: conn} do
       conn = post conn, campaign_path(conn, :create), %{
         "meta" => %{},
@@ -103,11 +118,18 @@ defmodule TossBountyWeb.CampaignControllerTest do
       }
       assert json_response(conn, 422)["errors"] != %{}
     end
+
+    test "renders 401 when not authenticated", %{conn: conn} do
+      conn
+      |> request_index
+      |> json_response(401)
+    end
   end
 
   describe "update campaign" do
     setup [:create_campaign]
 
+    @tag :authenticated
     test "renders campaign when data is valid", %{conn: conn, campaign: %Campaign{id: id} = campaign} do
       conn = put conn, campaign_path(conn, :update, campaign), %{
         "meta" => %{},
@@ -128,7 +150,13 @@ defmodule TossBountyWeb.CampaignControllerTest do
       assert data["attributes"]["short-description"] == "some updated short_description"
 
 
-      conn = get conn, campaign_path(conn, :show, id)
+      user = Repo.one(from u in User, limit: 1)
+      {:ok, jwt, _} = Guardian.encode_and_sign(user)
+
+      conn()
+      |> put_req_header("authorization", "Bearer #{jwt}")
+      |> get campaign_path(conn, :show, id)
+
       data = json_response(conn, 200)["data"]
       assert data["id"] == "#{id}"
       assert data["type"] == "campaign"
@@ -140,6 +168,7 @@ defmodule TossBountyWeb.CampaignControllerTest do
 
     end
 
+    @tag :authenticated
     test "renders errors when data is invalid", %{conn: conn, campaign: campaign} do
       conn = put conn, campaign_path(conn, :update, campaign), %{
       "meta" => %{},
@@ -152,17 +181,35 @@ defmodule TossBountyWeb.CampaignControllerTest do
     }
       assert json_response(conn, 422)["errors"] != %{}
     end
+
+    test "renders 401 when not authenticated", %{conn: conn} do
+      conn
+      |> request_index
+      |> json_response(401)
+    end
   end
 
   describe "delete campaign" do
     setup [:create_campaign]
 
+    @tag :authenticated
     test "deletes chosen campaign", %{conn: conn, campaign: campaign} do
       conn = delete conn, campaign_path(conn, :delete, campaign)
       assert response(conn, 204)
+
+      user = Repo.one(from u in User, limit: 1)
+      {:ok, jwt, _} = Guardian.encode_and_sign(user)
+
       assert_error_sent 404, fn ->
-        get conn, campaign_path(conn, :show, campaign)
+        conn()
+        |> put_req_header("authorization", "Bearer #{jwt}")
+        |> get campaign_path(conn, :show, campaign)
       end
+    end
+
+    test "renders 401 when not authenticated", %{conn: conn, campaign: campaign} do
+      conn = delete conn, campaign_path(conn, :delete, campaign)
+      assert conn |> json_response(401)
     end
   end
 
