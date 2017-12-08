@@ -84,7 +84,7 @@ defmodule TossBountyWeb.ApiCase do
     quote do
       defp factory_name, do: unquote(resource_name)
       defp path_helper_method, do: "#{unquote(resource_name)}_path" |> String.to_atom
-      defp default_record, do: insert(unquote(resource_name))
+      defp default_record, do: Repo.insert!(unquote(resource_name))
 
       defp path_for(conn, action, resource_or_id) do
         apply(TossBountyWeb.Router.Helpers, path_helper_method(), [conn, action, resource_or_id])
