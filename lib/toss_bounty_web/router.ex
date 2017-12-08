@@ -23,6 +23,10 @@ defmodule TossBountyWeb.Router do
     plug TossBountyWeb.CurrentUser
   end
 
+  pipeline :ensure_auth do
+    plug Guardian.Plug.EnsureAuthenticated
+  end
+
   scope "/", TossBountyWeb do
     pipe_through :browser # Use the default browser stack
 
@@ -44,7 +48,7 @@ defmodule TossBountyWeb.Router do
   end
 
   scope "/", TossBountyWeb do
-    pipe_through [:api, :bearer_auth, :current_user]
+    pipe_through [:api, :bearer_auth, :current_user, :ensure_auth]
 
     resources "/users", UserController, only: [:create, :show]
     resources "/github_repos", GitHubRepoController, only: [:index]
