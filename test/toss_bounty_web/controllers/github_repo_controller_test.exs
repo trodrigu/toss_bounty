@@ -21,19 +21,27 @@ defmodule TossBountyWeb.GitHubRepoControllerTest do
   end
 
   describe "index" do
-    @tag login_as: "max"
+    @tag :authenticated
     test "returns an index of the github repos", %{conn: conn} do
       conn = get conn, git_hub_repo_path(conn, :index)
       assert conn |> json_response(200)
     end
 
-    @tag login_as: "max"
+    @tag :authenticated
     test "filter by user id returns the correct repo", %{conn: conn} do
       user = Repo.get_by(User, email: "test@test.com")
       repo = Repo.insert!(%GitHubRepo{name: "foobar", user_id: user.id})
       repo_that_does_not_matter = Repo.insert!(%GitHubRepo{name: "bazbar"})
       Repo.insert!(%GitHubIssue{title: "great title", body: "body", github_repo_id: repo.id})
-      conn = get conn, git_hub_repo_path(conn, :index), %{ user_id: user.id }
+
+      user = Repo.one(from u in User, limit: 1)
+      {:ok, jwt, _} = Guardian.encode_and_sign(user)
+
+      conn =
+        conn()
+        |> put_req_header("authorization", "Bearer #{jwt}")
+        |> get git_hub_repo_path(conn, :index), %{ user_id: user.id }
+
       response = json_response(conn, 200)
       repo_from_response = response["data"]
       |> Enum.at(0)

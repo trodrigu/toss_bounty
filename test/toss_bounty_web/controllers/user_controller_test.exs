@@ -13,6 +13,7 @@ defmodule TossBountyWeb.UserControllerTest do
   }
 
   describe "create" do
+    @tag :authenticated
     test "creates and renders resource when data is valid", %{conn: conn} do
       attrs = Map.put(@valid_attrs, :password, "password")
       conn = post conn, user_path(conn, :create), %{
