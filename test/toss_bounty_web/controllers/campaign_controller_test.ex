@@ -8,14 +8,14 @@ defmodule TossBountyWeb.CampaignControllerTest do
 
   @create_attrs %{
     current_funding: 120.5,
-    funding_end_date: ~N[2010-04-17 14:00:00.000000],
+    funding_end_date: Timex.parse!("Tue, 06 Mar 2013 01:25:19 +0200", "{RFC1123}"),
     funding_goal: 120.5,
     long_description: "some long_description",
     short_description: "some short_description",
   }
   @update_attrs %{
     current_funding: 456.7,
-    funding_end_date: ~N[2011-05-18 15:01:01.000000],
+    funding_end_date: Timex.parse!("Tue, 06 Mar 2013 01:25:19 +0200", "{RFC1123}"),
     funding_goal: 456.7,
     long_description: "some updated long_description",
     short_description: "some updated short_description",
@@ -99,7 +99,7 @@ defmodule TossBountyWeb.CampaignControllerTest do
       assert data["id"] == "#{id}"
       assert data["type"] == "campaign"
       assert data["attributes"]["current-funding"] == 120.5
-      assert data["attributes"]["funding-end-date"] == "2010-04-17T14:00:00.000000"
+      assert data["attributes"]["funding-end-date"] == "2013-03-06T01:25:19+02:00"
       assert data["attributes"]["funding-goal"] == 120.5
       assert data["attributes"]["long-description"] == "some long_description"
       assert data["attributes"]["short-description"] == "some short_description"
@@ -144,7 +144,7 @@ defmodule TossBountyWeb.CampaignControllerTest do
       assert data["id"] == "#{id}"
       assert data["type"] == "campaign"
       assert data["attributes"]["current-funding"] == 456.7
-      assert data["attributes"]["funding-end-date"] == "2011-05-18T15:01:01.000000"
+      assert data["attributes"]["funding-end-date"] == "2013-03-06T01:25:19+02:00"
       assert data["attributes"]["funding-goal"] == 456.7
       assert data["attributes"]["long-description"] == "some updated long_description"
       assert data["attributes"]["short-description"] == "some updated short_description"
@@ -161,7 +161,7 @@ defmodule TossBountyWeb.CampaignControllerTest do
       assert data["id"] == "#{id}"
       assert data["type"] == "campaign"
       assert data["attributes"]["current-funding"] == 456.7
-      assert data["attributes"]["funding-end-date"] == "2011-05-18T15:01:01.000000"
+      assert data["attributes"]["funding-end-date"] == "2013-03-06T01:25:19+02:00"
       assert data["attributes"]["funding-goal"] == 456.7
       assert data["attributes"]["long-description"] == "some updated long_description"
       assert data["attributes"]["short-description"] == "some updated short_description"

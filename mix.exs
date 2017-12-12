@@ -34,6 +34,8 @@ defmodule TossBounty.Mixfile do
                     :corsica,
                     :postgrex,
                     :tentacat,
+                    :timex,
+                    :timex_ecto,
                     :oauth2]]
   end
 
@@ -63,6 +65,8 @@ defmodule TossBounty.Mixfile do
      {:tentacat, github: "trodrigu/tentacat"},
      {:conform, "~> 2.2"},
      {:phoenix_custom_generators, "~> 1.0.6"},
+     {:timex, "~> 3.1"},
+     {:timex_ecto, "~> 3.2"},
      {:oauth2, "~> 0.9"}]
   end
 

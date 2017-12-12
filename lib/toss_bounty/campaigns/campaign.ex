@@ -2,16 +2,15 @@ defmodule TossBountyWeb.Campaigns.Campaign do
   use Ecto.Schema
   import Ecto.Changeset
   alias TossBountyWeb.Campaigns.Campaign
-
+  use Timex.Ecto.Timestamps
 
   schema "campaigns" do
     field :current_funding, :float
-    field :funding_end_date, :naive_datetime
+    field :funding_end_date, Timex.Ecto.DateTimeWithTimezone
     field :funding_goal, :float
     field :long_description, :binary
     field :short_description, :string
     belongs_to :user, TossBountyWeb.User
-    # field :user_id, :id
 
     timestamps()
   end

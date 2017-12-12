@@ -14,14 +14,14 @@ defmodule TossBountyWeb.CampaignsTest do
 
     @valid_attrs %{
       current_funding: 120.5,
-      funding_end_date: ~N[2010-04-17 14:00:00.000000],
+      funding_end_date: Timex.parse!("Tue, 06 Mar 2013 01:25:19 +0200", "{RFC1123}"),
       funding_goal: 120.5,
       long_description: "some long_description",
       short_description: "some short_description",
     }
     @update_attrs %{
       current_funding: 456.7,
-      funding_end_date: ~N[2011-05-18 15:01:01.000000],
+      funding_end_date: Timex.parse!("Tue, 06 Mar 2013 01:25:19 +0200", "{RFC1123}"),
       funding_goal: 456.7,
       long_description: "some updated long_description",
       short_description: "some updated short_description",
@@ -59,7 +59,7 @@ defmodule TossBountyWeb.CampaignsTest do
       attrs = Map.put(@valid_attrs, :user_id, user.id)
       assert {:ok, %Campaign{} = campaign} = Campaigns.create_campaign(attrs)
       assert campaign.current_funding == 120.5
-      assert campaign.funding_end_date == ~N[2010-04-17 14:00:00.000000]
+      assert campaign.funding_end_date == Timex.parse!("Tue, 06 Mar 2013 01:25:19 +0200", "{RFC1123}")
       assert campaign.funding_goal == 120.5
       assert campaign.long_description == "some long_description"
       assert campaign.short_description == "some short_description"
@@ -74,7 +74,7 @@ defmodule TossBountyWeb.CampaignsTest do
       assert {:ok, campaign} = Campaigns.update_campaign(campaign, @update_attrs)
       assert %Campaign{} = campaign
       assert campaign.current_funding == 456.7
-      assert campaign.funding_end_date == ~N[2011-05-18 15:01:01.000000]
+      assert campaign.funding_end_date == Timex.parse!("Tue, 06 Mar 2013 01:25:19 +0200", "{RFC1123}")
       assert campaign.funding_goal == 456.7
       assert campaign.long_description == "some updated long_description"
       assert campaign.short_description == "some updated short_description"
