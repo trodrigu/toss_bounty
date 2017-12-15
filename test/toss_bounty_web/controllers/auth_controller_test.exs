@@ -21,6 +21,14 @@ defmodule TossBountyWeb.AuthControllerTest do
   }
 
   describe "callback" do
+    test "returns the email, auth token and id", %{conn: conn} do
+      conn = get conn, "/auth/github/callback?code=stuff"
+      assert redirected_to(conn) =~ "/save-session"
+      assert redirected_to(conn) =~ "email"
+      assert redirected_to(conn) =~ "token"
+      assert redirected_to(conn) =~ "user_id"
+    end
+
     test "creates user if one not found", %{conn: conn} do
       conn = get conn, "/auth/github/callback?code=stuff"
       user_count = Repo.one(from u in User, select: count("*"))

@@ -37,8 +37,9 @@ defmodule TossBountyWeb.AuthController do
       user_with_updated_github_token
       |> Guardian.encode_and_sign(:token)
 
+    user_id = user_with_updated_github_token.id
     front_end_url = Application.fetch_env!(:toss_bounty, :front_end_url)
-    total_redirect_url = front_end_url <> "/#/save-session/?token=#{token}&email=#{email}"
+    total_redirect_url = front_end_url <> "/#/save-session/?token=#{token}&email=#{email}&user_id=#{user_id}"
 
     conn
     |> Plug.Conn.assign(:current_user, user_with_updated_github_token)
