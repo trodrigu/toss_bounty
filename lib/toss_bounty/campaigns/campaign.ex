@@ -31,7 +31,6 @@ defmodule TossBountyWeb.Campaigns.Campaign do
       :short_description,
       :long_description,
       :funding_goal,
-      :current_funding,
       :funding_end_date,
       :user_id,
 
