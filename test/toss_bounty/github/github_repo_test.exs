@@ -4,7 +4,7 @@ defmodule TossBountyWeb.GitHubRepoModelTest do
   alias TossBountyWeb.User
 
   describe "repo changeset" do
-    @valid_attrs %{name: "toss_bounty", owner: "trodrigu"}
+    @valid_attrs %{name: "toss_bounty", owner: "trodrigu", bountiful_score: 3}
     @invalid_attrs %{user_id: 9999}
 
     setup do
