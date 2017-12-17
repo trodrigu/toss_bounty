@@ -9,7 +9,7 @@ defmodule TossBountyWeb.SellableRepos do
     sellable_repos =
       @sellable_repo_impl.list_mine(user)
       |> Enum.filter(fn(x) -> x["stargazers_count"] > 0 end)
-      |> Enum.map(fn(repo) -> %{ name: repo["name"], owner: repo["owner"]["login"], bountiful_score: calculate_bountiful_score(repo) } end)
+      |> Enum.map(fn(repo) -> %{ name: repo["name"], owner: repo["owner"]["login"], bountiful_score: calculate_bountiful_score(repo), image: repo["owner"]["avatar"] } end)
   end
 
   defp calculate_bountiful_score(repo) do
