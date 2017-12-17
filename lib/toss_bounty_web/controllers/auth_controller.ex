@@ -73,7 +73,7 @@ defmodule TossBountyWeb.AuthController do
   end
 
   defp save_or_return_github_repo(repo_from_db, repo_from_service, user) when is_nil(repo_from_db) do
-    changeset = GitHubRepo.changeset(%GitHubRepo{}, %{name: repo_from_service[:name], owner: repo_from_service[:owner], user_id: user.id})
+    changeset = GitHubRepo.changeset(%GitHubRepo{}, %{name: repo_from_service[:name], owner: repo_from_service[:owner], user_id: user.id, bountiful_score: repo_from_service[:bountiful_score], image: repo_from_service[:image]})
     Repo.insert!(changeset)
   end
   defp save_or_return_github_repo(repo_from_db, _repo_from_service, _user), do: repo_from_db
