@@ -2,5 +2,5 @@ defmodule TossBountyWeb.GitHubRepoView do
   use TossBountyWeb.Web, :view
   use JaSerializer.PhoenixView
 
-  attributes [:name, :bountiful_score]
+  attributes [:name, :bountiful_score, :image]
 end
