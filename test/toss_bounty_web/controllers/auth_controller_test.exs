@@ -3,9 +3,9 @@ defmodule TossBountyWeb.AuthControllerTest do
   import TossBountyWeb.AuthenticationTestHelpers
   alias TossBounty.User
   alias TossBounty.Repo
-  alias TossBountyWeb.SellableRepos
+  alias TossBounty.SellableRepos
   alias TossBountyWeb.SellableIssues
-  alias TossBountyWeb.SellableRepos.MockReposGrabber
+  alias TossBounty.SellableRepos.MockReposGrabber
   alias TossBountyWeb.SellableIssues.MockIssuesGrabber
   alias TossBounty.GitHubRepo
   alias TossBounty.GitHubIssue

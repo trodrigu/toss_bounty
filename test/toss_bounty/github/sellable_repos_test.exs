@@ -1,8 +1,8 @@
-defmodule TossBountyWeb.SellableReposTest do
+defmodule TossBounty.SellableReposTest do
   use TossBountyWeb.DataCase
-  alias TossBountyWeb.SellableRepos
+  alias TossBounty.SellableRepos
   alias TossBounty.User
-  alias TossBountyWeb.SellableRepos.MockReposGrabber
+  alias TossBounty.SellableRepos.MockReposGrabber
 
 
   describe "call/2" do

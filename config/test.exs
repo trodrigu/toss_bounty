@@ -23,7 +23,7 @@ config :oauth2, GitHub,
   client_secret: System.get_env("GITHUB_CLIENT_SECRET"),
   redirect_uri: System.get_env("GITHUB_REDIRECT_URI")
 
-config :toss_bounty, repo_grabber: TossBountyWeb.SellableRepos.MockReposGrabber
+config :toss_bounty, repo_grabber: TossBounty.SellableRepos.MockReposGrabber
 config :toss_bounty, issue_grabber: TossBountyWeb.SellableIssues.MockIssuesGrabber
 config :toss_bounty, github_strategy: TossBountyWeb.MockGithubStrategy
 

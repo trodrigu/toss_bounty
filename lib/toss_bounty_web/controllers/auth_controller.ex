@@ -1,7 +1,7 @@
 defmodule TossBountyWeb.AuthController do
   use TossBountyWeb.Web, :controller
   alias TossBounty.User
-  alias TossBountyWeb.SellableRepos
+  alias TossBounty.SellableRepos
   alias TossBountyWeb.SellableIssues
   alias TossBounty.GitHubRepo
   alias TossBounty.GitHubIssue

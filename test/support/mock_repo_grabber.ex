@@ -1,5 +1,5 @@
-defmodule TossBountyWeb.SellableRepos.MockReposGrabber do
-  @behaviour TossBountyWeb.SellableRepos.Behaviour
+defmodule TossBounty.SellableRepos.MockReposGrabber do
+  @behaviour TossBounty.SellableRepos.Behaviour
 
   def start_link do
     Agent.start_link(fn -> [] end, name: __MODULE__)

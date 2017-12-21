@@ -67,7 +67,7 @@ config :logger, level: :info
 # which should be versioned separately.
 import_config "prod.secret.exs"
 
-config :toss_bounty, repo_grabber: TossBountyWeb.SellableRepos.TentacatReposGrabber
+config :toss_bounty, repo_grabber: TossBounty.SellableRepos.TentacatReposGrabber
 config :toss_bounty, issue_grabber: TossBountyWeb.SellableIssues.TentacatIssuesGrabber
 config :toss_bounty, github_strategy: TossBountyWeb.GithubStrategy
 
