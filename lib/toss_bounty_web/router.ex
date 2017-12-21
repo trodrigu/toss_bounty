@@ -20,7 +20,7 @@ defmodule TossBountyWeb.Router do
   end
 
   pipeline :current_user do
-    plug TossBounty.CurrentUser
+    plug TossBounty.Accounts.CurrentUser
   end
 
   pipeline :ensure_auth do

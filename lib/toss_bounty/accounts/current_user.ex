@@ -1,4 +1,4 @@
-defmodule TossBounty.CurrentUser do
+defmodule TossBounty.Accounts.CurrentUser do
   import Plug.Conn
   alias TossBounty.GuardianSerializer
 
