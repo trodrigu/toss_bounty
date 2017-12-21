@@ -1,8 +1,8 @@
 defmodule TossBountyWeb.CampaignControllerTest do
   use TossBountyWeb.ApiCase, resource_name: :campaign
 
-  alias TossBountyWeb.Campaigns
-  alias TossBountyWeb.Campaigns.Campaign
+  alias TossBounty.Campaigns
+  alias TossBounty.Campaigns.Campaign
   alias TossBounty.Repo
   alias TossBountyWeb.User
 

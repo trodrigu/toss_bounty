@@ -1,7 +1,7 @@
 defmodule TossBounty.Campaigns.Campaign do
   use Ecto.Schema
   import Ecto.Changeset
-  alias TossBountyWeb.Campaigns.Campaign
+  alias TossBounty.Campaigns.Campaign
   use Timex.Ecto.Timestamps
 
   schema "campaigns" do

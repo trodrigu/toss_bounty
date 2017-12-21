@@ -1,7 +1,7 @@
-defmodule TossBountyWeb.CampaignsTest do
+defmodule TossBounty.CampaignsTest do
   use TossBountyWeb.DataCase
 
-  alias TossBountyWeb.Campaigns
+  alias TossBounty.Campaigns
   alias TossBountyWeb.User
 
   setup do
@@ -10,7 +10,7 @@ defmodule TossBountyWeb.CampaignsTest do
   end
 
   describe "campaigns" do
-    alias TossBountyWeb.Campaigns.Campaign
+    alias TossBounty.Campaigns.Campaign
 
     @valid_attrs %{
       current_funding: 120.5,

@@ -1,8 +1,8 @@
 defmodule TossBountyWeb.CampaignController do
   use TossBountyWeb.Web, :controller
 
-  alias TossBountyWeb.Campaigns
-  alias TossBountyWeb.Campaigns.Campaign
+  alias TossBounty.Campaigns
+  alias TossBounty.Campaigns.Campaign
   alias JaSerializer.Params
 
   action_fallback TossBountyWeb.FallbackController

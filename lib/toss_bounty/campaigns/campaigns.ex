@@ -6,7 +6,7 @@ defmodule TossBounty.Campaigns do
   import Ecto.Query, warn: false
   alias TossBounty.Repo
 
-  alias TossBountyWeb.Campaigns.Campaign
+  alias TossBounty.Campaigns.Campaign
 
   @doc """
   Returns the list of campaigns.
