@@ -4,7 +4,7 @@ defmodule TossBountyWeb.CampaignControllerTest do
   alias TossBounty.Campaigns
   alias TossBounty.Campaigns.Campaign
   alias TossBounty.Repo
-  alias TossBounty.User
+  alias TossBounty.Accounts.User
 
   @create_attrs %{
     current_funding: 120.5,
@@ -29,7 +29,7 @@ defmodule TossBountyWeb.CampaignControllerTest do
   }
 
   def fixture(:campaign) do
-    user = Repo.insert!(%TossBounty.User{})
+    user = Repo.insert!(%TossBounty.Accounts.User{})
     attrs = Map.put(@create_attrs, :user_id, user.id)
     {:ok, campaign} = Campaigns.create_campaign(attrs)
     campaign
@@ -41,7 +41,7 @@ defmodule TossBountyWeb.CampaignControllerTest do
   end
 
   defp relationships do
-    user = Repo.insert!(%TossBounty.User{})
+    user = Repo.insert!(%TossBounty.Accounts.User{})
 
     %{
       "user" => %{

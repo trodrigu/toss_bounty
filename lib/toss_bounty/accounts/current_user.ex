@@ -8,7 +8,7 @@ defmodule TossBounty.Accounts.CurrentUser do
   @spec call(Plug.Conn.t, Keyword.t) :: Plug.Conn.t
   def call(conn, _opts) do
     case Guardian.Plug.current_resource(conn) do
-      user = %TossBounty.User{} ->
+      user = %TossBounty.Accounts.User{} ->
         Plug.Conn.assign(conn, :current_user, user)
       nil ->
         conn

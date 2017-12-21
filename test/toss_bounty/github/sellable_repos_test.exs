@@ -1,7 +1,7 @@
 defmodule TossBounty.SellableReposTest do
   use TossBountyWeb.DataCase
   alias TossBounty.SellableRepos
-  alias TossBounty.User
+  alias TossBounty.Accounts.User
   alias TossBounty.SellableRepos.MockReposGrabber
 
 

@@ -2,7 +2,7 @@ defmodule TossBounty.CampaignsTest do
   use TossBountyWeb.DataCase
 
   alias TossBounty.Campaigns
-  alias TossBounty.User
+  alias TossBounty.Accounts.User
 
   setup do
     user = with {:ok, user} <- Repo.insert!(%User{email: "test@test.com"}), do: user

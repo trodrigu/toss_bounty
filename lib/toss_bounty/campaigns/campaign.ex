@@ -10,7 +10,7 @@ defmodule TossBounty.Campaigns.Campaign do
     field :funding_goal, :float
     field :long_description, :binary
     field :short_description, :string
-    belongs_to :user, TossBounty.User
+    belongs_to :user, TossBounty.Accounts.User
 
     timestamps()
   end

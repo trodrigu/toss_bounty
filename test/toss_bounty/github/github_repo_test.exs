@@ -1,7 +1,7 @@
 defmodule TossBounty.GitHubRepoModelTest do
   use TossBountyWeb.DataCase, async: true
   alias TossBounty.GitHubRepo
-  alias TossBounty.User
+  alias TossBounty.Accounts.User
 
   describe "repo changeset" do
     @valid_attrs %{name: "toss_bounty", owner: "trodrigu", bountiful_score: 3, image: "avatar"}

@@ -2,7 +2,7 @@ defmodule TossBounty.SellableRepos do
   @sellable_repo_impl Application.fetch_env!(:toss_bounty, :repo_grabber)
 
   defmodule Behaviour do
-    @callback list_mine([user: TossBounty.User.t]) :: :ok
+    @callback list_mine([user: TossBounty.Accounts.User.t]) :: :ok
   end
 
   def call(user) do

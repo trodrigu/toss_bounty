@@ -1,6 +1,6 @@
-defmodule TossBounty.UserModelTest do
+defmodule TossBounty.Accounts.UserModelTest do
   use TossBountyWeb.DataCase, async: true
-  alias TossBounty.User
+  alias TossBounty.Accounts.User
 
   describe "github registration changeset" do
     @valid_attrs %{github_token: "323jklsdfjklasdf", email: "test@test.com"}
