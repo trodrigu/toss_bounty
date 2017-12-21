@@ -1,6 +1,6 @@
 defmodule TossBounty.CurrentUser do
   import Plug.Conn
-  alias TossBountyWeb.GuardianSerializer
+  alias TossBounty.GuardianSerializer
 
   @spec init(Keyword.t) :: Keyword.t
   def init(opts), do: opts

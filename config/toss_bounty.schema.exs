@@ -373,7 +373,7 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
     "guardian.Elixir.Guardian.serializer": [
       commented: false,
       datatype: :atom,
-      default: TossBountyWeb.GuardianSerializer,
+      default: TossBounty.GuardianSerializer,
       doc: "Provide documentation for guardian.Elixir.Guardian.serializer here.",
       hidden: false,
       to: "guardian.Elixir.Guardian.serializer"

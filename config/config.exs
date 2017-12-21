@@ -39,6 +39,6 @@ config :guardian, Guardian,
   issuer: "TossBounty",
   ttl: { 30, :days },
   secret_key: System.get_env("GUARDIAN_SECRET_KEY"),
-  serializer: TossBountyWeb.GuardianSerializer
+  serializer: TossBounty.GuardianSerializer
 
 config :tentacat, :extra_headers, [{"Accept", "application/vnd.github.squirrel-girl-preview"}]

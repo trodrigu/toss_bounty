@@ -1,4 +1,4 @@
-defmodule TossBountyWeb.GuardianSerializer do
+defmodule TossBounty.GuardianSerializer do
   alias TossBountyWeb.Campaign
   alias TossBounty.Repo
   alias TossBounty.User

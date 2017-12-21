@@ -1,7 +1,7 @@
 defmodule TossBountyWeb.TokenController do
   use TossBountyWeb.Web, :controller
   import Comeonin.Bcrypt, only: [checkpw: 2, dummy_checkpw: 0]
-  alias TossBountyWeb.GuardianSerializer
+  alias TossBounty.GuardianSerializer
   alias TossBounty.Repo
   alias TossBounty.User
 
