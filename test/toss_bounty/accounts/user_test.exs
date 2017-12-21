@@ -1,5 +1,5 @@
 defmodule TossBountyWeb.UserModelTest do
-  use TossBountyWeb.ModelCase, async: true
+  use TossBountyWeb.DataCase, async: true
   alias TossBountyWeb.User
 
   describe "github registration changeset" do

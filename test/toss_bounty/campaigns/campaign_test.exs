@@ -1,5 +1,5 @@
 defmodule TossBountyWeb.CampaignsTest do
-  use TossBountyWeb.ModelCase
+  use TossBountyWeb.DataCase
 
   alias TossBountyWeb.Campaigns
   alias TossBountyWeb.User

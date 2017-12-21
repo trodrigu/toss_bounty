@@ -1,4 +1,4 @@
-defmodule TossBountyWeb.ModelCase do
+defmodule TossBountyWeb.DataCase do
   @moduledoc """
   This module defines the test case to be used by
   model tests.
@@ -21,7 +21,7 @@ defmodule TossBountyWeb.ModelCase do
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
-      import TossBountyWeb.ModelCase
+      import TossBountyWeb.DataCase
     end
   end
 

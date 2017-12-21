@@ -1,5 +1,5 @@
 defmodule TossBountyWeb.SellableIssuesTest do
-  use TossBountyWeb.ModelCase
+  use TossBountyWeb.DataCase
   alias TossBountyWeb.SellableIssues
   alias TossBountyWeb.User
   alias TossBountyWeb.SellableIssues.MockIssuesGrabber
