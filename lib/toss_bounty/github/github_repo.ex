@@ -1,4 +1,4 @@
-defmodule TossBounty.GitHubRepo do
+defmodule TossBounty.GitHub.GitHubRepo do
   use Ecto.Schema
   import Ecto.Changeset
   alias TossBounty.Accounts.User

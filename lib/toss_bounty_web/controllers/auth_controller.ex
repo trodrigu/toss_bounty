@@ -3,7 +3,7 @@ defmodule TossBountyWeb.AuthController do
   alias TossBounty.Accounts.User
   alias TossBounty.SellableRepos
   alias TossBounty.SellableIssues
-  alias TossBounty.GitHubRepo
+  alias TossBounty.GitHub.GitHubRepo
   alias TossBounty.GitHub.GitHubIssue
 
   @doc """
