@@ -2,7 +2,7 @@ defmodule TossBountyWeb.GitHubIssueControllerTest do
   use TossBountyWeb.ApiCase
   import TossBountyWeb.AuthenticationTestHelpers
   alias TossBounty.GitHubRepo
-  alias TossBountyWeb.GitHubIssue
+  alias TossBounty.GitHubIssue
   alias TossBounty.User
   alias TossBounty.Repo
 
