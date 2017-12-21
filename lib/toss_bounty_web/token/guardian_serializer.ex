@@ -1,7 +1,7 @@
 defmodule TossBountyWeb.GuardianSerializer do
   alias TossBountyWeb.Campaign
   alias TossBounty.Repo
-  alias TossBountyWeb.User
+  alias TossBounty.User
 
   @behaviour Guardian.Serializer
 

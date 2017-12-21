@@ -1,7 +1,7 @@
 defmodule TossBountyWeb.AuthControllerTest do
   use TossBountyWeb.ApiCase
   import TossBountyWeb.AuthenticationTestHelpers
-  alias TossBountyWeb.User
+  alias TossBounty.User
   alias TossBounty.Repo
   alias TossBountyWeb.SellableRepos
   alias TossBountyWeb.SellableIssues

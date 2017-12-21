@@ -8,7 +8,7 @@ defmodule TossBountyWeb.TestHelpers do
       attrs)
 
     %TossBounty.User{}
-    |> TossBountyWeb.User.registration_changeset(changes)
+    |> TossBounty.User.registration_changeset(changes)
     |> Repo.insert!()
   end
 end

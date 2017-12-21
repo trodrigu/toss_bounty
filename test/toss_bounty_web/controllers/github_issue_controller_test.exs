@@ -3,7 +3,7 @@ defmodule TossBountyWeb.GitHubIssueControllerTest do
   import TossBountyWeb.AuthenticationTestHelpers
   alias TossBountyWeb.GitHubRepo
   alias TossBountyWeb.GitHubIssue
-  alias TossBountyWeb.User
+  alias TossBounty.User
   alias TossBounty.Repo
 
   setup %{conn: conn} do

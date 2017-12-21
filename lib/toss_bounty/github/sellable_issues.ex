@@ -2,7 +2,7 @@ defmodule TossBounty.SellableIssues do
   @sellable_issues_impl Application.fetch_env!(:toss_bounty, :issue_grabber)
 
   defmodule Behaviour do
-    @callback filter([owner: String.t, repo_name: String.t, user: TossBountyWeb.User.t]) :: :ok
+    @callback filter([owner: String.t, repo_name: String.t, user: TossBounty.User.t]) :: :ok
   end
 
   def call(owner, repo_name, user) do

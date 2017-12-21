@@ -1,7 +1,7 @@
 defmodule TossBountyWeb.UserController do
   use TossBountyWeb.Web, :controller
   use JaResource
-  alias TossBountyWeb.User
+  alias TossBounty.User
   plug JaResource
   plug :login, only: [:create]
 

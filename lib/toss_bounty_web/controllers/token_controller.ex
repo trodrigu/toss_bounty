@@ -3,7 +3,7 @@ defmodule TossBountyWeb.TokenController do
   import Comeonin.Bcrypt, only: [checkpw: 2, dummy_checkpw: 0]
   alias TossBountyWeb.GuardianSerializer
   alias TossBounty.Repo
-  alias TossBountyWeb.User
+  alias TossBounty.User
 
   def create(conn, params = %{"email" => _, "password" => _}) do
     case login_by_email_and_password(params) do
