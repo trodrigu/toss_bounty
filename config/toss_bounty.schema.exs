@@ -313,7 +313,7 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
     "toss_bounty.issue_grabber": [
       commented: false,
       datatype: :atom,
-      default: TossBounty.SellableIssues.TentacatIssuesGrabber,
+      default: TossBounty.GitHub.SellableIssues.TentacatIssuesGrabber,
       doc: "Provide documentation for toss_bounty.issue_grabber here.",
       hidden: false,
       to: "toss_bounty.issue_grabber"

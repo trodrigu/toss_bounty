@@ -1,5 +1,5 @@
-defmodule TossBounty.SellableIssues.MockIssuesGrabber do
-  @behaviour TossBounty.SellableIssues.Behaviour
+defmodule TossBounty.GitHub.SellableIssues.MockIssuesGrabber do
+  @behaviour TossBounty.GitHub.SellableIssues.Behaviour
 
   def start_link do
     Agent.start_link(fn -> [] end, name: __MODULE__)

@@ -1,8 +1,8 @@
-defmodule TossBounty.SellableIssuesTest do
+defmodule TossBounty.GitHub.SellableIssuesTest do
   use TossBountyWeb.DataCase
-  alias TossBounty.SellableIssues
+  alias TossBounty.GitHub.SellableIssues
   alias TossBounty.Accounts.User
-  alias TossBounty.SellableIssues.MockIssuesGrabber
+  alias TossBounty.GitHub.SellableIssues.MockIssuesGrabber
 
   describe "call/3" do
 
