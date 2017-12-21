@@ -1,4 +1,4 @@
-defmodule TossBountyWeb.User do
+defmodule TossBounty.User do
   use TossBountyWeb.Web, :model
 
   schema "users" do

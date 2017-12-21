@@ -1,4 +1,4 @@
-defmodule TossBountyWeb.Campaigns do
+defmodule TossBounty.Campaigns do
   @moduledoc """
   The Campaigns context.
   """

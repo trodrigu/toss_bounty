@@ -1,4 +1,4 @@
-defmodule TossBountyWeb.SellableRepos do
+defmodule TossBounty.SellableRepos do
   @sellable_repo_impl Application.fetch_env!(:toss_bounty, :repo_grabber)
 
   defmodule Behaviour do

@@ -1,5 +1,5 @@
-defmodule TossBountyWeb.SellableIssues.TentacatIssuesGrabber do
-  @behaviour TossBountyWeb.SellableIssues.Behaviour
+defmodule TossBounty.SellableIssues.TentacatIssuesGrabber do
+  @behaviour TossBounty.SellableIssues.Behaviour
 
   alias Tentacat.Issues
 

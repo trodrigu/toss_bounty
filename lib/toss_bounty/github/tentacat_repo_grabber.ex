@@ -1,5 +1,5 @@
-defmodule TossBountyWeb.SellableRepos.TentacatReposGrabber do
-  @behaviour TossBountyWeb.SellableRepos.Behaviour
+defmodule TossBounty.SellableRepos.TentacatReposGrabber do
+  @behaviour TossBounty.SellableRepos.Behaviour
 
   def list_mine(user) do
     tentacat_client = create_tentacat_client(user)

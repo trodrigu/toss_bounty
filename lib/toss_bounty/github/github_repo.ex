@@ -1,7 +1,7 @@
-defmodule TossBountyWeb.GitHubRepo do
+defmodule TossBounty.GitHubRepo do
   use TossBountyWeb.Web, :model
-  alias TossBountyWeb.User
-  alias TossBountyWeb.GitHubIssue
+  alias TossBounty.User
+  alias TossBounty.GitHubIssue
 
   schema "github_repos" do
     field :name, :string

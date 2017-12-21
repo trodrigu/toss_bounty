@@ -1,6 +1,6 @@
-defmodule TossBountyWeb.GitHubIssue do
+defmodule TossBounty.GitHubIssue do
   use TossBountyWeb.Web, :model
-  alias TossBountyWeb.GitHubRepo
+  alias TossBounty.GitHubRepo
 
   schema "github_issues" do
     field :title, :string

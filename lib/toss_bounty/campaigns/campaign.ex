@@ -1,4 +1,4 @@
-defmodule TossBountyWeb.Campaigns.Campaign do
+defmodule TossBounty.Campaigns.Campaign do
   use Ecto.Schema
   import Ecto.Changeset
   alias TossBountyWeb.Campaigns.Campaign

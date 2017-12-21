@@ -1,4 +1,4 @@
-defmodule TossBountyWeb.SellableIssues do
+defmodule TossBounty.SellableIssues do
   @sellable_issues_impl Application.fetch_env!(:toss_bounty, :issue_grabber)
 
   defmodule Behaviour do
