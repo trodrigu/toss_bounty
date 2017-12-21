@@ -305,7 +305,7 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
     "toss_bounty.repo_grabber": [
       commented: false,
       datatype: :atom,
-      default: TossBounty.SellableRepos.TentacatReposGrabber,
+      default: TossBounty.GitHub.SellableRepos.TentacatReposGrabber,
       doc: "Provide documentation for toss_bounty.repo_grabber here.",
       hidden: false,
       to: "toss_bounty.repo_grabber"
