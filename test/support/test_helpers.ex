@@ -7,7 +7,7 @@ defmodule TossBountyWeb.TestHelpers do
                             password: "supersecret"},
       attrs)
 
-    %TossBountyWeb.User{}
+    %TossBounty.User{}
     |> TossBountyWeb.User.registration_changeset(changes)
     |> Repo.insert!()
   end
