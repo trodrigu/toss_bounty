@@ -24,7 +24,7 @@ config :oauth2, GitHub,
   redirect_uri: System.get_env("GITHUB_REDIRECT_URI")
 
 config :toss_bounty, repo_grabber: TossBounty.SellableRepos.MockReposGrabber
-config :toss_bounty, issue_grabber: TossBountyWeb.SellableIssues.MockIssuesGrabber
+config :toss_bounty, issue_grabber: TossBounty.SellableIssues.MockIssuesGrabber
 config :toss_bounty, github_strategy: TossBountyWeb.MockGithubStrategy
 
 config :toss_bounty, front_end_url: "http://localhost:8000"
