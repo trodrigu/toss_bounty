@@ -4,7 +4,7 @@ defmodule TossBountyWeb.AuthController do
   alias TossBounty.SellableRepos
   alias TossBounty.SellableIssues
   alias TossBounty.GitHubRepo
-  alias TossBounty.GitHubIssue
+  alias TossBounty.GitHub.GitHubIssue
 
   @doc """
   This action is reached via `/auth/:provider/callback` is the callback URL that

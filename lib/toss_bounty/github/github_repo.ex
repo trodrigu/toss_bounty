@@ -2,7 +2,7 @@ defmodule TossBounty.GitHubRepo do
   use Ecto.Schema
   import Ecto.Changeset
   alias TossBounty.Accounts.User
-  alias TossBounty.GitHubIssue
+  alias TossBounty.GitHub.GitHubIssue
 
   schema "github_repos" do
     field :name, :string

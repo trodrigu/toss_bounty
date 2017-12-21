@@ -8,7 +8,7 @@ defmodule TossBountyWeb.AuthControllerTest do
   alias TossBounty.SellableRepos.MockReposGrabber
   alias TossBounty.SellableIssues.MockIssuesGrabber
   alias TossBounty.GitHubRepo
-  alias TossBounty.GitHubIssue
+  alias TossBounty.GitHub.GitHubIssue
 
   setup do
     conn = build_conn()
