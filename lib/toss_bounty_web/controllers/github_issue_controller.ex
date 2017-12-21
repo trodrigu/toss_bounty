@@ -1,7 +1,7 @@
 defmodule TossBountyWeb.GitHubIssueController do
   use TossBountyWeb.Web, :controller
   use JaResource
-  alias TossBountyWeb.GitHubRepo
+  alias TossBounty.GitHubRepo
   plug JaResource
 
   def filter(_conn, query, "github_repo_id", github_repo_id) do
