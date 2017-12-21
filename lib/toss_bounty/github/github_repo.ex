@@ -1,5 +1,6 @@
 defmodule TossBounty.GitHubRepo do
-  use TossBountyWeb.Web, :model
+  use Ecto.Schema
+  import Ecto.Changeset
   alias TossBounty.User
   alias TossBounty.GitHubIssue
 

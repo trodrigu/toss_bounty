@@ -1,5 +1,6 @@
 defmodule TossBounty.User do
-  use TossBountyWeb.Web, :model
+  use Ecto.Schema
+  import Ecto.Changeset
 
   schema "users" do
     field :name, :string
