@@ -28,3 +28,6 @@ config :toss_bounty, issue_grabber: TossBounty.GitHub.SellableIssues.MockIssuesG
 config :toss_bounty, github_strategy: TossBountyWeb.MockGithubStrategy
 
 config :toss_bounty, front_end_url: "http://localhost:8000"
+
+config :stripity_stripe, secret_key: System.get_env("STRIPE_SECRET_KEY")
+config :stripity_stripe, platform_client_id: System.get_env("STRIPE_PLATFORM_CLIENT_ID")
