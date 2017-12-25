@@ -8,6 +8,7 @@ defmodule TossBounty.Accounts.User do
     field :password, :string, virtual: true
     field :password_hash, :string
     field :github_token, :string
+    field :stripe_token, :string
     timestamps()
   end
 

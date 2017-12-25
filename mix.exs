@@ -68,7 +68,7 @@ defmodule TossBounty.Mixfile do
      {:phoenix_custom_generators, "~> 1.0.6"},
      {:timex, "~> 3.1"},
      {:timex_ecto, "~> 3.2"},
-     {:stripity_stripe, "~> 2.0.0-alpha.10"},
+     {:stripity_stripe, "~> 2.0.0-beta"},
      {:oauth2, "~> 0.9"}]
   end
 

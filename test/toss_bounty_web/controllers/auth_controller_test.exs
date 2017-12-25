@@ -15,13 +15,13 @@ defmodule TossBountyWeb.AuthControllerTest do
     {:ok, conn: conn}
   end
 
-  @valid_attrs %{
-    code: "some-code",
-    provider: "github"
-  }
-
   describe "callback" do
-    test "returns the email, auth token and id", %{conn: conn} do
+    @valid_attrs %{
+      code: "some-code",
+      provider: "github"
+    }
+
+    test "when github returns the email, auth token and id", %{conn: conn} do
       conn = get conn, "/auth/github/callback?code=stuff"
       assert redirected_to(conn) =~ "/save-session"
       assert redirected_to(conn) =~ "email"
@@ -29,27 +29,27 @@ defmodule TossBountyWeb.AuthControllerTest do
       assert redirected_to(conn) =~ "user_id"
     end
 
-    test "creates user if one not found", %{conn: conn} do
+    test "when github creates user if one not found", %{conn: conn} do
       conn = get conn, "/auth/github/callback?code=stuff"
       user_count = Repo.one(from u in User, select: count("*"))
       assert user_count == 1
     end
 
-    test "updates the user's github token if already in db", %{conn: conn} do
+    test "when github updates the user's github token if already in db", %{conn: conn} do
       Repo.insert!(%User{email: "test@test.com", github_token: "different-token"})
       conn = get conn, "/auth/github/callback?code=stuff"
       user = Repo.get_by(User, email: "test@test.com")
       assert user.github_token != "different-token"
     end
 
-    test "does not create a new user if already in in db", %{conn: conn} do
+    test "when github does not create a new user if already in in db", %{conn: conn} do
       Repo.insert!(%User{email: "test@test.com", github_token: "different-token"})
       conn = get conn, "/auth/github/callback?code=stuff"
       user_count = Repo.one(from u in User, select: count("*"))
       assert user_count == 1
     end
 
-    test "creates github repos in the db", %{conn: conn} do
+    test "when github creates github repos in the db", %{conn: conn} do
       MockReposGrabber.clear
       MockReposGrabber.insert_repo(%{ "name" => "Barter", "open_issues_count" => 3, "owner" => %{ "login" => "smcfarlane" } })
       conn = get conn, "/auth/github/callback?code=stuff"
@@ -57,7 +57,7 @@ defmodule TossBountyWeb.AuthControllerTest do
       assert repo_count == 1
     end
 
-    test "associates the github repo with a user", %{conn: conn} do
+    test "when github associates the github repo with a user", %{conn: conn} do
       MockReposGrabber.clear
       MockReposGrabber.insert_repo(%{ "name" => "Barter", "open_issues_count" => 3, "owner" => %{ "login" => "smcfarlane" } })
       conn = get conn, "/auth/github/callback?code=stuff"
@@ -67,7 +67,7 @@ defmodule TossBountyWeb.AuthControllerTest do
       assert preloaded_repo.user == user
     end
 
-    test "creates github issues in the db", %{conn: conn} do
+    test "when github creates github issues in the db", %{conn: conn} do
       MockReposGrabber.clear
       SellableIssues.MockIssuesGrabber.clear
       issues =
@@ -107,6 +107,23 @@ defmodule TossBountyWeb.AuthControllerTest do
       conn = get conn, "/auth/github/callback?code=stuff"
       issue_count = Repo.one(from r in GitHubIssue, select: count("*"))
       assert issue_count == 1
+    end
+
+    @valid_attrs %{
+      code: "some-code",
+      provider: "stripe"
+    }
+    test "when stripe it updates the stripe token", %{conn: conn} do
+      user = with {:ok, user} <- Repo.insert!(%User{email: "trodriguez91@icloud.com"}), do: user
+      {:ok, jwt, _} = Guardian.encode_and_sign(user)
+
+      updatedConn =
+        conn
+        |> put_req_header("authorization", "Bearer #{jwt}")
+        |> Plug.Conn.assign(:current_user, user)
+      get updatedConn, "/auth/stripe/callback?code=stuff"
+      user = Repo.one(User)
+      assert user.stripe_token != "different-token"
     end
   end
 end

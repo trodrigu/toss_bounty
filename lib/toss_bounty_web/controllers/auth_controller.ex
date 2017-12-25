@@ -14,9 +14,26 @@ defmodule TossBountyWeb.AuthController do
   """
   def callback(conn, %{"provider" => provider, "code" => code}) do
     # Exchange an auth code for an access token
-    client = get_token!(provider, code)
+    callback_for(provider, code, conn)
+  end
 
-    user_data_from_response = get_user!(provider, client)
+  defp callback_for("stripe", code, conn) do
+    token_response = get_token!("stripe", code)
+
+    stripe_token = token_response.access_token
+    current_user = conn.assigns.current_user
+    update_user_with_stripe_token(current_user, stripe_token)
+    front_end_url = Application.fetch_env!(:toss_bounty, :front_end_url)
+    total_redirect_url = front_end_url <> "/#/rewards/new"
+
+    conn
+    |> redirect(external: total_redirect_url)
+  end
+
+  defp callback_for("github", code, conn) do
+    client = get_token!("github", code)
+
+    user_data_from_response = get_user!("github", client)
 
     email = user_data_from_response[:email]
     github_token = client.token.access_token
@@ -46,6 +63,11 @@ defmodule TossBountyWeb.AuthController do
     |> redirect(external: total_redirect_url)
   end
 
+  defp update_user_with_stripe_token(user, stripe_token) do
+    user = Ecto.Changeset.change user, stripe_token: stripe_token
+    with {:ok, user} <- Repo.update(user), do: user
+  end
+
   defp update_user_with_github_token(user, github_token) do
     user = Ecto.Changeset.change user, github_token: github_token
     with {:ok, user} <- Repo.update(user), do: user
@@ -56,8 +78,7 @@ defmodule TossBountyWeb.AuthController do
   end
   defp sign_up_or_return_user(user, _email), do: user
 
-  defp authorize_url!("github"), do: GitHub.authorize_url!
-
+  defp get_token!("stripe", code), do: StripeClient.get_token!(code: code)
   defp get_token!("github", code), do: GitHub.get_token!(code: code)
 
   defp get_user!("github", client), do: GitHub.get_user!(client)
