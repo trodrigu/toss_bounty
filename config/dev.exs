@@ -54,8 +54,7 @@ config :toss_bounty, github_strategy: TossBountyWeb.GithubStrategy
 
 config :toss_bounty, front_end_url: System.get_env("FRONT_END_URL")
 
-config :stripity_stripe, secret_key: System.get_env("STRIPE_SECRET_KEY")
-config :stripity_stripe, platform_client_id: "YOUR CONNECT PLATFORM CLIENT ID"
+config :stripity_stripe, api_key: System.get_env("STRIPE_SECRET_KEY")
 config :stripity_stripe, connect_client_id: System.get_env("STRIPE_CONNECT_CLIENT_ID")
 
 config :toss_bounty, stripe_strategy: TossBountyWeb.StripeClientStrategy

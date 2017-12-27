@@ -8,7 +8,8 @@ defmodule TossBounty.Accounts.User do
     field :password, :string, virtual: true
     field :password_hash, :string
     field :github_token, :string
-    field :stripe_token, :string
+    field :stripe_access_token, :string
+    field :stripe_external_id, :string
     timestamps()
   end
 
@@ -21,7 +22,7 @@ defmodule TossBounty.Accounts.User do
 
   def changeset(model, params \\ %{}) do
     model
-    |> cast(params, [:email])
+    |> cast(params, [:email, :stripe_external_id, :stripe_access_token])
     |> validate_required([:email])
     |> unique_constraint(:email)
   end

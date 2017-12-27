@@ -20,11 +20,9 @@ defmodule TossBountyWeb.AuthController do
   defp callback_for("stripe", code, conn) do
     token_response = get_token!("stripe", code)
 
-    stripe_token = token_response.access_token
-    current_user = conn.assigns.current_user
-    update_user_with_stripe_token(current_user, stripe_token)
+    stripe_access_token = token_response.access_token
     front_end_url = Application.fetch_env!(:toss_bounty, :front_end_url)
-    total_redirect_url = front_end_url <> "/#/rewards/new"
+    total_redirect_url = front_end_url <> "/#/save-stripe?stripe_id=#{stripe_access_token}"
 
     conn
     |> redirect(external: total_redirect_url)
@@ -61,11 +59,6 @@ defmodule TossBountyWeb.AuthController do
     conn
     |> Plug.Conn.assign(:current_user, user_with_updated_github_token)
     |> redirect(external: total_redirect_url)
-  end
-
-  defp update_user_with_stripe_token(user, stripe_token) do
-    user = Ecto.Changeset.change user, stripe_token: stripe_token
-    with {:ok, user} <- Repo.update(user), do: user
   end
 
   defp update_user_with_github_token(user, github_token) do

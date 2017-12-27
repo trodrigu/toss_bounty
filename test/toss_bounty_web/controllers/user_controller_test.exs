@@ -5,6 +5,8 @@ defmodule TossBountyWeb.UserControllerTest do
   @valid_attrs %{
     name: "Test User",
     email: "test@user.com",
+    stripe_external_id: "1dsfs23jkl",
+    stripe_access_token: "324jkkljkljfsdfjkl4325sdfjklb"
   }
 
   @invalid_attrs %{

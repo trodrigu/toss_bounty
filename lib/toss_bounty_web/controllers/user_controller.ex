@@ -5,6 +5,10 @@ defmodule TossBountyWeb.UserController do
   plug JaResource
   plug :login, only: [:create]
 
+  action_fallback TossBountyWeb.FallbackController
+
+  def model, do: User
+
   def handle_create(conn, attributes) do
     %User{}
     |> User.registration_changeset(attributes)
