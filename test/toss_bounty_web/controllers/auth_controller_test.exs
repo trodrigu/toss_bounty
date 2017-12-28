@@ -123,7 +123,7 @@ defmodule TossBountyWeb.AuthControllerTest do
         |> Plug.Conn.assign(:current_user, user)
       get updatedConn, "/auth/stripe/callback?code=stuff"
       user = Repo.one(User)
-      assert user.stripe_token != "different-token"
+      assert user.stripe_access_token != "different-token"
     end
   end
 end
