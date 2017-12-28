@@ -55,5 +55,6 @@ defmodule TossBountyWeb.Router do
     resources "/github_repos", GitHubRepoController, only: [:index]
     resources "/github_issues", GitHubIssueController, only: [:index]
     resources "/campaigns", CampaignController, only: [:index, :show, :update, :create, :delete]
+    resources "/rewards", RewardController, except: [:new, :edit]
   end
 end

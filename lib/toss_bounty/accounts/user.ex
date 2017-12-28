@@ -1,6 +1,7 @@
 defmodule TossBounty.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
+  alias TossBounty.Accounts.User
 
   schema "users" do
     field :name, :string
@@ -13,22 +14,22 @@ defmodule TossBounty.Accounts.User do
     timestamps()
   end
 
-  def github_registration_changeset(model, params \\ %{}) do
-    model
+  def github_registration_changeset(%User{} = user, params \\ %{}) do
+    user
     |> cast(params, [:email, :github_token])
     |> validate_required([:email])
     |> unique_constraint(:email)
   end
 
-  def changeset(model, params \\ %{}) do
-    model
+  def changeset(%User{} = user, params \\ %{}) do
+    user
     |> cast(params, [:email, :stripe_external_id, :stripe_access_token])
     |> validate_required([:email])
     |> unique_constraint(:email)
   end
 
-  def registration_changeset(model, params) do
-    model
+  def registration_changeset(%User{} = user, params) do
+    user
     |> changeset(params)
     |> cast(params, [:password, :email])
     |> validate_required(:password)
