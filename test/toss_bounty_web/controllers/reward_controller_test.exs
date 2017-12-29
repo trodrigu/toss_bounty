@@ -20,13 +20,28 @@ defmodule TossBountyWeb.RewardControllerTest do
   }
 
   def fixture(:reward) do
-    {:ok, reward} = Incentive.create_reward(@create_attrs)
+    campaign = Repo.insert!(%TossBounty.Campaigns.Campaign{})
+    attrs = Map.put(@create_attrs, :campaign_id, campaign.id)
+    {:ok, reward} = Incentive.create_reward(attrs)
     reward
   end
 
   defp dasherize_keys(attrs) do
     Enum.map(attrs, fn {k, v} -> {JaSerializer.Formatter.Utils.format_key(k), v} end)
     |> Enum.into(%{})
+  end
+
+  defp relationships do
+    campaign = Repo.insert!(%TossBounty.Campaigns.Campaign{})
+
+    %{
+      "campaign" => %{
+        "data" => %{
+          "type" => "campaign",
+          "id" => campaign.id
+        }
+      }
+    }
   end
 
   setup %{conn: conn} do
@@ -52,7 +67,8 @@ defmodule TossBountyWeb.RewardControllerTest do
         "meta" => %{},
         "data" => %{
           "type" => "reward",
-          "attributes" => dasherize_keys(@create_attrs)
+          "attributes" => dasherize_keys(@create_attrs),
+          "relationships" => relationships
         }
       }
       assert %{"id" => id} = json_response(conn, 201)["data"]
@@ -80,7 +96,8 @@ defmodule TossBountyWeb.RewardControllerTest do
         "meta" => %{},
         "data" => %{
           "type" => "reward",
-          "attributes" => dasherize_keys(@invalid_attrs)
+          "attributes" => dasherize_keys(@invalid_attrs),
+          "relationships" => relationships
         }
       }
       assert json_response(conn, 422)["errors"] != %{}
@@ -96,7 +113,8 @@ defmodule TossBountyWeb.RewardControllerTest do
         "meta" => %{},
         "data" => %{
           "type" => "reward",
-          "attributes" => dasherize_keys(@update_attrs)
+          "attributes" => dasherize_keys(@update_attrs),
+          "relationships" => relationships
         }
       }
       data = json_response(conn, 200)["data"]
@@ -112,7 +130,8 @@ defmodule TossBountyWeb.RewardControllerTest do
         "meta" => %{},
         "data" => %{
           "type" => "reward",
-          "attributes" => dasherize_keys(@invalid_attrs)
+          "attributes" => dasherize_keys(@invalid_attrs),
+          "relationships" => relationships
         }
       }
       assert json_response(conn, 422)["errors"] != %{}

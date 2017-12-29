@@ -7,6 +7,7 @@ defmodule TossBounty.Incentive.Reward do
   schema "rewards" do
     field :description, :string
     field :donation_level, :float
+    belongs_to :campaign, TossBounty.Campaigns.Campaign
 
     timestamps()
   end
@@ -17,12 +18,12 @@ defmodule TossBounty.Incentive.Reward do
     |> cast(attrs, [
       :description,
       :donation_level,
-      
+      :campaign_id
     ])
     |> validate_required([
       :description,
       :donation_level,
-      
+      :campaign_id
     ])
   end
 end

@@ -20,6 +20,8 @@ defmodule TossBounty.IncentiveTest do
     }
 
     def reward_fixture(attrs \\ %{}) do
+      campaign = Repo.insert!(%TossBounty.Campaigns.Campaign{})
+      attrs = Map.put(attrs, :campaign_id, campaign.id)
       {:ok, reward} =
         attrs
         |> Enum.into(@valid_attrs)
@@ -39,7 +41,9 @@ defmodule TossBounty.IncentiveTest do
     end
 
     test "create_reward/1 with valid data creates a reward" do
-      assert {:ok, %Reward{} = reward} = Incentive.create_reward(@valid_attrs)
+      campaign = Repo.insert!(%TossBounty.Campaigns.Campaign{})
+      attrs = Map.put(@valid_attrs, :campaign_id, campaign.id)
+      assert {:ok, %Reward{} = reward} = Incentive.create_reward(attrs)
       assert reward.description == "some description"
       assert reward.donation_level == 120.5
     end

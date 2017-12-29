@@ -24,16 +24,14 @@ defmodule TossBounty.Campaigns.Campaign do
       :funding_goal,
       :current_funding,
       :funding_end_date,
-      :user_id,
-
+      :user_id
     ])
     |> validate_required([
       :short_description,
       :long_description,
       :funding_goal,
       :funding_end_date,
-      :user_id,
-
+      :user_id
     ])
   end
 end

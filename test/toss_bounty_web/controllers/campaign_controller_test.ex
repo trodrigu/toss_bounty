@@ -49,7 +49,7 @@ defmodule TossBountyWeb.CampaignControllerTest do
           "type" => "user",
           "id" => user.id
         }
-      },
+      }
     }
   end
 
