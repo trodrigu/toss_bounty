@@ -60,8 +60,10 @@ defmodule TossBounty.CampaignsTest do
       assert Campaigns.get_campaign!(campaign.id) == campaign
     end
 
-    test "create_campaign/1 with valid data creates a campaign", %{user: user} do
-      attrs = Map.put(@valid_attrs, :user_id, user.id)
+    test "create_campaign/1 with valid data creates a campaign", %{user: user, github_repo: github_repo} do
+      attrs =
+        Map.put(@valid_attrs, :user_id, user.id)
+        |> Enum.into(%{github_repo_id: github_repo.id})
       assert {:ok, %Campaign{} = campaign} = Campaigns.create_campaign(attrs)
       assert campaign.current_funding == 120.5
       assert campaign.funding_end_date == Timex.parse!("Tue, 06 Mar 2013 01:25:19 +0200", "{RFC1123}")
@@ -83,6 +85,7 @@ defmodule TossBounty.CampaignsTest do
       assert campaign.funding_goal == 456.7
       assert campaign.long_description == "some updated long_description"
       assert campaign.short_description == "some updated short_description"
+      assert campaign.github_repo_id == github_repo.id
     end
 
     test "update_campaign/2 with invalid data returns error changeset", %{user: user, github_repo: github_repo} do

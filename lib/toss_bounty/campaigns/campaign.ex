@@ -11,6 +11,7 @@ defmodule TossBounty.Campaigns.Campaign do
     field :long_description, :binary
     field :short_description, :string
     belongs_to :user, TossBounty.Accounts.User
+    belongs_to :github_repo, TossBounty.Github.GitHubRepo
 
     timestamps()
   end
@@ -24,14 +25,16 @@ defmodule TossBounty.Campaigns.Campaign do
       :funding_goal,
       :current_funding,
       :funding_end_date,
-      :user_id
+      :user_id,
+      :github_repo_id
     ])
     |> validate_required([
       :short_description,
       :long_description,
       :funding_goal,
       :funding_end_date,
-      :user_id
+      :user_id,
+      :github_repo_id
     ])
   end
 end
