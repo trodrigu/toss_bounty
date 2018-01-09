@@ -71,7 +71,7 @@ defmodule TossBountyWeb.AuthController do
   end
   defp sign_up_or_return_user(user, _email), do: user
 
-  defp get_token!("stripe", code), do: StripeClient.get_token!(code: code)
+  defp get_token!("stripe", code), do: TossBountyWeb.StripeClient.get_token!(code: code)
   defp get_token!("github", code), do: GitHub.get_token!(code: code)
 
   defp get_user!("github", client), do: GitHub.get_user!(client)

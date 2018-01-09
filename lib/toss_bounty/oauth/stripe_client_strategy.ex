@@ -5,4 +5,8 @@ defmodule TossBountyWeb.StripeClientStrategy do
     {:ok, resp} = Stripe.Connect.OAuth.token(code[:code])
     resp
   end
+
+  def authorize_url! do
+    Stripe.Connect.OAuth.authorize_url
+  end
 end

@@ -1,4 +1,4 @@
-defmodule StripeClient do
+defmodule TossBountyWeb.StripeClient do
   @stripe_impl Application.fetch_env!(:toss_bounty, :stripe_strategy)
   @moduledoc """
   An OAuth2 strategy for Stripe.
