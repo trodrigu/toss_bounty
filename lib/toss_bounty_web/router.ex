@@ -52,8 +52,8 @@ defmodule TossBountyWeb.Router do
     pipe_through [:api, :bearer_auth, :current_user, :ensure_auth]
 
     resources "/users", UserController, only: [:create, :show, :update]
-    resources "/github_repos", GitHubRepoController, only: [:index]
-    resources "/github_issues", GitHubIssueController, only: [:index]
+    resources "/github_repos", GithubRepoController, only: [:index]
+    resources "/github_issues", GithubIssueController, only: [:index]
     resources "/campaigns", CampaignController, only: [:index, :show, :update, :create, :delete]
     resources "/rewards", RewardController, except: [:new, :edit]
   end

@@ -1,8 +1,8 @@
-defmodule TossBountyWeb.GitHubIssueControllerTest do
+defmodule TossBountyWeb.GithubIssueControllerTest do
   use TossBountyWeb.ApiCase
   import TossBountyWeb.AuthenticationTestHelpers
-  alias TossBounty.GitHub.GitHubRepo
-  alias TossBounty.GitHub.GitHubIssue
+  alias TossBounty.GitHub.GithubRepo
+  alias TossBounty.GitHub.GithubIssue
   alias TossBounty.Accounts.User
   alias TossBounty.Repo
 
@@ -18,15 +18,15 @@ defmodule TossBountyWeb.GitHubIssueControllerTest do
   describe "index" do
     @tag :authenticated
     test "renders index of resources", %{conn: conn} do
-      conn = get conn, git_hub_issue_path(conn, :index)
+      conn = get conn, github_issue_path(conn, :index)
       assert conn |> json_response(200)
     end
 
     @tag :authenticated
     test "filter by repo id returns the correct issues", %{conn: conn} do
-      repo = Repo.insert!(%GitHubRepo{name: "foobar"})
-      Repo.insert!(%GitHubIssue{title: "great title", body: "body", github_repo_id: repo.id})
-      Repo.insert!(%GitHubIssue{title: "wrong title", body: "body", github_repo_id: repo.id})
+      repo = Repo.insert!(%GithubRepo{name: "foobar"})
+      Repo.insert!(%GithubIssue{title: "great title", body: "body", github_repo_id: repo.id})
+      Repo.insert!(%GithubIssue{title: "wrong title", body: "body", github_repo_id: repo.id})
 
       user = Repo.one(from u in User, limit: 1)
       {:ok, jwt, _} = Guardian.encode_and_sign(user)
@@ -34,7 +34,7 @@ defmodule TossBountyWeb.GitHubIssueControllerTest do
       conn =
         conn()
         |> put_req_header("authorization", "Bearer #{jwt}")
-        |> get git_hub_issue_path(conn, :index), %{ github_repo_id: repo.id }
+        |> get github_issue_path(conn, :index), %{ github_repo_id: repo.id }
 
       response = json_response(conn, 200)
       issue_from_response = response["data"]

@@ -3,8 +3,8 @@ defmodule TossBountyWeb.AuthController do
   alias TossBounty.Accounts.User
   alias TossBounty.GitHub.SellableRepos
   alias TossBounty.GitHub.SellableIssues
-  alias TossBounty.GitHub.GitHubRepo
-  alias TossBounty.GitHub.GitHubIssue
+  alias TossBounty.GitHub.GithubRepo
+  alias TossBounty.GitHub.GithubIssue
 
   @doc """
   This action is reached via `/auth/:provider/callback` is the callback URL that
@@ -82,12 +82,12 @@ defmodule TossBountyWeb.AuthController do
   end
 
   defp save_repo_if_new(repo, user) do
-    repo_from_db = Repo.get_by(GitHubRepo, name: repo[:name], owner: repo[:owner], user_id: user.id)
+    repo_from_db = Repo.get_by(GithubRepo, name: repo[:name], owner: repo[:owner], user_id: user.id)
     save_or_return_github_repo(repo_from_db, repo, user)
   end
 
   defp save_or_return_github_repo(repo_from_db, repo_from_service, user) when is_nil(repo_from_db) do
-    changeset = GitHubRepo.changeset(%GitHubRepo{}, %{name: repo_from_service[:name], owner: repo_from_service[:owner], user_id: user.id, bountiful_score: repo_from_service[:bountiful_score], image: repo_from_service[:image]})
+    changeset = GithubRepo.changeset(%GithubRepo{}, %{name: repo_from_service[:name], owner: repo_from_service[:owner], user_id: user.id, bountiful_score: repo_from_service[:bountiful_score], image: repo_from_service[:image]})
     Repo.insert!(changeset)
   end
   defp save_or_return_github_repo(repo_from_db, _repo_from_service, _user), do: repo_from_db
@@ -102,18 +102,18 @@ defmodule TossBountyWeb.AuthController do
 
   defp save_or_return_issues(repo_and_sellable_issues) do
     name = repo_and_sellable_issues[:name]
-    repo = Repo.get_by(GitHubRepo, name: name)
+    repo = Repo.get_by(GithubRepo, name: name)
     issues = repo_and_sellable_issues[:issues]
     |> Enum.each(fn issue -> run_through_issues(issue, repo) end)
   end
 
   defp run_through_issues(issue, repo_from_db) do
-    issue_from_db = Repo.get_by(GitHubIssue, title: issue[:title], body: issue[:body], github_repo_id: repo_from_db.id)
+    issue_from_db = Repo.get_by(GithubIssue, title: issue[:title], body: issue[:body], github_repo_id: repo_from_db.id)
     save_or_return_issue(issue_from_db, issue, repo_from_db)
   end
 
   defp save_or_return_issue(issue_from_db, issue, repo_from_db) when is_nil(issue_from_db) do
-    changeset = GitHubIssue.changeset(%GitHubIssue{}, %{title: issue[:title], body: issue[:body], github_repo_id: repo_from_db.id})
+    changeset = GithubIssue.changeset(%GithubIssue{}, %{title: issue[:title], body: issue[:body], github_repo_id: repo_from_db.id})
     Repo.insert!(changeset)
   end
   defp save_or_return_issue(issue_from_db, _issue, _repo_from_db), do: issue_from_db

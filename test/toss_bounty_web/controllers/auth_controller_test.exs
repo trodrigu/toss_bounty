@@ -7,8 +7,8 @@ defmodule TossBountyWeb.AuthControllerTest do
   alias TossBounty.GitHub.SellableIssues
   alias TossBounty.GitHub.SellableRepos.MockReposGrabber
   alias TossBounty.GitHub.SellableIssues.MockIssuesGrabber
-  alias TossBounty.GitHub.GitHubRepo
-  alias TossBounty.GitHub.GitHubIssue
+  alias TossBounty.GitHub.GithubRepo
+  alias TossBounty.GitHub.GithubIssue
 
   setup do
     conn = build_conn()
@@ -53,7 +53,7 @@ defmodule TossBountyWeb.AuthControllerTest do
       MockReposGrabber.clear
       MockReposGrabber.insert_repo(%{ "name" => "Barter", "open_issues_count" => 3, "owner" => %{ "login" => "smcfarlane" } })
       conn = get conn, "/auth/github/callback?code=stuff"
-      repo_count = Repo.one(from r in GitHubRepo, select: count("*"))
+      repo_count = Repo.one(from r in GithubRepo, select: count("*"))
       assert repo_count == 1
     end
 
@@ -61,7 +61,7 @@ defmodule TossBountyWeb.AuthControllerTest do
       MockReposGrabber.clear
       MockReposGrabber.insert_repo(%{ "name" => "Barter", "open_issues_count" => 3, "owner" => %{ "login" => "smcfarlane" } })
       conn = get conn, "/auth/github/callback?code=stuff"
-      repo = Repo.one(GitHubRepo)
+      repo = Repo.one(GithubRepo)
       user = Repo.one(User)
       preloaded_repo = Repo.preload(repo, [ :user ])
       assert preloaded_repo.user == user
@@ -105,7 +105,7 @@ defmodule TossBountyWeb.AuthControllerTest do
       SellableIssues.MockIssuesGrabber.insert_issues issues
       MockReposGrabber.insert_repo(%{ "name" => "Barter", "open_issues_count" => 3, "owner" => %{ "login" => "smcfarlane" } })
       conn = get conn, "/auth/github/callback?code=stuff"
-      issue_count = Repo.one(from r in GitHubIssue, select: count("*"))
+      issue_count = Repo.one(from r in GithubIssue, select: count("*"))
       assert issue_count == 1
     end
 

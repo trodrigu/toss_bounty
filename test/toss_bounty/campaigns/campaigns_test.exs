@@ -3,11 +3,11 @@ defmodule TossBounty.CampaignsTest do
 
   alias TossBounty.Campaigns
   alias TossBounty.Accounts.User
-  alias TossBounty.GitHub.GitHubRepo
+  alias TossBounty.GitHub.GithubRepo
 
   setup do
     user = with {:ok, user} <- Repo.insert!(%User{email: "test@test.com"}), do: user
-    github_repo = with {:ok, github_repo} <- Repo.insert!(%GitHubRepo{name: "elm-lang", owner: "trodrigu", bountiful_score: 5, user_id: user.id}), do: github_repo
+    github_repo = with {:ok, github_repo} <- Repo.insert!(%GithubRepo{name: "elm-lang", owner: "trodrigu", bountiful_score: 5, user_id: user.id}), do: github_repo
     {:ok, user: user, github_repo: github_repo}
   end
 

@@ -1,6 +1,6 @@
-defmodule TossBounty.GitHub.GitHubRepoModelTest do
+defmodule TossBounty.GitHub.GithubRepoModelTest do
   use TossBountyWeb.DataCase, async: true
-  alias TossBounty.GitHub.GitHubRepo
+  alias TossBounty.GitHub.GithubRepo
   alias TossBounty.Accounts.User
 
   describe "repo changeset" do
@@ -14,12 +14,12 @@ defmodule TossBounty.GitHub.GitHubRepoModelTest do
 
     test "changeset with valid attributes", %{user: user} do
       attrs = Map.put(@valid_attrs, :user_id, user.id)
-      changeset = GitHubRepo.changeset(%GitHubRepo{}, attrs)
+      changeset = GithubRepo.changeset(%GithubRepo{}, attrs)
       assert changeset.valid?
     end
 
     test "changeset with invalid attributes" do
-      changeset = GitHubRepo.changeset(%GitHubRepo{}, @invalid_attrs)
+      changeset = GithubRepo.changeset(%GithubRepo{}, @invalid_attrs)
       {:error, updated_changeset} = Repo.insert(changeset)
       refute updated_changeset.valid?
     end

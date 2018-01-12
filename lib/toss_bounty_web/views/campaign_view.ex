@@ -7,4 +7,8 @@ defmodule TossBountyWeb.CampaignView do
   has_one :user,
     field: :user_id,
     type: "user"
+
+  has_one :github_repo,
+    field: :github_repo_id,
+    type: "github_repo"
 end

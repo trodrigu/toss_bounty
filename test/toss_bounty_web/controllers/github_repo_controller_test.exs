@@ -1,8 +1,8 @@
-defmodule TossBountyWeb.GitHubRepoControllerTest do
+defmodule TossBountyWeb.GithubRepoControllerTest do
   use TossBountyWeb.ApiCase
   import TossBountyWeb.AuthenticationTestHelpers
-  alias TossBounty.GitHub.GitHubIssue
-  alias TossBounty.GitHub.GitHubRepo
+  alias TossBounty.GitHub.GithubIssue
+  alias TossBounty.GitHub.GithubRepo
   alias TossBounty.Accounts.User
   setup config = %{conn: conn} do
     if email = config[:login_as] do
@@ -23,16 +23,16 @@ defmodule TossBountyWeb.GitHubRepoControllerTest do
   describe "index" do
     @tag :authenticated
     test "returns an index of the github repos", %{conn: conn} do
-      conn = get conn, git_hub_repo_path(conn, :index)
+      conn = get conn, github_repo_path(conn, :index)
       assert conn |> json_response(200)
     end
 
     @tag :authenticated
     test "filter by user id returns the correct repo", %{conn: conn} do
       user = Repo.get_by(User, email: "test@test.com")
-      repo = Repo.insert!(%GitHubRepo{name: "foobar", user_id: user.id})
-      repo_that_does_not_matter = Repo.insert!(%GitHubRepo{name: "bazbar"})
-      Repo.insert!(%GitHubIssue{title: "great title", body: "body", github_repo_id: repo.id})
+      repo = Repo.insert!(%GithubRepo{name: "foobar", user_id: user.id})
+      repo_that_does_not_matter = Repo.insert!(%GithubRepo{name: "bazbar"})
+      Repo.insert!(%GithubIssue{title: "great title", body: "body", github_repo_id: repo.id})
 
       user = Repo.one(from u in User, limit: 1)
       {:ok, jwt, _} = Guardian.encode_and_sign(user)
@@ -40,7 +40,7 @@ defmodule TossBountyWeb.GitHubRepoControllerTest do
       conn =
         conn()
         |> put_req_header("authorization", "Bearer #{jwt}")
-        |> get git_hub_repo_path(conn, :index), %{ user_id: user.id }
+        |> get github_repo_path(conn, :index), %{ user_id: user.id }
 
       response = json_response(conn, 200)
       repo_from_response = response["data"]
