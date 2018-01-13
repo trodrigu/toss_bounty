@@ -9,6 +9,7 @@ defmodule TossBountyWeb.CampaignView do
     type: "user"
 
   has_one :github_repo,
-    field: :github_repo_id,
+    include: true,
+    serializer: TossBountyWeb.GithubRepoView,
     type: "github_repo"
 end

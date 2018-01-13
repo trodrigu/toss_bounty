@@ -19,6 +19,7 @@ defmodule TossBounty.Campaigns do
   """
   def list_campaigns do
     Repo.all(Campaign)
+    |> Repo.preload :github_repo
   end
 
   @doc """
