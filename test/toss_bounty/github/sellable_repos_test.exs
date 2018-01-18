@@ -12,7 +12,7 @@ defmodule TossBounty.GitHub.SellableReposTest do
       SellableRepos.MockReposGrabber.clear
       SellableRepos.MockReposGrabber.insert_repo(%{ "name" => "Barter", "stargazers_count" => 0, "owner" => %{ "login" => "smcfarlane", "avatar_url" => "avatar-source" } })
       result = SellableRepos.call(user)
-      assert Enum.count(result) == 0
+      assert Enum.count(result) == 1
     end
 
     test "when there is one repo with more than zero stargazers" do

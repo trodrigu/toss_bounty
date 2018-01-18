@@ -58,7 +58,8 @@ defmodule TossBountyWeb.CampaignControllerTest do
       |> put_req_header("accept", "application/vnd.api+json")
       |> put_req_header("content-type", "application/vnd.api+json")
 
-    {:ok, conn: conn}
+    user = Repo.insert!(%TossBounty.Accounts.User{})
+    {:ok, conn: conn, user_id: user.id}
   end
 
   describe "index" do
@@ -66,6 +67,15 @@ defmodule TossBountyWeb.CampaignControllerTest do
     test "lists all campaigns", %{conn: conn} do
       conn = get conn, campaign_path(conn, :index)
       assert json_response(conn, 200)["data"] == []
+    end
+
+    @tag :authenticated
+    test "lists campaigns filtered by user id", %{conn: conn, user_id: user_id} do
+      campaign = Repo.insert!(%TossBounty.Campaigns.Campaign{user_id: user_id})
+      other_campaign = Repo.insert!(%TossBounty.Campaigns.Campaign{})
+      conn = get conn, campaign_path(conn, :index, %{user_id: user_id})
+      data = json_response(conn, 200)["data"]
+      assert Enum.count( data ) == 1
     end
 
     test "renders 401 when not authenticated", %{conn: conn} do

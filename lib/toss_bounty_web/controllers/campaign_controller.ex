@@ -7,10 +7,11 @@ defmodule TossBountyWeb.CampaignController do
 
   action_fallback TossBountyWeb.FallbackController
 
-  def index(conn, _params) do
-    campaigns = Campaigns.list_campaigns()
-    updatedCampaigns = Repo.preload campaigns, :github_repo
-    render(conn, "index.json-api", data: updatedCampaigns)
+  def index(conn, %{"user_id" => user_id}) do
+    campaigns =
+      Campaigns.list_campaigns(%{ "user_id" => user_id })
+
+    render(conn, "index.json-api", data: campaigns)
   end
 
   def create(conn, %{"data" => data = %{"type" => "campaign", "attributes" => campaign_params}}) do

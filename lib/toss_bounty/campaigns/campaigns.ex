@@ -17,8 +17,15 @@ defmodule TossBounty.Campaigns do
       [%Campaign{}, ...]
 
   """
+  def list_campaigns(%{ "user_id" => user_id }) do
+    Campaign
+    |> Ecto.Query.where(user_id: ^user_id)
+    |> Repo.all
+    |> Repo.preload :github_repo
+  end
   def list_campaigns do
-    Repo.all(Campaign)
+    Campaign
+    |> Repo.all
     |> Repo.preload :github_repo
   end
 
