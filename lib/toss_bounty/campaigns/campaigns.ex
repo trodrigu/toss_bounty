@@ -23,6 +23,7 @@ defmodule TossBounty.Campaigns do
     |> Repo.all
     |> Repo.preload :github_repo
   end
+
   def list_campaigns do
     Campaign
     |> Repo.all

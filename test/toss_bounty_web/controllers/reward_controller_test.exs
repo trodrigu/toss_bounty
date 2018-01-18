@@ -49,7 +49,8 @@ defmodule TossBountyWeb.RewardControllerTest do
     |> put_req_header("accept", "application/vnd.api+json")
     |> put_req_header("content-type", "application/vnd.api+json")
 
-    {:ok, conn: conn}
+    campaign = Repo.insert!(%TossBounty.Campaigns.Campaign{})
+    {:ok, conn: conn, campaign_id: campaign.id}
   end
 
   describe "index" do
@@ -57,6 +58,15 @@ defmodule TossBountyWeb.RewardControllerTest do
     test "lists all rewards", %{conn: conn} do
       conn = get conn, reward_path(conn, :index)
       assert json_response(conn, 200)["data"] == []
+    end
+
+    @tag :authenticated
+    test "lists rewards filtered by campaign id", %{conn: conn, campaign_id: campaign_id} do
+      reward = Repo.insert!(%TossBounty.Incentive.Reward{campaign_id: campaign_id})
+      other_reward = Repo.insert!(%TossBounty.Incentive.Reward{})
+      conn = get conn, reward_path(conn, :index, %{"campaign_id" => campaign_id})
+      data = json_response(conn, 200)["data"]
+      assert Enum.count( data ) == 1
     end
   end
 

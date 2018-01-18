@@ -64,9 +64,10 @@ defmodule TossBountyWeb.CampaignControllerTest do
 
   describe "index" do
     @tag :authenticated
-    test "lists all campaigns", %{conn: conn} do
+    test "lists all campaigns", %{conn: conn, user_id: user_id} do
+      campaign = Repo.insert!(%TossBounty.Campaigns.Campaign{user_id: user_id})
       conn = get conn, campaign_path(conn, :index)
-      assert json_response(conn, 200)["data"] == []
+      assert Enum.count( json_response(conn, 200)["data"] )== 1
     end
 
     @tag :authenticated

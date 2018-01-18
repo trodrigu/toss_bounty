@@ -10,7 +10,12 @@ defmodule TossBountyWeb.CampaignController do
   def index(conn, %{"user_id" => user_id}) do
     campaigns =
       Campaigns.list_campaigns(%{ "user_id" => user_id })
+    render(conn, "index.json-api", data: campaigns)
+  end
 
+  def index(conn, _params) do
+    campaigns =
+      Campaigns.list_campaigns()
     render(conn, "index.json-api", data: campaigns)
   end
 

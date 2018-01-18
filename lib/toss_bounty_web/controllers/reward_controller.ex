@@ -7,6 +7,11 @@ defmodule TossBountyWeb.RewardController do
 
   action_fallback TossBountyWeb.FallbackController
 
+  def index(conn, %{"campaign_id" => campaign_id}) do
+    rewards = Incentive.list_rewards(%{"campaign_id" => campaign_id})
+    render(conn, "index.json-api", rewards: rewards)
+  end
+
   def index(conn, _params) do
     rewards = Incentive.list_rewards()
     render(conn, "index.json-api", rewards: rewards)
