@@ -1,7 +1,7 @@
 defmodule TossBounty.Policy.RewardTest do
   use TossBounty.PolicyCase
 
-  import TossBounty.Policy.Reward, only: [update?: 2]
+  import TossBounty.Policy.Reward, only: [administer?: 2]
 
   alias TossBounty.Incentive.Reward
   alias TossBounty.Incentive
@@ -33,14 +33,14 @@ defmodule TossBounty.Policy.RewardTest do
     {:ok, user: user, campaign: campaign}
   end
 
-  describe "update?" do
+  describe "administer?" do
     test "returns true when reward belongs to a user", %{user: user, campaign: campaign} do
       attrs = Map.put(@reward_attrs, :campaign_id, campaign.id)
 
       {:ok, reward} =
         Incentive.create_reward(attrs)
 
-      assert update?(user, reward)
+      assert administer?(user, reward)
     end
 
     test "returns false when reward belongs to a user", %{user: user, campaign: campaign} do
@@ -51,7 +51,7 @@ defmodule TossBounty.Policy.RewardTest do
 
       another_user = Repo.insert!(%User{email: "another_test@test.com"})
 
-      refute update?(another_user, reward)
+      refute administer?(another_user, reward)
     end
   end
 end

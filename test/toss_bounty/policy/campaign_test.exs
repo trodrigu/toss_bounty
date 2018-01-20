@@ -1,7 +1,7 @@
 defmodule TossBounty.Policy.CampaignTest do
   use TossBounty.PolicyCase
 
-  import TossBounty.Policy.Campaign, only: [update?: 2]
+  import TossBounty.Policy.Campaign, only: [administer?: 2]
 
   alias TossBounty.Campaigns.Campaign
   alias TossBounty.Campaigns
@@ -17,7 +17,7 @@ defmodule TossBounty.Policy.CampaignTest do
     short_description: "some short_description",
   }
 
-  describe "update?" do
+  describe "administer?" do
     test "returns true when campaign belongs to a user" do
       user = Repo.insert!(%User{name: "foobar"})
       github_repo = Repo.insert!(%GithubRepo{ user_id: user.id })
@@ -26,7 +26,7 @@ defmodule TossBounty.Policy.CampaignTest do
       {:ok, campaign} =
         Campaigns.create_campaign(attrs)
 
-      assert update?(user, campaign)
+      assert administer?(user, campaign)
     end
 
     test "returns false when campaign belongs to a user" do
@@ -39,7 +39,7 @@ defmodule TossBounty.Policy.CampaignTest do
       {:ok, campaign} =
         Campaigns.create_campaign(attrs)
 
-      refute update?(user, campaign)
+      refute administer?(user, campaign)
     end
   end
 end
