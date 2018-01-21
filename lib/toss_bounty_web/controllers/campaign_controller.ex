@@ -33,7 +33,8 @@ defmodule TossBountyWeb.CampaignController do
 
   def show(conn, %{"id" => id}) do
     campaign = Campaigns.get_campaign!(id)
-    render(conn, "show.json-api", data: campaign)
+    preloaded_campaign = Repo.preload(campaign, :github_repo)
+    render(conn, "show.json-api", data: preloaded_campaign)
   end
 
   def update(conn, %{"id" => id, "data" => data = %{"type" => "campaign", "attributes" => campaign_params}}) do
