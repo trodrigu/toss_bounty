@@ -5,6 +5,7 @@ defmodule TossBountyWeb.CampaignControllerTest do
   alias TossBounty.Campaigns.Campaign
   alias TossBounty.Repo
   alias TossBounty.Accounts.User
+  alias TossBounty.GitHub.GithubRepo
 
   @create_attrs %{
     current_funding: 120.5,
@@ -30,8 +31,11 @@ defmodule TossBountyWeb.CampaignControllerTest do
 
   def fixture(:campaign) do
     user = Repo.insert!(%TossBounty.Accounts.User{})
+    repo = Repo.insert!(%GithubRepo{name: "foobar", user_id: user.id})
+
     attrs = Map.put(@create_attrs, :user_id, user.id)
-    {:ok, campaign} = Campaigns.create_campaign(attrs)
+    attrs_with_github_repo_id = Map.put(attrs, :github_repo_id, repo.id)
+    {:ok, campaign} = Campaigns.create_campaign(attrs_with_github_repo_id)
     campaign
   end
 
@@ -42,12 +46,19 @@ defmodule TossBountyWeb.CampaignControllerTest do
 
   defp relationships do
     user = Repo.insert!(%TossBounty.Accounts.User{})
+    repo = Repo.insert!(%GithubRepo{name: "foobar", user_id: user.id})
 
     %{
       "user" => %{
         "data" => %{
           "type" => "user",
           "id" => user.id
+        }
+      },
+      "github_repo" => %{
+        "data" => %{
+          "type" => "github_repo",
+          "id" => repo.id
         }
       }
     }
