@@ -3,6 +3,7 @@ defmodule TossBountyWeb.CampaignController do
 
   alias TossBounty.Campaigns
   alias TossBounty.Campaigns.Campaign
+  alias TossBounty.Accounts.CurrentUser
   alias JaSerializer.Params
 
   action_fallback TossBountyWeb.FallbackController
@@ -41,16 +42,47 @@ defmodule TossBountyWeb.CampaignController do
     campaign = Campaigns.get_campaign!(id)
     attrs = Params.to_attributes(data)
 
-    with {:ok, %Campaign{} = campaign} <- Campaigns.update_campaign(campaign, attrs) do
-      preloaded_campaign = Repo.preload(campaign, :github_repo)
-      render(conn, "show.json-api", data: preloaded_campaign)
+    current_user =
+      conn.assigns[:current_user]
+
+    case TossBounty.Policy.authorize(current_user, :administer, campaign, attrs) do
+      {:ok, :authorized} ->
+        with {:ok, %Campaign{} = campaign} <- Campaigns.update_campaign(campaign, attrs) do
+          preloaded_campaign = Repo.preload(campaign, :github_repo)
+          render(conn, "show.json-api", data: preloaded_campaign)
+        end
+
+      {:error, :not_authorized} ->
+        message =
+          "User with id: #{current_user.id} is not authorized " <>
+          "to administer campaign with id: #{campaign.id}"
+
+        conn
+        |> put_status(403)
+        |> render("403.json-api", %{message: message})
     end
   end
 
   def delete(conn, %{"id" => id}) do
     campaign = Campaigns.get_campaign!(id)
-    with {:ok, %Campaign{}} <- Campaigns.delete_campaign(campaign) do
-      send_resp(conn, :no_content, "")
+
+    current_user =
+      conn.assigns[:current_user]
+
+    case TossBounty.Policy.authorize(current_user, :administer, campaign) do
+      {:ok, :authorized} ->
+        with {:ok, %Campaign{}} <- Campaigns.delete_campaign(campaign) do
+          send_resp(conn, :no_content, "")
+        end
+
+      {:error, :not_authorized} ->
+        message =
+          "User with id: #{current_user.id} is not authorized " <>
+          "to administer campaign with id: #{campaign.id}"
+
+        conn
+        |> put_status(403)
+        |> render("403.json-api", %{message: message})
     end
   end
 end

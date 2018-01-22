@@ -29,8 +29,16 @@ defmodule TossBountyWeb.CampaignControllerTest do
     short_description: nil,
   }
 
-  def fixture(:campaign) do
-    user = Repo.insert!(%TossBounty.Accounts.User{})
+  def fixture(:campaign, nil) do
+    user = Repo.insert! %User{email: "another@test.com"}
+    repo = Repo.insert!(%GithubRepo{name: "foobar", user_id: user.id})
+
+    attrs = Map.put(@create_attrs, :user_id, user.id)
+    attrs_with_github_repo_id = Map.put(attrs, :github_repo_id, repo.id)
+    {:ok, campaign} = Campaigns.create_campaign(attrs_with_github_repo_id)
+    campaign
+  end
+  def fixture(:campaign, user) do
     repo = Repo.insert!(%GithubRepo{name: "foobar", user_id: user.id})
 
     attrs = Map.put(@create_attrs, :user_id, user.id)
@@ -193,15 +201,33 @@ defmodule TossBountyWeb.CampaignControllerTest do
     @tag :authenticated
     test "renders errors when data is invalid", %{conn: conn, campaign: campaign} do
       conn = put conn, campaign_path(conn, :update, campaign), %{
-      "meta" => %{},
-      "data" => %{
+        "meta" => %{},
+        "data" => %{
+          "type" => "campaign",
+          "id" => "#{campaign.id}",
+          "attributes" => dasherize_keys(@invalid_attrs),
+          "relationships" => relationships
+        }
+      }
+      assert json_response(conn, 422)["errors"] != %{}
+    end
+
+    @tag :authenticated
+    test "renders errors when not authorized", %{conn: conn, campaign: campaign} do
+      another_user = insert_user(email: "test2@test.com")
+      another_campaign_from_different_user =
+        fixture(:campaign, another_user)
+
+      conn = put conn, campaign_path(conn, :update, another_campaign_from_different_user), %{
+        "meta" => %{},
+        "data" => %{
         "type" => "campaign",
-        "id" => "#{campaign.id}",
+        "id" => "#{another_campaign_from_different_user.id}",
         "attributes" => dasherize_keys(@invalid_attrs),
         "relationships" => relationships
+        }
       }
-    }
-      assert json_response(conn, 422)["errors"] != %{}
+      assert json_response(conn, 403)["errors"] != %{}
     end
 
     test "renders 401 when not authenticated", %{conn: conn} do
@@ -229,6 +255,15 @@ defmodule TossBountyWeb.CampaignControllerTest do
       end
     end
 
+    @tag :authenticated
+    test "renders errors when not authorized", %{conn: conn, campaign: campaign} do
+      another_user = insert_user(email: "test2@test.com")
+      another_campaign_from_different_user =
+        fixture(:campaign, another_user)
+      conn = delete conn, campaign_path(conn, :delete, another_campaign_from_different_user)
+      assert json_response(conn, 403)["errors"] != %{}
+    end
+
     test "renders 401 when not authenticated", %{conn: conn, campaign: campaign} do
       conn = delete conn, campaign_path(conn, :delete, campaign)
       assert conn |> json_response(401)
@@ -236,7 +271,7 @@ defmodule TossBountyWeb.CampaignControllerTest do
   end
 
   defp create_campaign(attrs) do
-    campaign = fixture(:campaign)
+    campaign = fixture(:campaign, attrs[:current_user])
     {:ok, campaign: campaign}
   end
 end

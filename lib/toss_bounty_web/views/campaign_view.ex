@@ -12,4 +12,17 @@ defmodule TossBountyWeb.CampaignView do
     include: true,
     serializer: TossBountyWeb.GithubRepoView,
     type: "github_repo"
+
+  def render("403.json-api", %{message: message}) do
+    %{
+      errors: [
+        %{
+          id: "FORBIDDEN",
+          title: "403 Forbidden",
+          detail: message,
+          status: 403,
+        }
+      ]
+    }
+  end
 end

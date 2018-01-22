@@ -19,7 +19,7 @@ config :toss_bounty,
 config :toss_bounty, TossBountyWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "MAjVtcm9+3sgx0N/rAUPlgtkkZ1fC8X5lWUaCrXFl9GxDz0HOlr3yKhoZ+DWggzz",
-  render_errors: [view: TossBountyWeb.ErrorView, accepts: ~w(html json)],
+  render_errors: [view: TossBountyWeb.ErrorView, accepts: ~w(html json json-api)],
   pubsub: [name: TossBounty.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
