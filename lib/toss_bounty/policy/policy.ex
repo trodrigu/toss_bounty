@@ -53,5 +53,7 @@ defmodule TossBounty.Policy do
   end
 
   # Reward
-  defp can?(%User{} = current_user, :administer, %Reward{} = reward, %{}), do: TossBounty.Policy.Reward.administer?(current_user, reward)
+  defp can?(%User{} = current_user, :administer, %Reward{} = reward, %{}) do
+    TossBounty.Policy.Reward.administer?(current_user, reward)
+  end
 end

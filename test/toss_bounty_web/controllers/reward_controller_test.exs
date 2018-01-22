@@ -19,6 +19,12 @@ defmodule TossBountyWeb.RewardControllerTest do
     donation_level: nil,
   }
 
+  def fixture(:reward, user) do
+    campaign = Repo.insert!(%TossBounty.Campaigns.Campaign{user_id: user.id})
+    attrs = Map.put(@create_attrs, :campaign_id, campaign.id)
+    {:ok, reward} = Incentive.create_reward(attrs)
+    reward
+  end
   def fixture(:reward) do
     campaign = Repo.insert!(%TossBounty.Campaigns.Campaign{})
     attrs = Map.put(@create_attrs, :campaign_id, campaign.id)
@@ -146,6 +152,22 @@ defmodule TossBountyWeb.RewardControllerTest do
       }
       assert json_response(conn, 422)["errors"] != %{}
     end
+
+    @tag :authenticated
+    test "renders errors when not authorized", %{conn: conn, reward: reward} do
+      another_user = insert_user(email: "test2@test.com")
+      another_reward_from_different_user =
+        fixture(:reward, another_user)
+      conn = put conn, reward_path(conn, :update, another_reward_from_different_user), %{
+        "meta" => %{},
+        "data" => %{
+          "type" => "reward",
+          "attributes" => dasherize_keys(@update_attrs),
+          "relationships" => relationships
+        }
+      }
+      assert json_response(conn, 403)["errors"] != %{}
+    end
   end
 
   describe "delete reward" do
@@ -164,8 +186,21 @@ defmodule TossBountyWeb.RewardControllerTest do
         |> get( reward_path(conn, :show, reward) )
       end
     end
+
+    @tag :authenticated
+    test "renders errors when not authorized", %{conn: conn, reward: reward} do
+      another_user = insert_user(email: "test2@test.com")
+      another_reward_from_different_user =
+        fixture(:reward, another_user)
+      conn = delete conn, reward_path(conn, :delete, another_reward_from_different_user)
+      assert json_response(conn, 403)["errors"] != %{}
+    end
   end
 
+  defp create_reward(attrs) do
+    reward = fixture(:reward, attrs[:current_user])
+    {:ok, reward: reward}
+  end
   defp create_reward(_) do
     reward = fixture(:reward)
     {:ok, reward: reward}

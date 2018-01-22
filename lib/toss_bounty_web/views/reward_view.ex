@@ -16,4 +16,16 @@ defmodule TossBountyWeb.RewardView do
   #     description: reward.description,
   #     donation_level: reward.donation_level}
   # end
+  def render("403.json-api", %{message: message}) do
+    %{
+      errors: [
+        %{
+          id: "FORBIDDEN",
+          title: "403 Forbidden",
+          detail: message,
+          status: 403,
+        }
+      ]
+    }
+  end
 end
