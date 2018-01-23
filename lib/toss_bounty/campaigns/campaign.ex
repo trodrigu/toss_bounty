@@ -6,13 +6,13 @@ defmodule TossBounty.Campaigns.Campaign do
   alias TossBounty.GitHub.GithubRepo
 
   schema "campaigns" do
-    field :current_funding, :float
-    field :funding_end_date, Timex.Ecto.DateTimeWithTimezone
-    field :funding_goal, :float
-    field :long_description, :binary
-    field :short_description, :string
-    belongs_to :user, TossBounty.Accounts.User
-    belongs_to :github_repo, GithubRepo
+    field(:current_funding, :float)
+    field(:funding_end_date, Timex.Ecto.DateTimeWithTimezone)
+    field(:funding_goal, :float)
+    field(:long_description, :binary)
+    field(:short_description, :string)
+    belongs_to(:user, TossBounty.Accounts.User)
+    belongs_to(:github_repo, GithubRepo)
 
     timestamps()
   end
