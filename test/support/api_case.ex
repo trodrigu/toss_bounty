@@ -21,8 +21,7 @@ defmodule TossBountyWeb.ApiCase do
   use ExUnit.CaseTemplate
   use Phoenix.ConnTest
 
-
-  using(opts) do
+  using opts do
     quote do
       # Import conveniences for testing with connections
       use Phoenix.ConnTest
@@ -55,11 +54,13 @@ defmodule TossBountyWeb.ApiCase do
       |> put_req_header("accept", "application/vnd.api+json")
       |> put_req_header("content-type", "application/vnd.api+json")
 
-    {conn, current_user} = cond do
-      tags[:authenticated] ->
-        conn |> add_authentication_headers(tags[:authenticated])
-      true ->
-        {conn, nil}
+    {conn, current_user} =
+      cond do
+        tags[:authenticated] ->
+          conn |> add_authentication_headers(tags[:authenticated])
+
+        true ->
+          {conn, nil}
       end
 
     {:ok, conn: conn, current_user: current_user}
@@ -73,17 +74,19 @@ defmodule TossBountyWeb.ApiCase do
 
   defp add_authentication_headers(conn) do
     user = insert_user(email: "test@test.com")
-    conn = conn |> TossBountyWeb.AuthenticationTestHelpers.authenticate
+    conn = conn |> TossBountyWeb.AuthenticationTestHelpers.authenticate()
     {conn}
   end
 
-  defmacro define_request_helper_methods(resource_name: resource_name), do: do_add_request_helper_methods(resource_name)
+  defmacro define_request_helper_methods(resource_name: resource_name),
+    do: do_add_request_helper_methods(resource_name)
+
   defmacro define_request_helper_methods(_), do: nil
 
   defp do_add_request_helper_methods(resource_name) do
     quote do
       defp factory_name, do: unquote(resource_name)
-      defp path_helper_method, do: "#{unquote(resource_name)}_path" |> String.to_atom
+      defp path_helper_method, do: "#{unquote(resource_name)}_path" |> String.to_atom()
       defp default_record, do: Repo.insert!(unquote(resource_name))
 
       defp path_for(conn, action, resource_or_id) do
@@ -100,6 +103,7 @@ defmodule TossBountyWeb.ApiCase do
       end
 
       def request_show(conn, :not_found), do: conn |> request_show(-1)
+
       def request_show(conn, resource_or_id) do
         path = conn |> path_for(:show, resource_or_id)
         conn |> get(path)
@@ -114,6 +118,7 @@ defmodule TossBountyWeb.ApiCase do
       def request_update(conn), do: request_update(conn, %{})
       def request_update(conn, :not_found), do: request_update(conn, -1, %{})
       def request_update(conn, attrs), do: request_update(conn, default_record(), attrs)
+
       def request_update(conn, resource_or_id, attrs) do
         payload = TossBountyWeb.JsonAPIHelpers.build_json_payload(attrs)
         path = conn |> path_for(:update, resource_or_id)
@@ -122,6 +127,7 @@ defmodule TossBountyWeb.ApiCase do
 
       def request_delete(conn), do: request_delete(conn, default_record())
       def request_delete(conn, :not_found), do: request_delete(conn, -1)
+
       def request_delete(conn, resource_or_id) do
         path = conn |> path_for(:delete, resource_or_id)
         conn |> delete(path)
