@@ -3,22 +3,19 @@ defmodule TossBounty.StripeProcessing.Charge do
   import Ecto.Changeset
   alias TossBounty.StripeProcessing.Charge
   alias TossBounty.Accounts.User
+  alias TossBounty.StripeProcessing.Token
 
   schema "charges" do
-    field(:token, :string)
     field(:amount, :float)
-    field(:successful, :boolean)
     field(:message, :string)
-    belongs_to(:maintainer, User)
-    belongs_to(:contributor, User)
+    belongs_to(:token, Token)
   end
 
   @doc false
   def changeset(%Charge{} = charge, attrs) do
     charge
-    |> cast(attrs, [:token, :amount, :successful, :message, :maintainer_id, :contributor_id])
-    |> validate_required([:token, :amount, :successful, :message, :maintainer_id, :contributor_id])
-    |> assoc_constraint(:maintainer)
-    |> assoc_constraint(:contributor)
+    |> cast(attrs, [:token_id, :amount, :message])
+    |> validate_required([:token_id, :amount, :message])
+    |> assoc_constraint(:token)
   end
 end

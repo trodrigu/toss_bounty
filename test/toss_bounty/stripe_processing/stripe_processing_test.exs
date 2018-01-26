@@ -3,43 +3,82 @@ defmodule TossBounty.StripeProcessingTest do
 
   alias TossBounty.StripeProcessing
   alias TossBounty.StripeProcessing.Charge
+  alias TossBounty.StripeProcessing.Token
   import TossBountyWeb.TestHelpers
 
   setup do
-    maintainer = insert_user(email: "maintainer@test.com")
-    contributor = insert_user(email: "contributor@test.com")
-    {:ok, maintainer: maintainer, contributor: contributor}
+    user = insert_user(email: "user_with_token@email.com")
+
+    {:ok, user: user}
+  end
+
+  describe "tokens" do
+    @valid_attrs %{
+      uuid: "some-token-1"
+    }
+    @invalid_attrs %{
+      uuid: nil
+    }
+
+    test "create_token/1 returns the token with given id", %{
+      user: user
+    } do
+      attrs =
+        @valid_attrs
+        |> Map.put(:user_id, user.id)
+
+      assert {:ok, %Token{} = token} = StripeProcessing.create_token(attrs)
+      assert token.uuid == "some-token-1"
+    end
+
+    test "create_token/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = StripeProcessing.create_token(@invalid_attrs)
+    end
   end
 
   describe "charges" do
     @valid_attrs %{
-      token: "some-token",
       amount: 1000.0,
-      successful: true,
       message: "this is a message"
     }
     @invalid_attrs %{
-      token: nil,
       amount: nil,
-      successful: nil,
       message: nil
     }
 
+    setup [:create_fixture_token]
+
     test "create_charge/1 returns the charge with given id", %{
-      maintainer: maintainer,
-      contributor: contributor
+      token: token
     } do
       attrs =
         @valid_attrs
-        |> Map.put(:maintainer_id, maintainer.id)
-        |> Map.put(:contributor_id, contributor.id)
+        |> Map.put(:token_id, token.id)
 
       assert {:ok, %Charge{} = charge} = StripeProcessing.create_charge(attrs)
-      assert charge.token == "some-token"
+
+      preloaded_charge =
+        charge
+        |> Repo.preload([:token])
+
+      assert preloaded_charge.token.uuid == "some-token-1"
     end
 
     test "create_charge/1 with invalid data returns error changeset" do
       assert {:error, %Ecto.Changeset{}} = StripeProcessing.create_charge(@invalid_attrs)
     end
+  end
+
+  def create_fixture_token(attrs \\ %{}) do
+    user = attrs[:user]
+
+    token_attrs = %{
+      uuid: "some-token-1",
+      user_id: user.id
+    }
+
+    {:ok, token} = StripeProcessing.create_token(token_attrs)
+
+    {:ok, token: token}
   end
 end
