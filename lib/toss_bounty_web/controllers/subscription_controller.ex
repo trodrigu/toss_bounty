@@ -1,4 +1,4 @@
-defmodule TossBountyWeb.StripeTokenController do
+defmodule TossBountyWeb.SubscriptionController do
   use TossBountyWeb.Web, :controller
   alias JaSerializer.Params
   alias TossBounty.Accounts.CurrentUser

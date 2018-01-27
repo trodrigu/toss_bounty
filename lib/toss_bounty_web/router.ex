@@ -57,6 +57,6 @@ defmodule TossBountyWeb.Router do
     resources("/github_issues", GithubIssueController, only: [:index])
     resources("/campaigns", CampaignController, only: [:index, :show, :update, :create, :delete])
     resources("/rewards", RewardController, except: [:new, :edit])
-    resources("/tokens", StripeTokenController, only: [:create])
+    resources("/tokens", SubscriptionController, only: [:create])
   end
 end
