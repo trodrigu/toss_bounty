@@ -4,6 +4,7 @@ defmodule TossBounty.StripeProcessing do
   """
   import Ecto.Query, warn: false
   alias TossBounty.Repo
+  alias TossBounty.StripeProcessing.Subscription
   alias TossBounty.StripeProcessing.Plan
   alias TossBounty.StripeProcessing.Customer
   alias TossBounty.StripeProcessing.Charge
@@ -68,7 +69,7 @@ defmodule TossBounty.StripeProcessing do
 
   @doc """
   Creates a plan record which stores a plan uuid
-  used to create a subscription.
+  used to create a subscription for a customer.
 
   ## Examples
 
@@ -82,6 +83,25 @@ defmodule TossBounty.StripeProcessing do
   def create_plan(attrs \\ %{}) do
     %Plan{}
     |> Plan.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Creates a subscription record which stores a subscription uuid
+  resulting from associating a customer with a plan.
+
+  ## Examples
+
+  iex> create_subscription(%{field: value})
+  {:ok, %Subscription{}}
+
+  iex> create_subscription(%{field: bad_value})
+  {:error, %Ecto.Changeset{}}
+
+  """
+  def create_subscription(attrs \\ %{}) do
+    %Subscription{}
+    |> Subscription.changeset(attrs)
     |> Repo.insert()
   end
 end
