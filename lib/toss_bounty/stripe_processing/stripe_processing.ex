@@ -4,6 +4,7 @@ defmodule TossBounty.StripeProcessing do
   """
   import Ecto.Query, warn: false
   alias TossBounty.Repo
+  alias TossBounty.StripeProcessing.Customer
   alias TossBounty.StripeProcessing.Charge
   alias TossBounty.StripeProcessing.Token
 
@@ -42,6 +43,25 @@ defmodule TossBounty.StripeProcessing do
   def create_token(attrs \\ %{}) do
     %Token{}
     |> Token.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Creates a customer record which stores a customer uuid
+  used to associate subscriptions to.
+
+  ## Examples
+
+  iex> create_customer(%{field: value})
+  {:ok, %Campaign{}}
+
+  iex> create_customer(%{field: bad_value})
+  {:error, %Ecto.Changeset{}}
+
+  """
+  def create_customer(attrs \\ %{}) do
+    %Customer{}
+    |> Customer.changeset(attrs)
     |> Repo.insert()
   end
 end
