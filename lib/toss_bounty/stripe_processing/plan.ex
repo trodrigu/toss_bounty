@@ -6,14 +6,12 @@ defmodule TossBounty.StripeProcessing.Plan do
 
   schema "plans" do
     field(:uuid, :string)
-    belongs_to(:user, User)
   end
 
   @doc false
   def changeset(%Plan{} = plan, attrs) do
     plan
-    |> cast(attrs, [:user_id, :uuid])
-    |> validate_required([:user_id, :uuid])
-    |> assoc_constraint(:user)
+    |> cast(attrs, [:uuid])
+    |> validate_required([:uuid])
   end
 end
