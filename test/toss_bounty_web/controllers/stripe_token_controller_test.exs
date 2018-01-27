@@ -1,4 +1,4 @@
-defmodule TossBountyWeb.SubscriptionControllerTest do
+defmodule TossBountyWeb.StripeTokenControllerTest do
   use TossBountyWeb.ApiCase, resource_name: :token
   alias TossBounty.StripeProcessing.Token
   alias TossBounty.Repo
