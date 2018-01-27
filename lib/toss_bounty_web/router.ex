@@ -58,5 +58,6 @@ defmodule TossBountyWeb.Router do
     resources("/campaigns", CampaignController, only: [:index, :show, :update, :create, :delete])
     resources("/rewards", RewardController, except: [:new, :edit])
     resources("/tokens", StripeTokenController, only: [:create])
+    resources("/customers", CustomerController, only: [:create])
   end
 end
