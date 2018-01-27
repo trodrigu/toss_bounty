@@ -47,8 +47,14 @@ defmodule TossBounty.StripeProcessingTest do
       uuid: nil
     }
 
-    test "create_plan/1 returns the plan with given id" do
-      assert {:ok, %Plan{} = plan} = StripeProcessing.create_plan(@valid_attrs)
+    test "create_plan/1 returns the plan with given id", %{
+      user: user
+    } do
+      attrs =
+        @valid_attrs
+        |> Map.put(:user_id, user.id)
+
+      assert {:ok, %Plan{} = plan} = StripeProcessing.create_plan(attrs)
       assert plan.uuid == "some-plan-1"
     end
 
