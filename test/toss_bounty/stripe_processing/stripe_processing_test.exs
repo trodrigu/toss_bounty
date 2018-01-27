@@ -2,6 +2,7 @@ defmodule TossBounty.StripeProcessingTest do
   use TossBountyWeb.DataCase
 
   alias TossBounty.StripeProcessing
+  alias TossBounty.StripeProcessing.Plan
   alias TossBounty.StripeProcessing.Customer
   alias TossBounty.StripeProcessing.Charge
   alias TossBounty.StripeProcessing.Token
@@ -11,6 +12,30 @@ defmodule TossBounty.StripeProcessingTest do
     user = insert_user(email: "user_with_token@email.com")
 
     {:ok, user: user}
+  end
+
+  describe "plans" do
+    @valid_attrs %{
+      uuid: "some-plan-1"
+    }
+    @invalid_attrs %{
+      uuid: nil
+    }
+
+    test "create_plan/1 returns the plan with given id", %{
+      user: user
+    } do
+      attrs =
+        @valid_attrs
+        |> Map.put(:user_id, user.id)
+
+      assert {:ok, %Plan{} = plan} = StripeProcessing.create_plan(attrs)
+      assert plan.uuid == "some-plan-1"
+    end
+
+    test "create_plan/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = StripeProcessing.create_plan(@invalid_attrs)
+    end
   end
 
   describe "customers" do
