@@ -4,7 +4,7 @@ defmodule TossBounty.Repo.Migrations.CreateCustomers do
   def change do
     create table(:customers) do
       add(:uuid, :string)
-      add(:user_id, references(:users))
+      add(:token_id, references(:tokens))
     end
   end
 end

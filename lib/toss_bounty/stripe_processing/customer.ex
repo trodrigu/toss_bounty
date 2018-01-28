@@ -3,17 +3,18 @@ defmodule TossBounty.StripeProcessing.Customer do
   import Ecto.Changeset
   alias TossBounty.Accounts.User
   alias TossBounty.StripeProcessing.Customer
+  alias TossBounty.StripeProcessing.Token
 
   schema "customers" do
     field(:uuid, :string)
-    belongs_to(:user, User)
+    belongs_to(:token, Token)
   end
 
   @doc false
   def changeset(%Customer{} = customer, attrs) do
     customer
-    |> cast(attrs, [:user_id, :uuid])
-    |> validate_required([:user_id, :uuid])
-    |> assoc_constraint(:user)
+    |> cast(attrs, [:token_id, :uuid])
+    |> validate_required([:token_id, :uuid])
+    |> assoc_constraint(:token)
   end
 end

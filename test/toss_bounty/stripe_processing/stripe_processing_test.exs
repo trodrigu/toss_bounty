@@ -71,12 +71,14 @@ defmodule TossBounty.StripeProcessingTest do
       uuid: nil
     }
 
+    setup [:create_fixture_token]
+
     test "create_customer/1 returns the customer with given id", %{
-      user: user
+      token: token
     } do
       attrs =
         @valid_attrs
-        |> Map.put(:user_id, user.id)
+        |> Map.put(:token_id, token.id)
 
       assert {:ok, %Customer{} = customer} = StripeProcessing.create_customer(attrs)
       assert customer.uuid == "some-customer-1"
