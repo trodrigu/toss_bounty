@@ -4,29 +4,19 @@ defmodule TossBountyWeb.CustomerControllerTest do
   alias TossBounty.Repo
   alias TossBounty.Accounts.User
 
-  @create_attrs %{
-    uuid: "some-customer-1"
-  }
-  @update_attrs %{
-    uuid: "some-customer-1"
-  }
-  @invalid_attrs %{
-    uuid: nil
-  }
-
   defp dasherize_keys(attrs) do
     Enum.map(attrs, fn {k, v} -> {JaSerializer.Formatter.Utils.format_key(k), v} end)
     |> Enum.into(%{})
   end
 
   defp relationships do
-    user = Repo.insert!(%TossBounty.Accounts.User{})
+    token = Repo.insert!(%TossBounty.StripeProcessing.Token{})
 
     %{
-      "user" => %{
+      "token" => %{
         "data" => %{
-          "type" => "user",
-          "id" => user.id
+          "type" => "token",
+          "id" => token.id
         }
       }
     }
@@ -50,7 +40,6 @@ defmodule TossBountyWeb.CustomerControllerTest do
           "meta" => %{},
           "data" => %{
             "type" => "customer",
-            "attributes" => dasherize_keys(@create_attrs),
             "relationships" => relationships
           }
         })
@@ -64,9 +53,7 @@ defmodule TossBountyWeb.CustomerControllerTest do
         post(conn, customer_path(conn, :create), %{
           "meta" => %{},
           "data" => %{
-            "type" => "customer",
-            "attributes" => dasherize_keys(@invalid_attrs),
-            "relationships" => relationships
+            "type" => "customer"
           }
         })
 
@@ -79,7 +66,6 @@ defmodule TossBountyWeb.CustomerControllerTest do
           "meta" => %{},
           "data" => %{
             "type" => "customer",
-            "attributes" => dasherize_keys(@create_attrs),
             "relationships" => relationships
           }
         })

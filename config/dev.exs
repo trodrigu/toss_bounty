@@ -12,7 +12,6 @@ config :toss_bounty, TossBountyWeb.Endpoint,
   code_reloader: true,
   check_origin: false
 
-
 # Watch static and templates for browser reloading.
 config :toss_bounty, TossBountyWeb.Endpoint,
   live_reload: [
@@ -49,6 +48,7 @@ config :tentacat, :extra_headers, [{"Accept", "application/vnd.github.squirrel-g
 config :toss_bounty, repo_grabber: TossBounty.GitHub.SellableRepos.TentacatReposGrabber
 config :toss_bounty, issue_grabber: TossBounty.GitHub.SellableIssues.TentacatIssuesGrabber
 config :toss_bounty, github_strategy: TossBountyWeb.GithubStrategy
+config :toss_bounty, customer_creator: TossBounty.StripeProcessing.StripeCustomerCreator
 
 config :toss_bounty, front_end_url: System.get_env("FRONT_END_URL")
 

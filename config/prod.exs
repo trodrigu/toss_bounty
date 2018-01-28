@@ -14,11 +14,13 @@ use Mix.Config
 config :toss_bounty, TossBountyWeb.Endpoint,
   url: [host: "api.toss-bounty.com", port: {:system, "PORT"}],
   http: [port: 80],
-  https: [port: 443,
-          otp_app: :toss_bounty,
-          keyfile: System.get_env("PRIVKEY_PATH"),
-          cacertfile: System.get_env("CHAIN_PATH"),
-          certfile: System.get_env("CERT_PATH")],
+  https: [
+    port: 443,
+    otp_app: :toss_bounty,
+    keyfile: System.get_env("PRIVKEY_PATH"),
+    cacertfile: System.get_env("CHAIN_PATH"),
+    certfile: System.get_env("CERT_PATH")
+  ],
   server: true,
   root: ".",
   version: Application.spec(:toss_bounty, :vsn)
@@ -70,6 +72,7 @@ import_config "prod.secret.exs"
 config :toss_bounty, repo_grabber: TossBounty.GitHub.SellableRepos.TentacatReposGrabber
 config :toss_bounty, issue_grabber: TossBounty.GitHub.SellableIssues.TentacatIssuesGrabber
 config :toss_bounty, github_strategy: TossBountyWeb.GithubStrategy
+config :toss_bounty, customer_creator: TossBounty.StripeProcessing.StripeCustomerCreator
 
 config :oauth2, GitHub,
   client_id: System.get_env("GITHUB_CLIENT_ID"),
