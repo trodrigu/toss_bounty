@@ -2,12 +2,13 @@ defmodule TossBounty.StripeProcessing.Customer do
   use Ecto.Schema
   import Ecto.Changeset
   alias TossBounty.Accounts.User
-  alias TossBounty.StripeProcessing.Customer
+  alias TossBounty.StripeProcessing.Plan
   alias TossBounty.StripeProcessing.Token
 
   schema "customers" do
     field(:uuid, :string)
     belongs_to(:token, Token)
+    has_one(:plan, Plan)
   end
 
   @doc false

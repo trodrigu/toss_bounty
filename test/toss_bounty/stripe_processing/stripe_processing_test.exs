@@ -47,12 +47,14 @@ defmodule TossBounty.StripeProcessingTest do
       uuid: nil
     }
 
+    setup [:create_fixture_token, :create_fixture_customer]
+
     test "create_plan/1 returns the plan with given id", %{
-      user: user
+      customer: customer
     } do
       attrs =
         @valid_attrs
-        |> Map.put(:user_id, user.id)
+        |> Map.put(:customer_id, customer.id)
 
       assert {:ok, %Plan{} = plan} = StripeProcessing.create_plan(attrs)
       assert plan.uuid == "some-plan-1"
@@ -157,5 +159,18 @@ defmodule TossBounty.StripeProcessingTest do
     {:ok, token} = StripeProcessing.create_token(token_attrs)
 
     {:ok, token: token}
+  end
+
+  def create_fixture_customer(attrs \\ %{}) do
+    token = attrs[:token]
+
+    customer_attrs = %{
+      uuid: "some-customer-1",
+      token_id: token.id
+    }
+
+    {:ok, customer} = StripeProcessing.create_customer(customer_attrs)
+
+    {:ok, customer: customer}
   end
 end
