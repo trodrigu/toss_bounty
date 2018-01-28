@@ -6,22 +6,21 @@ defmodule TossBountyWeb.CampaignController do
   alias TossBounty.Accounts.CurrentUser
   alias JaSerializer.Params
 
-  action_fallback TossBountyWeb.FallbackController
+  action_fallback(TossBountyWeb.FallbackController)
 
   def index(conn, %{"user_id" => user_id}) do
-    campaigns =
-      Campaigns.list_campaigns(%{ "user_id" => user_id })
+    campaigns = Campaigns.list_campaigns(%{"user_id" => user_id})
     render(conn, "index.json-api", data: campaigns)
   end
 
   def index(conn, _params) do
-    campaigns =
-      Campaigns.list_campaigns()
+    campaigns = Campaigns.list_campaigns()
     render(conn, "index.json-api", data: campaigns)
   end
 
   def create(conn, %{"data" => data = %{"type" => "campaign", "attributes" => campaign_params}}) do
-    attrs = Params.to_attributes(data)
+    attrs =
+      Params.to_attributes(data)
     with {:ok, %Campaign{} = campaign} <- Campaigns.create_campaign(attrs) do
       preloaded_campaign = Repo.preload(campaign, :github_repo)
 
@@ -38,12 +37,14 @@ defmodule TossBountyWeb.CampaignController do
     render(conn, "show.json-api", data: preloaded_campaign)
   end
 
-  def update(conn, %{"id" => id, "data" => data = %{"type" => "campaign", "attributes" => campaign_params}}) do
+  def update(conn, %{
+        "id" => id,
+        "data" => data = %{"type" => "campaign", "attributes" => campaign_params}
+      }) do
     campaign = Campaigns.get_campaign!(id)
     attrs = Params.to_attributes(data)
 
-    current_user =
-      conn.assigns[:current_user]
+    current_user = conn.assigns[:current_user]
 
     case TossBounty.Policy.authorize(current_user, :administer, campaign, attrs) do
       {:ok, :authorized} ->
@@ -55,7 +56,7 @@ defmodule TossBountyWeb.CampaignController do
       {:error, :not_authorized} ->
         message =
           "User with id: #{current_user.id} is not authorized " <>
-          "to administer campaign with id: #{campaign.id}"
+            "to administer campaign with id: #{campaign.id}"
 
         conn
         |> put_status(403)
@@ -66,8 +67,7 @@ defmodule TossBountyWeb.CampaignController do
   def delete(conn, %{"id" => id}) do
     campaign = Campaigns.get_campaign!(id)
 
-    current_user =
-      conn.assigns[:current_user]
+    current_user = conn.assigns[:current_user]
 
     case TossBounty.Policy.authorize(current_user, :administer, campaign) do
       {:ok, :authorized} ->
@@ -78,7 +78,7 @@ defmodule TossBountyWeb.CampaignController do
       {:error, :not_authorized} ->
         message =
           "User with id: #{current_user.id} is not authorized " <>
-          "to administer campaign with id: #{campaign.id}"
+            "to administer campaign with id: #{campaign.id}"
 
         conn
         |> put_status(403)
