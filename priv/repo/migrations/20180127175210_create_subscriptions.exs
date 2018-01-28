@@ -4,7 +4,8 @@ defmodule TossBounty.Repo.Migrations.CreateSubscriptions do
   def change do
     create table(:subscriptions) do
       add(:uuid, :string)
-      add(:user_id, references(:users))
+      add(:customer_id, references(:customers))
+      add(:plan_id, references(:plans))
     end
   end
 end

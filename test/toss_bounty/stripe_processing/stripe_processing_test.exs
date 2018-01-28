@@ -23,12 +23,16 @@ defmodule TossBounty.StripeProcessingTest do
       uuid: nil
     }
 
+    setup [:create_fixture_token, :create_fixture_customer, :create_fixture_plan]
+
     test "create_subscription/1 returns the subscription with given id", %{
-      user: user
+      plan: plan,
+      customer: customer
     } do
       attrs =
         @valid_attrs
-        |> Map.put(:user_id, user.id)
+        |> Map.put(:plan_id, plan.id)
+        |> Map.put(:customer_id, customer.id)
 
       assert {:ok, %Subscription{} = subscription} = StripeProcessing.create_subscription(attrs)
       assert subscription.uuid == "some-subscription-1"
@@ -49,14 +53,8 @@ defmodule TossBounty.StripeProcessingTest do
 
     setup [:create_fixture_token, :create_fixture_customer]
 
-    test "create_plan/1 returns the plan with given id", %{
-      customer: customer
-    } do
-      attrs =
-        @valid_attrs
-        |> Map.put(:customer_id, customer.id)
-
-      assert {:ok, %Plan{} = plan} = StripeProcessing.create_plan(attrs)
+    test "create_plan/1 returns the plan with given id" do
+      assert {:ok, %Plan{} = plan} = StripeProcessing.create_plan(@valid_attrs)
       assert plan.uuid == "some-plan-1"
     end
 
@@ -158,10 +156,11 @@ defmodule TossBounty.StripeProcessingTest do
 
     {:ok, token} = StripeProcessing.create_token(token_attrs)
 
-    {:ok, token: token}
+    {:ok, user: user, token: token}
   end
 
   def create_fixture_customer(attrs \\ %{}) do
+    user = attrs[:user]
     token = attrs[:token]
 
     customer_attrs = %{
@@ -171,6 +170,20 @@ defmodule TossBounty.StripeProcessingTest do
 
     {:ok, customer} = StripeProcessing.create_customer(customer_attrs)
 
-    {:ok, customer: customer}
+    {:ok, user: user, token: token, customer: customer}
+  end
+
+  def create_fixture_plan(attrs \\ %{}) do
+    user = attrs[:user]
+    token = attrs[:token]
+    customer = attrs[:customer]
+
+    plan_attrs = %{
+      uuid: "some-plan-1"
+    }
+
+    {:ok, plan} = StripeProcessing.create_plan(plan_attrs)
+
+    {:ok, user: user, token: token, customer: customer, plan: plan}
   end
 end
