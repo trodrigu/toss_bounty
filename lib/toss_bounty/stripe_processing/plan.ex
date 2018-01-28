@@ -7,13 +7,17 @@ defmodule TossBounty.StripeProcessing.Plan do
 
   schema "plans" do
     field(:uuid, :string)
+    field(:amount, :float)
+    field(:interval, :string)
+    field(:name, :string)
+    field(:currency, :string)
     has_one(:subscription, Subscription)
   end
 
   @doc false
   def changeset(%Plan{} = plan, attrs) do
     plan
-    |> cast(attrs, [:uuid])
-    |> validate_required([:uuid])
+    |> cast(attrs, [:uuid, :amount, :interval, :name, :currency])
+    |> validate_required([:uuid, :amount, :interval, :name, :currency])
   end
 end

@@ -45,7 +45,11 @@ defmodule TossBounty.StripeProcessingTest do
 
   describe "plans" do
     @valid_attrs %{
-      uuid: "some-plan-1"
+      uuid: "some-plan-1",
+      amount: 2000,
+      interval: "month",
+      name: "the gold plan",
+      currency: "usd"
     }
     @invalid_attrs %{
       uuid: nil
@@ -56,6 +60,10 @@ defmodule TossBounty.StripeProcessingTest do
     test "create_plan/1 returns the plan with given id" do
       assert {:ok, %Plan{} = plan} = StripeProcessing.create_plan(@valid_attrs)
       assert plan.uuid == "some-plan-1"
+      assert plan.amount == 2000
+      assert plan.interval == "month"
+      assert plan.name == "the gold plan"
+      assert plan.currency == "usd"
     end
 
     test "create_plan/1 with invalid data returns error changeset" do
@@ -179,7 +187,11 @@ defmodule TossBounty.StripeProcessingTest do
     customer = attrs[:customer]
 
     plan_attrs = %{
-      uuid: "some-plan-1"
+      uuid: "some-plan-1",
+      amount: 2000,
+      interval: "month",
+      name: "the gold plan",
+      currency: "usd"
     }
 
     {:ok, plan} = StripeProcessing.create_plan(plan_attrs)
