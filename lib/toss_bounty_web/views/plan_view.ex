@@ -10,6 +10,19 @@ defmodule TossBountyWeb.PlanView do
     type: "reward"
   )
 
+  def render("404.json-api", %{message: message}) do
+    %{
+      errors: [
+        %{
+          id: "NOT FOUND",
+          title: "404 Not Found",
+          detail: message,
+          status: 404
+        }
+      ]
+    }
+  end
+
   def render("403.json-api", %{message: message}) do
     %{
       errors: [

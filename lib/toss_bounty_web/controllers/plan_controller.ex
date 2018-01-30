@@ -5,6 +5,7 @@ defmodule TossBountyWeb.PlanController do
   alias JaSerializer.Params
 
   @plan_creator Application.fetch_env!(:toss_bounty, :plan_creator)
+  @plan_deleter Application.fetch_env!(:toss_bounty, :plan_deleter)
 
   defmodule Behaviour do
     @callback create(Map.t()) :: :ok
@@ -39,25 +40,37 @@ defmodule TossBountyWeb.PlanController do
     |> Enum.into(%{"uuid" => stripe_plan.id})
   end
 
+  defp delete_plan_in_stripe(conn, plan_id) do
+    @plan_deleter.delete(conn, plan_id)
+  end
+
   def delete(conn, %{"id" => id}) do
     plan = StripeProcessing.get_plan!(id)
 
     current_user = conn.assigns[:current_user]
 
-    case TossBounty.Policy.authorize(current_user, :administer, plan) do
-      {:ok, :authorized} ->
-        with {:ok, %Plan{}} <- StripeProcessing.delete_plan(plan) do
-          send_resp(conn, :no_content, "")
-        end
-
-      {:error, :not_authorized} ->
-        message =
-          "User with id: #{current_user.id} is not authorized " <>
-            "to administer plan with id: #{plan.id}"
-
+    case delete_plan_in_stripe(conn, id) do
+      {:error, %Stripe.APIErrorResponse{} = response} ->
         conn
-        |> put_status(403)
-        |> render("403.json-api", %{message: message})
+        |> put_status(404)
+        |> render("404.json-api", %{message: response.message})
+
+      {:ok, %{deleted: true, id: id}} ->
+        case TossBounty.Policy.authorize(current_user, :administer, plan) do
+          {:ok, :authorized} ->
+            with {:ok, %Plan{}} <- StripeProcessing.delete_plan(plan) do
+              send_resp(conn, :no_content, "")
+            end
+
+          {:error, :not_authorized} ->
+            message =
+              "User with id: #{current_user.id} is not authorized " <>
+                "to administer plan with id: #{plan.id}"
+
+            conn
+            |> put_status(403)
+            |> render("403.json-api", %{message: message})
+        end
     end
   end
 end

@@ -196,5 +196,20 @@ defmodule TossBountyWeb.PlanControllerTest do
       conn = delete(conn, plan_path(conn, :delete, plan))
       assert conn |> json_response(401)
     end
+
+    @tag :authenticated
+    test "renders errors when stripe service returns none found", %{conn: conn, plan: plan} do
+      conn_with_errors =
+        conn
+        |> add_stripe_client_none_found
+
+      conn = delete(conn_with_errors, plan_path(conn_with_errors, :delete, plan))
+      assert response(conn, 404)
+    end
+
+    defp add_stripe_client_none_found(conn) do
+      conn
+      |> Plug.Conn.assign(:errors, :none_found)
+    end
   end
 end

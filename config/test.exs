@@ -28,6 +28,7 @@ config :toss_bounty, issue_grabber: TossBounty.GitHub.SellableIssues.MockIssuesG
 config :toss_bounty, github_strategy: TossBountyWeb.MockGithubStrategy
 config :toss_bounty, customer_creator: TossBounty.StripeProcessing.MockStripeCustomerCreator
 config :toss_bounty, plan_creator: TossBounty.StripeProcessing.MockStripePlanCreator
+config :toss_bounty, plan_deleter: TossBounty.StripeProcessing.MockStripePlanDeleter
 
 config :toss_bounty, front_end_url: "http://localhost:8000"
 
