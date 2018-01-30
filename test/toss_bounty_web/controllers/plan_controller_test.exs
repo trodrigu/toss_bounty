@@ -3,9 +3,18 @@ defmodule TossBountyWeb.PlanControllerTest do
   alias TossBounty.GitHub.GithubRepo
   alias TossBounty.Campaigns
   alias TossBounty.Incentive
+  alias TossBounty.StripeProcessing
+  alias TossBounty.Accounts.User
 
-  setup do
-    user = insert_user(email: "user_with_token@email.com")
+  setup config = %{conn: conn, current_user: current_user} do
+    user =
+      case current_user do
+        %User{} ->
+          current_user
+
+        _ ->
+          insert_user(email: "some_email@test.com")
+      end
 
     {:ok, user: user}
   end
@@ -80,7 +89,9 @@ defmodule TossBountyWeb.PlanControllerTest do
 
   def create_fixture_reward(attrs \\ %{}) do
     user = attrs[:user]
+
     campaign = attrs[:campaign]
+
     github_repo = attrs[:github_repo]
 
     reward_attrs = %{
@@ -92,6 +103,28 @@ defmodule TossBountyWeb.PlanControllerTest do
     {:ok, reward} = Incentive.create_reward(reward_attrs)
 
     {:ok, user: user, github_repo: github_repo, campaign: campaign, reward: reward}
+  end
+
+  def create_fixture_plan(attrs \\ %{}) do
+    user = attrs[:user]
+
+    reward = attrs[:reward]
+
+    campaign = attrs[:campaign]
+    github_repo = attrs[:github_repo]
+
+    plan_attrs = %{
+      uuid: "some-plan-1",
+      amount: 2000,
+      interval: "month",
+      name: "the gold plan",
+      currency: "usd",
+      reward_id: reward.id
+    }
+
+    {:ok, plan} = StripeProcessing.create_plan(plan_attrs)
+
+    {:ok, user: user, github_repo: github_repo, campaign: campaign, reward: reward, plan: plan}
   end
 
   describe "create plan" do
@@ -128,6 +161,40 @@ defmodule TossBountyWeb.PlanControllerTest do
         })
 
       assert json_response(conn, 422)["errors"] != %{}
+    end
+  end
+
+  describe "delete plan" do
+    setup [
+      :create_fixture_github_repo,
+      :create_fixture_campaign,
+      :create_fixture_reward,
+      :create_fixture_plan
+    ]
+
+    @tag :authenticated
+    test "deletes chosen plan", %{conn: conn, plan: plan} do
+      conn = delete(conn, plan_path(conn, :delete, plan))
+      assert response(conn, 204)
+    end
+
+    @tag :authenticated
+    test "renders errors when not authorized", %{conn: conn, plan: plan} do
+      another_user = insert_user(email: "test2@test.com")
+
+      {:ok, jwt, _} = Guardian.encode_and_sign(another_user)
+
+      delete_conn =
+        conn()
+        |> put_req_header("authorization", "Bearer #{jwt}")
+
+      conn = delete(delete_conn, plan_path(conn, :delete, plan))
+      assert json_response(conn, 403)["errors"] != %{}
+    end
+
+    test "renders 401 when not authenticated", %{conn: conn, plan: plan} do
+      conn = delete(conn, plan_path(conn, :delete, plan))
+      assert conn |> json_response(401)
     end
   end
 end

@@ -8,6 +8,7 @@ defmodule TossBountyWeb.PlanController do
 
   defmodule Behaviour do
     @callback create(Map.t()) :: :ok
+    @callback delete(TossBounty.StripeProcessing.Plan.t()) :: :ok
   end
 
   action_fallback(TossBountyWeb.FallbackController)
@@ -36,5 +37,27 @@ defmodule TossBountyWeb.PlanController do
 
     attrs
     |> Enum.into(%{"uuid" => stripe_plan.id})
+  end
+
+  def delete(conn, %{"id" => id}) do
+    plan = StripeProcessing.get_plan!(id)
+
+    current_user = conn.assigns[:current_user]
+
+    case TossBounty.Policy.authorize(current_user, :administer, plan) do
+      {:ok, :authorized} ->
+        with {:ok, %Plan{}} <- StripeProcessing.delete_plan(plan) do
+          send_resp(conn, :no_content, "")
+        end
+
+      {:error, :not_authorized} ->
+        message =
+          "User with id: #{current_user.id} is not authorized " <>
+            "to administer plan with id: #{plan.id}"
+
+        conn
+        |> put_status(403)
+        |> render("403.json-api", %{message: message})
+    end
   end
 end

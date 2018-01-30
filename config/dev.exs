@@ -50,6 +50,7 @@ config :toss_bounty, issue_grabber: TossBounty.GitHub.SellableIssues.TentacatIss
 config :toss_bounty, github_strategy: TossBountyWeb.GithubStrategy
 config :toss_bounty, customer_creator: TossBounty.StripeProcessing.StripeCustomerCreator
 config :toss_bounty, plan_creator: TossBounty.StripeProcessing.StripePlanCreator
+config :toss_bounty, plan_deleter: TossBounty.StripeProcessing.StripePlanDeleter
 
 config :toss_bounty, front_end_url: System.get_env("FRONT_END_URL")
 
