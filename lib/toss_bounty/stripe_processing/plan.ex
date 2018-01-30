@@ -2,6 +2,7 @@ defmodule TossBounty.StripeProcessing.Plan do
   use Ecto.Schema
   import Ecto.Changeset
   alias TossBounty.Accounts.User
+  alias TossBounty.Incentive.Reward
   alias TossBounty.StripeProcessing.Plan
   alias TossBounty.StripeProcessing.Subscription
 
@@ -11,13 +12,14 @@ defmodule TossBounty.StripeProcessing.Plan do
     field(:interval, :string)
     field(:name, :string)
     field(:currency, :string)
-    has_many(:subscription, Subscription)
+    has_many(:subscriptions, Subscription)
+    belongs_to(:reward, Reward)
   end
 
   @doc false
   def changeset(%Plan{} = plan, attrs) do
     plan
-    |> cast(attrs, [:uuid, :amount, :interval, :name, :currency])
-    |> validate_required([:uuid, :amount, :interval, :name, :currency])
+    |> cast(attrs, [:uuid, :amount, :interval, :name, :currency, :reward_id])
+    |> validate_required([:uuid, :amount, :interval, :name, :currency, :reward_id])
   end
 end

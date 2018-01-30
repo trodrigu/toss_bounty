@@ -83,6 +83,24 @@ defmodule TossBounty.StripeProcessingTest do
     test "create_plan/1 with invalid data returns error changeset" do
       assert {:error, %Ecto.Changeset{}} = StripeProcessing.create_plan(@invalid_attrs)
     end
+
+    setup [
+      :create_fixture_token,
+      :create_fixture_customer,
+      :create_fixture_github_repo,
+      :create_fixture_campaign,
+      :create_fixture_reward,
+      :create_fixture_plan
+    ]
+
+    test "get_plan!/1 returns the plan with given id", %{plan: plan} do
+      assert StripeProcessing.get_plan!(plan.id) == plan
+    end
+
+    test "delete_plan/1 deletes the plan", %{plan: plan} do
+      assert {:ok, %Plan{}} = StripeProcessing.delete_plan(plan)
+      assert_raise Ecto.NoResultsError, fn -> StripeProcessing.get_plan!(plan.id) end
+    end
   end
 
   describe "customers" do

@@ -87,6 +87,38 @@ defmodule TossBounty.StripeProcessing do
   end
 
   @doc """
+  Gets a single plan.
+
+  Raises `Ecto.NoResultsError` if the Plan does not exist.
+
+  ## Examples
+
+  iex> get_plan!(123)
+  %Campaign{}
+
+  iex> get_plan!(456)
+  ** (Ecto.NoResultsError)
+
+  """
+  def get_plan!(id), do: Repo.get!(Plan, id)
+
+  @doc """
+  Deletes a Plan.
+
+  ## Examples
+
+  iex> delete_plan(plan)
+  {:ok, %Plan{}}
+
+  iex> delete_plan(plan)
+  {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_plan(%Plan{} = plan) do
+    Repo.delete(plan)
+  end
+
+  @doc """
   Creates a subscription record which stores a subscription uuid
   resulting from associating a customer with a plan.
 
