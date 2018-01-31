@@ -30,6 +30,12 @@ config :toss_bounty, customer_creator: TossBounty.StripeProcessing.MockStripeCus
 config :toss_bounty, plan_creator: TossBounty.StripeProcessing.MockStripePlanCreator
 config :toss_bounty, plan_deleter: TossBounty.StripeProcessing.MockStripePlanDeleter
 
+config :toss_bounty,
+  subscription_creator: TossBounty.StripeProcessing.MockStripeSubscriptionCreator
+
+config :toss_bounty,
+  subscription_deleter: TossBounty.StripeProcessing.MockStripeSubscriptionDeleter
+
 config :toss_bounty, front_end_url: "http://localhost:8000"
 
 config :stripity_stripe, secret_key: System.get_env("STRIPE_SECRET_KEY")

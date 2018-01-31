@@ -1,5 +1,5 @@
 defmodule TossBountyWeb.PlanControllerTest do
-  use TossBountyWeb.ApiCase, resource_name: :campaign
+  use TossBountyWeb.ApiCase, resource_name: :plan
   alias TossBounty.GitHub.GithubRepo
   alias TossBounty.Campaigns
   alias TossBounty.Incentive
@@ -46,6 +46,33 @@ defmodule TossBountyWeb.PlanControllerTest do
         }
       }
     }
+  end
+
+  def create_fixture_token(attrs \\ %{}) do
+    user = attrs[:user]
+
+    token_attrs = %{
+      uuid: "some-token-1",
+      user_id: user.id
+    }
+
+    {:ok, token} = StripeProcessing.create_token(token_attrs)
+
+    {:ok, user: user, token: token}
+  end
+
+  def create_fixture_customer(attrs \\ %{}) do
+    user = attrs[:user]
+    token = attrs[:token]
+
+    customer_attrs = %{
+      uuid: "some-customer-1",
+      token_id: token.id
+    }
+
+    {:ok, customer} = StripeProcessing.create_customer(customer_attrs)
+
+    {:ok, user: user, token: token, customer: customer}
   end
 
   def create_fixture_github_repo(attrs \\ %{}) do

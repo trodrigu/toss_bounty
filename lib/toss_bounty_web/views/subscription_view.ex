@@ -1,13 +1,19 @@
-defmodule TossBountyWeb.PlanView do
+defmodule TossBountyWeb.SubscriptionView do
   use TossBountyWeb.Web, :view
   use JaSerializer.PhoenixView
 
   attributes([:uuid])
 
   has_one(
-    :reward,
-    field: :reward_id,
-    type: "reward"
+    :plan,
+    field: :plan_id,
+    type: "plan"
+  )
+
+  has_one(
+    :customer,
+    field: :customer_id,
+    type: "customer"
   )
 
   def render("404.json-api", %{message: message}) do

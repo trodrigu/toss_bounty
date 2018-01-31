@@ -11,7 +11,9 @@ defmodule TossBounty.Policy do
     Campaigns.Campaign,
     Incentive.Reward,
     Repo,
-    StripeProcessing.Plan
+    StripeProcessing.Plan,
+    StripeProcessing.Subscription,
+    StripeProcessing.Customer
   }
 
   alias Ecto.Changeset
@@ -66,6 +68,19 @@ defmodule TossBounty.Policy do
     Repo.one(query) != nil
   end
 
+  def belongs_to?(%Subscription{id: subscription_id} = subscription, %User{id: user_id}) do
+    query =
+      from(
+        s in Subscription,
+        join: c in assoc(s, :customer),
+        join: t in assoc(c, :token),
+        where: t.user_id == ^user_id,
+        where: s.id == ^subscription_id
+      )
+
+    Repo.one(query) != nil
+  end
+
   # Campaign
   defp can?(%User{} = current_user, :administer, %Campaign{} = campaign, %{}) do
     TossBounty.Policy.Campaign.administer?(current_user, campaign)
@@ -79,5 +94,10 @@ defmodule TossBounty.Policy do
   # Plan
   defp can?(%User{} = current_user, :administer, %Plan{} = plan, %{}) do
     TossBounty.Policy.Plan.administer?(current_user, plan)
+  end
+
+  # Subscription
+  defp can?(%User{} = current_user, :administer, %Subscription{} = subscription, %{}) do
+    TossBounty.Policy.Subscription.administer?(current_user, subscription)
   end
 end
