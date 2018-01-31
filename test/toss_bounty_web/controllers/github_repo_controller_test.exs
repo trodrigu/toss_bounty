@@ -1,12 +1,14 @@
 defmodule TossBountyWeb.GithubRepoControllerTest do
   use TossBountyWeb.ApiCase
   import TossBountyWeb.AuthenticationTestHelpers
-  alias TossBounty.GitHub.GithubIssue
-  alias TossBounty.GitHub.GithubRepo
+  alias TossBounty.Github.GithubIssue
+  alias TossBounty.Github.GithubRepo
   alias TossBounty.Accounts.User
+
   setup config = %{conn: conn} do
     if email = config[:login_as] do
       user = insert_user(email: "test@test.com")
+
       conn =
         %{build_conn() | host: "api."}
         |> put_req_header("accept", "application/vnd.api+json")
@@ -17,13 +19,12 @@ defmodule TossBountyWeb.GithubRepoControllerTest do
     else
       :ok
     end
-
   end
 
   describe "index" do
     @tag :authenticated
     test "returns an index of the github repos", %{conn: conn} do
-      conn = get conn, github_repo_path(conn, :index)
+      conn = get(conn, github_repo_path(conn, :index))
       assert conn |> json_response(200)
     end
 
@@ -34,17 +35,20 @@ defmodule TossBountyWeb.GithubRepoControllerTest do
       repo_that_does_not_matter = Repo.insert!(%GithubRepo{name: "bazbar"})
       Repo.insert!(%GithubIssue{title: "great title", body: "body", github_repo_id: repo.id})
 
-      user = Repo.one(from u in User, limit: 1)
+      user = Repo.one(from(u in User, limit: 1))
       {:ok, jwt, _} = Guardian.encode_and_sign(user)
 
       conn =
         conn()
         |> put_req_header("authorization", "Bearer #{jwt}")
-        |> get github_repo_path(conn, :index), %{ user_id: user.id }
+        |> get(github_repo_path(conn, :index), %{user_id: user.id})
 
       response = json_response(conn, 200)
-      repo_from_response = response["data"]
-      |> Enum.at(0)
+
+      repo_from_response =
+        response["data"]
+        |> Enum.at(0)
+
       repos_name = repo_from_response["attributes"]["name"]
       assert repos_name == "foobar"
     end

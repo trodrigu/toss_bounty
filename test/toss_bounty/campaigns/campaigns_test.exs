@@ -3,11 +3,21 @@ defmodule TossBounty.CampaignsTest do
 
   alias TossBounty.Campaigns
   alias TossBounty.Accounts.User
-  alias TossBounty.GitHub.GithubRepo
+  alias TossBounty.Github.GithubRepo
 
   setup do
     user = with {:ok, user} <- Repo.insert!(%User{email: "test@test.com"}), do: user
-    github_repo = with {:ok, github_repo} <- Repo.insert!(%GithubRepo{name: "elm-lang", owner: "trodrigu", bountiful_score: 5, user_id: user.id}), do: github_repo
+
+    github_repo =
+      with {:ok, github_repo} <-
+             Repo.insert!(%GithubRepo{
+               name: "elm-lang",
+               owner: "trodrigu",
+               bountiful_score: 5,
+               user_id: user.id
+             }),
+           do: github_repo
+
     {:ok, user: user, github_repo: github_repo}
   end
 
@@ -19,21 +29,21 @@ defmodule TossBounty.CampaignsTest do
       funding_end_date: Timex.parse!("Tue, 06 Mar 2013 01:25:19 +0200", "{RFC1123}"),
       funding_goal: 120.5,
       long_description: "some long_description",
-      short_description: "some short_description",
+      short_description: "some short_description"
     }
     @update_attrs %{
       current_funding: 456.7,
       funding_end_date: Timex.parse!("Tue, 06 Mar 2013 01:25:19 +0200", "{RFC1123}"),
       funding_goal: 456.7,
       long_description: "some updated long_description",
-      short_description: "some updated short_description",
+      short_description: "some updated short_description"
     }
     @invalid_attrs %{
       current_funding: nil,
       funding_end_date: nil,
       funding_goal: nil,
       long_description: nil,
-      short_description: nil,
+      short_description: nil
     }
 
     def campaign_fixture(attrs \\ %{}) do
@@ -41,6 +51,7 @@ defmodule TossBounty.CampaignsTest do
       github_repo = attrs[:github_repo]
       attrs_with_user_id = Map.put(@valid_attrs, :user_id, user.id)
       attrs_with_github_repo = Map.put(@valid_attrs, :github_repo_id, github_repo.id)
+
       {:ok, campaign} =
         attrs_with_user_id
         |> Enum.into(attrs_with_github_repo)
@@ -52,22 +63,32 @@ defmodule TossBounty.CampaignsTest do
 
     test "list_campaigns/0 returns all campaigns", %{user: user, github_repo: github_repo} do
       campaign = campaign_fixture(%{user: user, github_repo: github_repo})
-      preloaded_campaign = Repo.preload campaign, :github_repo
+      preloaded_campaign = Repo.preload(campaign, :github_repo)
       assert Campaigns.list_campaigns() == [preloaded_campaign]
     end
 
-    test "get_campaign!/1 returns the campaign with given id", %{user: user, github_repo: github_repo} do
+    test "get_campaign!/1 returns the campaign with given id", %{
+      user: user,
+      github_repo: github_repo
+    } do
       campaign = campaign_fixture(%{user: user, github_repo: github_repo})
       assert Campaigns.get_campaign!(campaign.id) == campaign
     end
 
-    test "create_campaign/1 with valid data creates a campaign", %{user: user, github_repo: github_repo} do
+    test "create_campaign/1 with valid data creates a campaign", %{
+      user: user,
+      github_repo: github_repo
+    } do
       attrs =
         Map.put(@valid_attrs, :user_id, user.id)
         |> Enum.into(%{github_repo_id: github_repo.id})
+
       assert {:ok, %Campaign{} = campaign} = Campaigns.create_campaign(attrs)
       assert campaign.current_funding == 120.5
-      assert campaign.funding_end_date == Timex.parse!("Tue, 06 Mar 2013 01:25:19 +0200", "{RFC1123}")
+
+      assert campaign.funding_end_date ==
+               Timex.parse!("Tue, 06 Mar 2013 01:25:19 +0200", "{RFC1123}")
+
       assert campaign.funding_goal == 120.5
       assert campaign.long_description == "some long_description"
       assert campaign.short_description == "some short_description"
@@ -77,19 +98,28 @@ defmodule TossBounty.CampaignsTest do
       assert {:error, %Ecto.Changeset{}} = Campaigns.create_campaign(@invalid_attrs)
     end
 
-    test "update_campaign/2 with valid data updates the campaign", %{user: user, github_repo: github_repo} do
+    test "update_campaign/2 with valid data updates the campaign", %{
+      user: user,
+      github_repo: github_repo
+    } do
       campaign = campaign_fixture(%{user: user, github_repo: github_repo})
       assert {:ok, campaign} = Campaigns.update_campaign(campaign, @update_attrs)
       assert %Campaign{} = campaign
       assert campaign.current_funding == 456.7
-      assert campaign.funding_end_date == Timex.parse!("Tue, 06 Mar 2013 01:25:19 +0200", "{RFC1123}")
+
+      assert campaign.funding_end_date ==
+               Timex.parse!("Tue, 06 Mar 2013 01:25:19 +0200", "{RFC1123}")
+
       assert campaign.funding_goal == 456.7
       assert campaign.long_description == "some updated long_description"
       assert campaign.short_description == "some updated short_description"
       assert campaign.github_repo_id == github_repo.id
     end
 
-    test "update_campaign/2 with invalid data returns error changeset", %{user: user, github_repo: github_repo} do
+    test "update_campaign/2 with invalid data returns error changeset", %{
+      user: user,
+      github_repo: github_repo
+    } do
       campaign = campaign_fixture(%{user: user, github_repo: github_repo})
       assert {:error, %Ecto.Changeset{}} = Campaigns.update_campaign(campaign, @invalid_attrs)
       assert campaign == Campaigns.get_campaign!(campaign.id)
@@ -101,7 +131,7 @@ defmodule TossBounty.CampaignsTest do
       assert_raise Ecto.NoResultsError, fn -> Campaigns.get_campaign!(campaign.id) end
     end
 
-    test "change_campaign/1 returns a campaign changeset", %{user: user, github_repo: github_repo}  do
+    test "change_campaign/1 returns a campaign changeset", %{user: user, github_repo: github_repo} do
       campaign = campaign_fixture(%{user: user, github_repo: github_repo})
       assert %Ecto.Changeset{} = Campaigns.change_campaign(campaign)
     end

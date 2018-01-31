@@ -18,13 +18,13 @@ config :toss_bounty, TossBounty.Repo,
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
 
-config :oauth2, GitHub,
+config :oauth2, Github,
   client_id: System.get_env("GITHUB_CLIENT_ID"),
   client_secret: System.get_env("GITHUB_CLIENT_SECRET"),
   redirect_uri: System.get_env("GITHUB_REDIRECT_URI")
 
-config :toss_bounty, repo_grabber: TossBounty.GitHub.SellableRepos.MockReposGrabber
-config :toss_bounty, issue_grabber: TossBounty.GitHub.SellableIssues.MockIssuesGrabber
+config :toss_bounty, repo_grabber: TossBounty.Github.SellableRepos.MockReposGrabber
+config :toss_bounty, issue_grabber: TossBounty.Github.SellableIssues.MockIssuesGrabber
 config :toss_bounty, github_strategy: TossBountyWeb.MockGithubStrategy
 config :toss_bounty, customer_creator: TossBounty.StripeProcessing.MockStripeCustomerCreator
 config :toss_bounty, plan_creator: TossBounty.StripeProcessing.MockStripePlanCreator

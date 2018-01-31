@@ -1,6 +1,6 @@
-defmodule TossBounty.GitHub.GithubRepoModelTest do
+defmodule TossBounty.Github.GithubRepoModelTest do
   use TossBountyWeb.DataCase, async: true
-  alias TossBounty.GitHub.GithubRepo
+  alias TossBounty.Github.GithubRepo
   alias TossBounty.Accounts.User
 
   describe "repo changeset" do

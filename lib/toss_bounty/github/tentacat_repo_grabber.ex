@@ -1,5 +1,5 @@
-defmodule TossBounty.GitHub.SellableRepos.TentacatReposGrabber do
-  @behaviour TossBounty.GitHub.SellableRepos.Behaviour
+defmodule TossBounty.Github.SellableRepos.TentacatReposGrabber do
+  @behaviour TossBounty.Github.SellableRepos.Behaviour
 
   def list_mine(user) do
     tentacat_client = create_tentacat_client(user)
@@ -8,6 +8,6 @@ defmodule TossBounty.GitHub.SellableRepos.TentacatReposGrabber do
 
   defp create_tentacat_client(user) do
     access_token = user.github_token
-    Tentacat.Client.new(%{ access_token: access_token })
+    Tentacat.Client.new(%{access_token: access_token})
   end
 end

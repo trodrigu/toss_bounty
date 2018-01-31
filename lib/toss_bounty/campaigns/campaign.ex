@@ -3,7 +3,7 @@ defmodule TossBounty.Campaigns.Campaign do
   import Ecto.Changeset
   alias TossBounty.Campaigns.Campaign
   use Timex.Ecto.Timestamps
-  alias TossBounty.GitHub.GithubRepo
+  alias TossBounty.Github.GithubRepo
   alias TossBounty.Accounts.User
 
   schema "campaigns" do

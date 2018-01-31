@@ -1,8 +1,8 @@
 defmodule TossBountyWeb.GithubIssueController do
   use TossBountyWeb.Web, :controller
   use JaResource
-  alias TossBounty.GitHub.GithubIssue
-  plug JaResource
+  alias TossBounty.Github.GithubIssue
+  plug(JaResource)
 
   def model, do: GithubIssue
 

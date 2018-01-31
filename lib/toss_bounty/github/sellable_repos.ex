@@ -1,14 +1,21 @@
-defmodule TossBounty.GitHub.SellableRepos do
+defmodule TossBounty.Github.SellableRepos do
   @sellable_repo_impl Application.fetch_env!(:toss_bounty, :repo_grabber)
 
   defmodule Behaviour do
-    @callback list_mine([user: TossBounty.Accounts.User.t]) :: :ok
+    @callback list_mine(user: TossBounty.Accounts.User.t()) :: :ok
   end
 
   def call(user) do
     sellable_repos =
       @sellable_repo_impl.list_mine(user)
-      |> Enum.map(fn(repo) -> %{ name: repo["name"], owner: repo["owner"]["login"], bountiful_score: calculate_bountiful_score(repo), image: repo["owner"]["avatar_url"] } end)
+      |> Enum.map(fn repo ->
+        %{
+          name: repo["name"],
+          owner: repo["owner"]["login"],
+          bountiful_score: calculate_bountiful_score(repo),
+          image: repo["owner"]["avatar_url"]
+        }
+      end)
   end
 
   defp calculate_bountiful_score(repo) do
@@ -19,12 +26,13 @@ defmodule TossBounty.GitHub.SellableRepos do
   defp look_up_tier(stargazers_count) do
     index =
       tiers
-      |> Enum.find_index(fn (tier) -> check_tier(tier, stargazers_count) end)
+      |> Enum.find_index(fn tier -> check_tier(tier, stargazers_count) end)
+
     return_index(index)
   end
 
   defp check_tier(tier, stargazers_count) do
-    Enum.member?( tier, stargazers_count )
+    Enum.member?(tier, stargazers_count)
   end
 
   defp return_index(nil), do: 5
@@ -36,7 +44,7 @@ defmodule TossBounty.GitHub.SellableRepos do
       20..40,
       40..60,
       60..80,
-      80..100,
+      80..100
     ]
   end
 end

@@ -113,7 +113,8 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
       commented: false,
       datatype: :atom,
       default: TossBountyWeb.ErrorView,
-      doc: "Provide documentation for toss_bounty.Elixir.TossBountyWeb.Endpoint.render_errors.view here.",
+      doc:
+        "Provide documentation for toss_bounty.Elixir.TossBountyWeb.Endpoint.render_errors.view here.",
       hidden: false,
       to: "toss_bounty.Elixir.TossBountyWeb.Endpoint.render_errors.view"
     ],
@@ -126,7 +127,8 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
         "html",
         "json"
       ],
-      doc: "Provide documentation for toss_bounty.Elixir.TossBountyWeb.Endpoint.render_errors.accepts here.",
+      doc:
+        "Provide documentation for toss_bounty.Elixir.TossBountyWeb.Endpoint.render_errors.accepts here.",
       hidden: false,
       to: "toss_bounty.Elixir.TossBountyWeb.Endpoint.render_errors.accepts"
     ],
@@ -142,7 +144,8 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
       commented: false,
       datatype: :atom,
       default: Phoenix.PubSub.PG2,
-      doc: "Provide documentation for toss_bounty.Elixir.TossBountyWeb.Endpoint.pubsub.adapter here.",
+      doc:
+        "Provide documentation for toss_bounty.Elixir.TossBountyWeb.Endpoint.pubsub.adapter here.",
       hidden: false,
       to: "toss_bounty.Elixir.TossBountyWeb.Endpoint.pubsub.adapter"
     ],
@@ -182,28 +185,32 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
       commented: false,
       datatype: :atom,
       default: :toss_bounty,
-      doc: "Provide documentation for toss_bounty.Elixir.TossBountyWeb.Endpoint.https.otp_app here.",
+      doc:
+        "Provide documentation for toss_bounty.Elixir.TossBountyWeb.Endpoint.https.otp_app here.",
       hidden: false,
       to: "toss_bounty.Elixir.TossBountyWeb.Endpoint.https.otp_app"
     ],
     "toss_bounty.Elixir.TossBountyWeb.Endpoint.https.keyfile": [
       commented: false,
       datatype: :binary,
-      doc: "Provide documentation for toss_bounty.Elixir.TossBountyWeb.Endpoint.https.keyfile here.",
+      doc:
+        "Provide documentation for toss_bounty.Elixir.TossBountyWeb.Endpoint.https.keyfile here.",
       hidden: false,
       to: "toss_bounty.Elixir.TossBountyWeb.Endpoint.https.keyfile"
     ],
     "toss_bounty.Elixir.TossBountyWeb.Endpoint.https.cacertfile": [
       commented: false,
       datatype: :binary,
-      doc: "Provide documentation for toss_bounty.Elixir.TossBountyWeb.Endpoint.https.cacertfile here.",
+      doc:
+        "Provide documentation for toss_bounty.Elixir.TossBountyWeb.Endpoint.https.cacertfile here.",
       hidden: false,
       to: "toss_bounty.Elixir.TossBountyWeb.Endpoint.https.cacertfile"
     ],
     "toss_bounty.Elixir.TossBountyWeb.Endpoint.https.certfile": [
       commented: false,
       datatype: :binary,
-      doc: "Provide documentation for toss_bounty.Elixir.TossBountyWeb.Endpoint.https.certfile here.",
+      doc:
+        "Provide documentation for toss_bounty.Elixir.TossBountyWeb.Endpoint.https.certfile here.",
       hidden: false,
       to: "toss_bounty.Elixir.TossBountyWeb.Endpoint.https.certfile"
     ],
@@ -233,7 +240,8 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
     "toss_bounty.Elixir.TossBountyWeb.Endpoint.secret_key_base": [
       commented: false,
       datatype: :binary,
-      doc: "Provide documentation for toss_bounty.Elixir.TossBountyWeb.Endpoint.secret_key_base here.",
+      doc:
+        "Provide documentation for toss_bounty.Elixir.TossBountyWeb.Endpoint.secret_key_base here.",
       hidden: false,
       to: "toss_bounty.Elixir.TossBountyWeb.Endpoint.secret_key_base"
     ],
@@ -281,31 +289,31 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
       hidden: false,
       to: "toss_bounty.guardian_secret_key"
     ],
-    "toss_bounty.Elixir.GitHub.client_id": [
+    "toss_bounty.Elixir.Github.client_id": [
       commented: false,
       datatype: :atom,
-      doc: "Provide documentation for toss_bounty.Elixir.GitHub.client_id here.",
+      doc: "Provide documentation for toss_bounty.Elixir.Github.client_id here.",
       hidden: false,
-      to: "toss_bounty.Elixir.GitHub.client_id"
+      to: "toss_bounty.Elixir.Github.client_id"
     ],
-    "toss_bounty.Elixir.GitHub.client_secret": [
+    "toss_bounty.Elixir.Github.client_secret": [
       commented: false,
       datatype: :atom,
-      doc: "Provide documentation for toss_bounty.Elixir.GitHub.client_secret here.",
+      doc: "Provide documentation for toss_bounty.Elixir.Github.client_secret here.",
       hidden: false,
-      to: "toss_bounty.Elixir.GitHub.client_secret"
+      to: "toss_bounty.Elixir.Github.client_secret"
     ],
-    "toss_bounty.Elixir.GitHub.redirect_uri": [
+    "toss_bounty.Elixir.Github.redirect_uri": [
       commented: false,
       datatype: :atom,
-      doc: "Provide documentation for toss_bounty.Elixir.GitHub.redirect_uri here.",
+      doc: "Provide documentation for toss_bounty.Elixir.Github.redirect_uri here.",
       hidden: false,
-      to: "toss_bounty.Elixir.GitHub.redirect_uri"
+      to: "toss_bounty.Elixir.Github.redirect_uri"
     ],
     "toss_bounty.repo_grabber": [
       commented: false,
       datatype: :atom,
-      default: TossBounty.GitHub.SellableRepos.TentacatReposGrabber,
+      default: TossBounty.Github.SellableRepos.TentacatReposGrabber,
       doc: "Provide documentation for toss_bounty.repo_grabber here.",
       hidden: false,
       to: "toss_bounty.repo_grabber"
@@ -313,7 +321,7 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
     "toss_bounty.issue_grabber": [
       commented: false,
       datatype: :atom,
-      default: TossBounty.GitHub.SellableIssues.TentacatIssuesGrabber,
+      default: TossBounty.Github.SellableIssues.TentacatIssuesGrabber,
       doc: "Provide documentation for toss_bounty.issue_grabber here.",
       hidden: false,
       to: "toss_bounty.issue_grabber"
@@ -326,26 +334,26 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
       hidden: false,
       to: "toss_bounty.github_strategy"
     ],
-    "oauth2.Elixir.GitHub.client_id": [
+    "oauth2.Elixir.Github.client_id": [
       commented: false,
       datatype: :atom,
-      doc: "Provide documentation for oauth2.Elixir.GitHub.client_id here.",
+      doc: "Provide documentation for oauth2.Elixir.Github.client_id here.",
       hidden: false,
-      to: "oauth2.Elixir.GitHub.client_id"
+      to: "oauth2.Elixir.Github.client_id"
     ],
-    "oauth2.Elixir.GitHub.client_secret": [
+    "oauth2.Elixir.Github.client_secret": [
       commented: false,
       datatype: :atom,
-      doc: "Provide documentation for oauth2.Elixir.GitHub.client_secret here.",
+      doc: "Provide documentation for oauth2.Elixir.Github.client_secret here.",
       hidden: false,
-      to: "oauth2.Elixir.GitHub.client_secret"
+      to: "oauth2.Elixir.Github.client_secret"
     ],
-    "oauth2.Elixir.GitHub.redirect_uri": [
+    "oauth2.Elixir.Github.redirect_uri": [
       commented: false,
       datatype: :atom,
-      doc: "Provide documentation for oauth2.Elixir.GitHub.redirect_uri here.",
+      doc: "Provide documentation for oauth2.Elixir.Github.redirect_uri here.",
       hidden: false,
-      to: "oauth2.Elixir.GitHub.redirect_uri"
+      to: "oauth2.Elixir.Github.redirect_uri"
     ],
     "ja_resource.repo": [
       commented: false,

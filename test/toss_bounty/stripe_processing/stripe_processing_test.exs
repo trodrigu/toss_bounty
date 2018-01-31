@@ -7,7 +7,7 @@ defmodule TossBounty.StripeProcessingTest do
   alias TossBounty.StripeProcessing.Customer
   alias TossBounty.StripeProcessing.Charge
   alias TossBounty.StripeProcessing.Token
-  alias TossBounty.GitHub.GithubRepo
+  alias TossBounty.Github.GithubRepo
   alias TossBounty.Campaigns
   alias TossBounty.Incentive
   import TossBountyWeb.TestHelpers

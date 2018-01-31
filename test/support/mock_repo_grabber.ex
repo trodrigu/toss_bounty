@@ -1,12 +1,12 @@
-defmodule TossBounty.GitHub.SellableRepos.MockReposGrabber do
-  @behaviour TossBounty.GitHub.SellableRepos.Behaviour
+defmodule TossBounty.Github.SellableRepos.MockReposGrabber do
+  @behaviour TossBounty.Github.SellableRepos.Behaviour
 
   def start_link do
     Agent.start_link(fn -> [] end, name: __MODULE__)
   end
 
   def list_mine(_user) do
-    Agent.get(__MODULE__, &(&1))
+    Agent.get(__MODULE__, & &1)
   end
 
   def insert_repo(repo) do

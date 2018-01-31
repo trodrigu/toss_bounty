@@ -5,7 +5,7 @@ defmodule TossBountyWeb.CampaignControllerTest do
   alias TossBounty.Campaigns.Campaign
   alias TossBounty.Repo
   alias TossBounty.Accounts.User
-  alias TossBounty.GitHub.GithubRepo
+  alias TossBounty.Github.GithubRepo
 
   @create_attrs %{
     current_funding: 120.5,

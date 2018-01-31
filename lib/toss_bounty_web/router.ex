@@ -45,7 +45,7 @@ defmodule TossBountyWeb.Router do
 
     post("/token", TokenController, :create)
     post("/token/refresh", TokenController, :refresh)
-    get("/github_oauth_url", GitHubOauthUrlController, :show)
+    get("/github_oauth_url", GithubOauthUrlController, :show)
     get("/stripe_oauth_url", StripeOauthUrlController, :show)
   end
 

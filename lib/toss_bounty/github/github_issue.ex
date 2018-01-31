@@ -1,12 +1,12 @@
-defmodule TossBounty.GitHub.GithubIssue do
+defmodule TossBounty.Github.GithubIssue do
   use Ecto.Schema
   import Ecto.Changeset
-  alias TossBounty.GitHub.GithubRepo
+  alias TossBounty.Github.GithubRepo
 
   schema "github_issues" do
-    field :title, :string
-    field :body, :binary
-    belongs_to :github_repo, GithubRepo
+    field(:title, :string)
+    field(:body, :binary)
+    belongs_to(:github_repo, GithubRepo)
   end
 
   def changeset(model, params \\ %{}) do

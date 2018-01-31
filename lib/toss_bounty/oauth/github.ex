@@ -1,17 +1,17 @@
-defmodule GitHub do
+defmodule Github do
   @github_impl Application.fetch_env!(:toss_bounty, :github_strategy)
   @moduledoc """
-  An OAuth2 strategy for GitHub.
+  An OAuth2 strategy for Github.
   """
   use OAuth2.Strategy
 
   alias OAuth2.Strategy.AuthCode
 
   defmodule Behaviour do
-    @callback authorize_url!([params: List.t]) :: :ok
-    @callback get_token!([params: List.t, headers: List.t]) :: :ok
+    @callback authorize_url!(params: List.t()) :: :ok
+    @callback get_token!(params: List.t(), headers: List.t()) :: :ok
     @callback client() :: :ok
-    @callback get_user!(Map.t) :: :ok
+    @callback get_user!(Map.t()) :: :ok
   end
 
   # Public API
@@ -25,7 +25,10 @@ defmodule GitHub do
   end
 
   def get_token!(params \\ [], headers \\ []) do
-    @github_impl.get_token!(client(), Keyword.merge(params, client_secret: client().client_secret))
+    @github_impl.get_token!(
+      client(),
+      Keyword.merge(params, client_secret: client().client_secret)
+    )
   end
 
   # Strategy Callbacks

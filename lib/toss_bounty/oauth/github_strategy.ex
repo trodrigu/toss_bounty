@@ -6,7 +6,10 @@ defmodule TossBountyWeb.GithubStrategy do
   end
 
   def get_token!(client, params \\ []) do
-    OAuth2.Client.get_token!(client(), Keyword.merge(params, client_secret: client().client_secret))
+    OAuth2.Client.get_token!(
+      client(),
+      Keyword.merge(params, client_secret: client().client_secret)
+    )
   end
 
   def get_user!(client) do
@@ -15,15 +18,17 @@ defmodule TossBountyWeb.GithubStrategy do
   end
 
   def client do
-    Application.get_env(:oauth2, GitHub)
+    Application.get_env(:oauth2, Github)
     |> Keyword.merge(config())
     |> OAuth2.Client.new()
   end
 
   defp config do
-    [strategy: GitHub,
-     site: "https://api.github.com",
-     authorize_url: "https://github.com/login/oauth/authorize",
-     token_url: "https://github.com/login/oauth/access_token"]
+    [
+      strategy: Github,
+      site: "https://api.github.com",
+      authorize_url: "https://github.com/login/oauth/authorize",
+      token_url: "https://github.com/login/oauth/access_token"
+    ]
   end
 end

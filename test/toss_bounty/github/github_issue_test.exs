@@ -1,10 +1,9 @@
-defmodule TossBounty.GitHub.GithubIssueTest do
+defmodule TossBounty.Github.GithubIssueTest do
   use TossBountyWeb.DataCase, async: true
-  alias TossBounty.GitHub.GithubIssue
+  alias TossBounty.Github.GithubIssue
   alias TossBounty.Accounts.User
 
   describe "issue changeset" do
-
     @valid_attrs %{title: "some title", body: "some body"}
     @invalid_attrs %{github_repo_id: 9999}
 

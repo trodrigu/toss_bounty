@@ -1,12 +1,12 @@
-defmodule TossBounty.GitHub.SellableIssues.MockIssuesGrabber do
-  @behaviour TossBounty.GitHub.SellableIssues.Behaviour
+defmodule TossBounty.Github.SellableIssues.MockIssuesGrabber do
+  @behaviour TossBounty.Github.SellableIssues.Behaviour
 
   def start_link do
     Agent.start_link(fn -> [] end, name: __MODULE__)
   end
 
   def filter(_owner, _repo_name, _user) do
-    Agent.get(__MODULE__, &(&1))
+    Agent.get(__MODULE__, & &1)
   end
 
   def insert_issue(issue) do

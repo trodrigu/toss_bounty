@@ -1,6 +1,6 @@
 defmodule TossBountyWeb.SubscriptionControllerTest do
   use TossBountyWeb.ApiCase, resource_name: :subscription
-  alias TossBounty.GitHub.GithubRepo
+  alias TossBounty.Github.GithubRepo
   alias TossBounty.Campaigns
   alias TossBounty.Incentive
   alias TossBounty.StripeProcessing
