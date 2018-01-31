@@ -26,4 +26,20 @@ defmodule TossBounty.Github do
     GithubRepo
     |> Repo.all()
   end
+
+  @doc """
+  Gets a single github_repo.
+
+  Raises `Ecto.NoResultsError` if the GithubRepo does not exist.
+
+  ## Examples
+
+  iex> get_github_repo!(123)
+  %GithubRepo{}
+
+  iex> get_github_repo!(456)
+  ** (Ecto.NoResultsError)
+
+  """
+  def get_github_repo!(id), do: Repo.get!(GithubRepo, id)
 end

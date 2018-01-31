@@ -58,5 +58,12 @@ defmodule TossBounty.GithubTest do
 
       assert Github.list_github_repos(%{"user_id" => user.id}) == [github_repo]
     end
+
+    test "get_github_repo!/1 returns the github_repo with given id", %{
+      user: user,
+      github_repo: github_repo
+    } do
+      assert Github.get_github_repo!(github_repo.id) == github_repo
+    end
   end
 end
