@@ -3,6 +3,7 @@ defmodule TossBounty.StripeProcessing.Subscription do
   import Ecto.Changeset
   alias TossBounty.Accounts.User
   alias TossBounty.StripeProcessing.Subscription
+  alias TossBounty.StripeProcessing.Customer
   alias TossBounty.StripeProcessing.Plan
 
   schema "subscriptions" do

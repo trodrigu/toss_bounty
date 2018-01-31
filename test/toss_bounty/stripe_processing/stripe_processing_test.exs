@@ -51,6 +51,30 @@ defmodule TossBounty.StripeProcessingTest do
     test "create_subscription/1 with invalid data returns error changeset" do
       assert {:error, %Ecto.Changeset{}} = StripeProcessing.create_subscription(@invalid_attrs)
     end
+
+    setup [
+      :create_fixture_token,
+      :create_fixture_customer,
+      :create_fixture_github_repo,
+      :create_fixture_campaign,
+      :create_fixture_reward,
+      :create_fixture_plan,
+      :create_fixture_subscription
+    ]
+
+    test "get_subscription!/1 returns the subscription with given id", %{
+      subscription: subscription
+    } do
+      assert StripeProcessing.get_subscription!(subscription.id) == subscription
+    end
+
+    test "delete_subscription/1 deletes the subscription", %{subscription: subscription} do
+      assert {:ok, %Subscription{}} = StripeProcessing.delete_subscription(subscription)
+
+      assert_raise Ecto.NoResultsError, fn ->
+        StripeProcessing.get_subscription!(subscription.id)
+      end
+    end
   end
 
   describe "plans" do
@@ -215,6 +239,8 @@ defmodule TossBounty.StripeProcessingTest do
 
   def create_fixture_github_repo(attrs \\ %{}) do
     user = attrs[:user]
+    token = attrs[:token]
+    customer = attrs[:customer]
 
     github_repo_attrs = %{
       name: "a name",
@@ -229,12 +255,14 @@ defmodule TossBounty.StripeProcessingTest do
       |> GithubRepo.changeset(github_repo_attrs)
       |> Repo.insert()
 
-    {:ok, user: user, github_repo: github_repo}
+    {:ok, user: user, token: token, customer: customer, github_repo: github_repo}
   end
 
   def create_fixture_campaign(attrs \\ %{}) do
     user = attrs[:user]
     github_repo = attrs[:github_repo]
+    token = attrs[:token]
+    customer = attrs[:customer]
 
     campaign_attrs = %{
       short_description: "a short description",
@@ -249,13 +277,16 @@ defmodule TossBounty.StripeProcessingTest do
       campaign_attrs
       |> Campaigns.create_campaign()
 
-    {:ok, user: user, github_repo: github_repo, campaign: campaign}
+    {:ok,
+     user: user, token: token, customer: customer, github_repo: github_repo, campaign: campaign}
   end
 
   def create_fixture_reward(attrs \\ %{}) do
     user = attrs[:user]
     campaign = attrs[:campaign]
     github_repo = attrs[:github_repo]
+    token = attrs[:token]
+    customer = attrs[:customer]
 
     reward_attrs = %{
       description: "some reward 1",
@@ -265,7 +296,13 @@ defmodule TossBounty.StripeProcessingTest do
 
     {:ok, reward} = Incentive.create_reward(reward_attrs)
 
-    {:ok, user: user, github_repo: github_repo, campaign: campaign, reward: reward}
+    {:ok,
+     user: user,
+     token: token,
+     customer: customer,
+     github_repo: github_repo,
+     campaign: campaign,
+     reward: reward}
   end
 
   def create_fixture_plan(attrs \\ %{}) do
@@ -273,6 +310,8 @@ defmodule TossBounty.StripeProcessingTest do
     reward = attrs[:reward]
     campaign = attrs[:campaign]
     github_repo = attrs[:github_repo]
+    token = attrs[:token]
+    customer = attrs[:customer]
 
     plan_attrs = %{
       uuid: "some-plan-1",
@@ -285,6 +324,41 @@ defmodule TossBounty.StripeProcessingTest do
 
     {:ok, plan} = StripeProcessing.create_plan(plan_attrs)
 
-    {:ok, user: user, github_repo: github_repo, campaign: campaign, reward: reward, plan: plan}
+    {:ok,
+     user: user,
+     token: token,
+     customer: customer,
+     github_repo: github_repo,
+     campaign: campaign,
+     reward: reward,
+     plan: plan}
+  end
+
+  def create_fixture_subscription(attrs \\ %{}) do
+    user = attrs[:user]
+    reward = attrs[:reward]
+    campaign = attrs[:campaign]
+    github_repo = attrs[:github_repo]
+    plan = attrs[:plan]
+    token = attrs[:token]
+    customer = attrs[:customer]
+
+    subscription_attrs = %{
+      uuid: "some-subscription-1",
+      plan_id: plan.id,
+      customer_id: customer.id
+    }
+
+    {:ok, subscription} = StripeProcessing.create_subscription(subscription_attrs)
+
+    {:ok,
+     user: user,
+     token: token,
+     customer: customer,
+     github_repo: github_repo,
+     campaign: campaign,
+     reward: reward,
+     plan: plan,
+     subscription: subscription}
   end
 end

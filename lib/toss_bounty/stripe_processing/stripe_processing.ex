@@ -136,4 +136,36 @@ defmodule TossBounty.StripeProcessing do
     |> Subscription.changeset(attrs)
     |> Repo.insert()
   end
+
+  @doc """
+  Gets a single subscription.
+
+  Raises `Ecto.NoResultsError` if the Subscription does not exist.
+
+  ## Examples
+
+  iex> get_subscription!(123)
+  %Subscription{}
+
+  iex> get_subscription!(456)
+  ** (Ecto.NoResultsError)
+
+  """
+  def get_subscription!(id), do: Repo.get!(Subscription, id)
+
+  @doc """
+  Deletes a Subscription.
+
+  ## Examples
+
+  iex> delete_subscription(subcription)
+  {:ok, %Subscription{}}
+
+  iex> delete_subscription(subcription)
+  {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_subscription(%Subscription{} = subcription) do
+    Repo.delete(subcription)
+  end
 end
