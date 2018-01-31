@@ -13,4 +13,9 @@ defmodule TossBountyWeb.GithubRepoController do
     github_repos = TossBounty.Github.list_github_repos()
     render(conn, "index.json-api", data: github_repos)
   end
+
+  def show(conn, %{"id" => id}) do
+    github_repo = TossBounty.Github.get_github_repo!(id)
+    render(conn, "show.json-api", data: github_repo)
+  end
 end
