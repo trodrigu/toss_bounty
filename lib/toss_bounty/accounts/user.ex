@@ -3,15 +3,31 @@ defmodule TossBounty.Accounts.User do
   import Ecto.Changeset
   alias TossBounty.Accounts.User
 
+  @doc """
+  Schema for users which includes a type reflecting the following.
+
+  ## Examples
+
+      iex> user.type
+      0 # :contributor
+
+      iex> user.type
+      1 # :maintainer
+
+      iex> user.type
+      2 # :both
+
+  """
   schema "users" do
-    field :name, :string
-    field :email, :string
-    field :password, :string, virtual: true
-    field :password_hash, :string
-    field :github_token, :string
-    field :stripe_access_token, :string
-    field :stripe_external_id, :string
-    timestamps()
+    field(:name, :string)
+    field(:email, :string)
+    field(:password, :string, virtual: true)
+    field(:password_hash, :string)
+    field(:github_token, :string)
+    field(:stripe_access_token, :string)
+    field(:stripe_external_id, :string)
+    field(:type, :integer)
+    timestamps
   end
 
   def github_registration_changeset(%User{} = user, params \\ %{}) do
@@ -23,7 +39,7 @@ defmodule TossBounty.Accounts.User do
 
   def changeset(%User{} = user, params \\ %{}) do
     user
-    |> cast(params, [:email, :stripe_external_id, :stripe_access_token])
+    |> cast(params, [:email, :stripe_external_id, :stripe_access_token, :type])
     |> validate_required([:email])
     |> unique_constraint(:email)
   end
@@ -39,11 +55,11 @@ defmodule TossBounty.Accounts.User do
     |> put_pass_hash()
   end
 
-
   def put_pass_hash(changeset) do
     case changeset do
       %Ecto.Changeset{valid?: true, changes: %{password: pass}} ->
         put_change(changeset, :password_hash, Comeonin.Bcrypt.hashpwsalt(pass))
+
       _ ->
         changeset
     end

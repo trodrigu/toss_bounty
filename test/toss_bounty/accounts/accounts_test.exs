@@ -5,17 +5,20 @@ defmodule TossBounty.AccountsTest do
   alias TossBounty.Accounts.User
 
   setup do
-    user = with {:ok, user} <- Repo.insert!(%User{email: "test@test.com"}), do: user
+    user = Repo.insert!(%User{email: "test@test.com"})
     {:ok, user: user}
   end
+
   @update_attrs %{
     stripe_external_id: "an-external-id",
-    stripe_access_token: "an-access-token"
+    stripe_access_token: "an-access-token",
+    type: 0
   }
   test "update_user/2 with valid data updates the user", %{user: user} do
     assert {:ok, user} = Accounts.update_user(user, @update_attrs)
     assert %User{} = user
     assert user.stripe_external_id == "an-external-id"
     assert user.stripe_access_token == "an-access-token"
+    assert user.type == 0
   end
 end
