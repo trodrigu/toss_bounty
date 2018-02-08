@@ -51,6 +51,7 @@ config :toss_bounty, github_strategy: TossBountyWeb.GithubStrategy
 config :toss_bounty, customer_creator: TossBounty.StripeProcessing.StripeCustomerCreator
 config :toss_bounty, plan_creator: TossBounty.StripeProcessing.StripePlanCreator
 config :toss_bounty, plan_deleter: TossBounty.StripeProcessing.StripePlanDeleter
+config :toss_bounty, plan_updater: TossBounty.StripeProcessing.StripePlanUpdater
 config :toss_bounty, subscription_creator: TossBounty.StripeProcessing.StripeSubscriptionCreator
 config :toss_bounty, subscription_deleter: TossBounty.StripeProcessing.StripeSubscriptionDeleter
 

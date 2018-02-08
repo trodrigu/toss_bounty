@@ -6,6 +6,7 @@ defmodule TossBountyWeb.PlanController do
 
   @plan_creator Application.fetch_env!(:toss_bounty, :plan_creator)
   @plan_deleter Application.fetch_env!(:toss_bounty, :plan_deleter)
+  @plan_updater Application.fetch_env!(:toss_bounty, :plan_updater)
 
   defmodule Behaviour do
     @callback create(Map.t()) :: :ok
@@ -46,7 +47,11 @@ defmodule TossBountyWeb.PlanController do
       }) do
     plan = StripeProcessing.get_plan!(id)
 
-    attrs = Params.to_attributes(data)
+    attrs =
+      data
+      |> Params.to_attributes()
+      |> update_plan_in_stripe(conn)
+
     current_user = conn.assigns[:current_user]
 
     case TossBounty.Policy.authorize(current_user, :administer, plan, attrs) do
@@ -64,6 +69,13 @@ defmodule TossBountyWeb.PlanController do
         |> put_status(403)
         |> render("403.json-api", %{message: message})
     end
+  end
+
+  defp update_plan_in_stripe(attrs, conn) do
+    {:ok, stripe_plan} = @plan_updater.update(conn, attrs)
+
+    attrs
+    |> Enum.into(%{"uuid" => stripe_plan.id})
   end
 
   def delete(conn, %{"id" => id}) do

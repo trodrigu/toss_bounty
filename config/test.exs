@@ -29,6 +29,7 @@ config :toss_bounty, github_strategy: TossBountyWeb.MockGithubStrategy
 config :toss_bounty, customer_creator: TossBounty.StripeProcessing.MockStripeCustomerCreator
 config :toss_bounty, plan_creator: TossBounty.StripeProcessing.MockStripePlanCreator
 config :toss_bounty, plan_deleter: TossBounty.StripeProcessing.MockStripePlanDeleter
+config :toss_bounty, plan_updater: TossBounty.StripeProcessing.MockStripePlanUpdater
 
 config :toss_bounty,
   subscription_creator: TossBounty.StripeProcessing.MockStripeSubscriptionCreator
