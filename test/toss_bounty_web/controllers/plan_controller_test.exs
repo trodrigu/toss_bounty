@@ -25,6 +25,12 @@ defmodule TossBountyWeb.PlanControllerTest do
     name: "a name",
     currency: "usd"
   }
+  @update_attrs %{
+    amount: 1100.00,
+    interval: "month",
+    name: "another name",
+    currency: "usd"
+  }
   @invalid_attrs %{
     amount: nil,
     interval: nil,
@@ -75,81 +81,85 @@ defmodule TossBountyWeb.PlanControllerTest do
     {:ok, user: user, token: token, customer: customer}
   end
 
-  def create_fixture_github_repo(attrs \\ %{}) do
-    user = attrs[:user]
+  def create_fixture_github_repo(relationships \\ %{}, github_repo_attrs \\ %{}) do
+    user = relationships[:user]
 
-    github_repo_attrs = %{
-      name: "a name",
-      owner: "an owner",
-      bountiful_score: 5,
-      image: "an-img-path",
-      user_id: user.id
-    }
+    updated_github_repo_attrs =
+      github_repo_attrs
+      |> Enum.into(%{
+        name: "a name",
+        owner: "an owner",
+        bountiful_score: 5,
+        image: "an-img-path",
+        user_id: user.id
+      })
 
     {:ok, github_repo} =
       %GithubRepo{}
-      |> GithubRepo.changeset(github_repo_attrs)
+      |> GithubRepo.changeset(updated_github_repo_attrs)
       |> Repo.insert()
 
     {:ok, user: user, github_repo: github_repo}
   end
 
-  def create_fixture_campaign(attrs \\ %{}) do
-    user = attrs[:user]
-    github_repo = attrs[:github_repo]
+  def create_fixture_campaign(relationships \\ %{}, campaign_attrs \\ %{}) do
+    user = relationships[:user]
+    github_repo = relationships[:github_repo]
 
-    campaign_attrs = %{
-      short_description: "a short description",
-      long_description: "a longer description",
-      funding_goal: 20000.00,
-      funding_end_date: Timex.parse!("Tue, 06 Mar 2013 01:25:19 +0200", "{RFC1123}"),
-      user_id: user.id,
-      github_repo_id: github_repo.id
-    }
+    updated_campaign_attrs =
+      campaign_attrs
+      |> Enum.into(%{
+        short_description: "a short description",
+        long_description: "a longer description",
+        funding_goal: 20000.00,
+        funding_end_date: Timex.parse!("Tue, 06 Mar 2013 01:25:19 +0200", "{RFC1123}"),
+        user_id: user.id,
+        github_repo_id: github_repo.id
+      })
 
     {:ok, campaign} =
-      campaign_attrs
+      updated_campaign_attrs
       |> Campaigns.create_campaign()
 
     {:ok, user: user, github_repo: github_repo, campaign: campaign}
   end
 
-  def create_fixture_reward(attrs \\ %{}) do
-    user = attrs[:user]
+  def create_fixture_reward(relationships \\ %{}, reward_attrs \\ %{}) do
+    user = relationships[:user]
+    campaign = relationships[:campaign]
+    github_repo = relationships[:github_repo]
 
-    campaign = attrs[:campaign]
+    updated_reward_attrs =
+      reward_attrs
+      |> Enum.into(%{
+        description: "some reward 1",
+        donation_level: 20.00,
+        campaign_id: campaign.id
+      })
 
-    github_repo = attrs[:github_repo]
-
-    reward_attrs = %{
-      description: "some reward 1",
-      donation_level: 20.00,
-      campaign_id: campaign.id
-    }
-
-    {:ok, reward} = Incentive.create_reward(reward_attrs)
+    {:ok, reward} = Incentive.create_reward(updated_reward_attrs)
 
     {:ok, user: user, github_repo: github_repo, campaign: campaign, reward: reward}
   end
 
-  def create_fixture_plan(attrs \\ %{}) do
-    user = attrs[:user]
+  def create_fixture_plan(relationships \\ %{}, plan_attrs \\ %{}) do
+    user = relationships[:user]
+    reward = relationships[:reward]
+    campaign = relationships[:campaign]
+    github_repo = relationships[:github_repo]
 
-    reward = attrs[:reward]
+    updated_plan_attrs =
+      plan_attrs
+      |> Enum.into(%{
+        uuid: "some-plan-1",
+        amount: 2000,
+        interval: "month",
+        name: "the gold plan",
+        currency: "usd",
+        reward_id: reward.id
+      })
 
-    campaign = attrs[:campaign]
-    github_repo = attrs[:github_repo]
-
-    plan_attrs = %{
-      uuid: "some-plan-1",
-      amount: 2000,
-      interval: "month",
-      name: "the gold plan",
-      currency: "usd",
-      reward_id: reward.id
-    }
-
-    {:ok, plan} = StripeProcessing.create_plan(plan_attrs)
+    {:ok, plan} = StripeProcessing.create_plan(updated_plan_attrs)
 
     {:ok, user: user, github_repo: github_repo, campaign: campaign, reward: reward, plan: plan}
   end
@@ -188,6 +198,80 @@ defmodule TossBountyWeb.PlanControllerTest do
         })
 
       assert json_response(conn, 422)["errors"] != %{}
+    end
+  end
+
+  describe "update plan" do
+    setup [
+      :create_fixture_github_repo,
+      :create_fixture_campaign,
+      :create_fixture_reward,
+      :create_fixture_plan
+    ]
+
+    @tag :authenticated
+    test "renders plan when data is valid", %{conn: conn, plan: plan} do
+      conn =
+        put(conn, plan_path(conn, :update, plan), %{
+          "meta" => %{},
+          "data" => %{
+            "type" => "plan",
+            "attributes" => dasherize_keys(@update_attrs)
+          }
+        })
+
+      data = json_response(conn, 200)["data"]
+      assert data["id"] == "#{plan.id}"
+      assert data["type"] == "plan"
+      assert data["attributes"]["interval"] == "month"
+      assert data["attributes"]["name"] == "another name"
+      assert data["attributes"]["currency"] == "usd"
+    end
+
+    @tag :authenticated
+    test "renders errors when data is invalid", %{conn: conn, plan: plan} do
+      conn =
+        put(conn, plan_path(conn, :update, plan), %{
+          "meta" => %{},
+          "data" => %{
+            "type" => "plan",
+            "attributes" => dasherize_keys(@invalid_attrs)
+          }
+        })
+
+      assert json_response(conn, 422)["errors"] != %{}
+    end
+
+    @tag :authenticated
+    test "renders errors when not authorized", %{conn: conn, plan: plan} do
+      another_user = insert_user(email: "test2@test.com")
+
+      {:ok, user: _user, github_repo: github_repo} =
+        create_fixture_github_repo(%{user: another_user})
+
+      {:ok, user: _user, github_repo: _github_repo, campaign: campaign} =
+        create_fixture_campaign(%{github_repo: github_repo, user: another_user})
+
+      {:ok, user: _user, github_repo: _github_repo, campaign: _campaign, reward: reward} =
+        create_fixture_reward(%{campaign: campaign})
+
+      {:ok,
+       user: _user,
+       github_repo: _github_repo,
+       campaign: _campaign,
+       reward: _reward,
+       plan: another_plan_from_different_user} = create_fixture_plan(%{reward: reward})
+
+      conn =
+        put(conn, plan_path(conn, :update, another_plan_from_different_user), %{
+          "meta" => %{},
+          "data" => %{
+            "type" => "plan",
+            "attributes" => dasherize_keys(@update_attrs)
+          }
+        })
+
+      assert json_response(conn, 403)["errors"] != %{}
     end
   end
 

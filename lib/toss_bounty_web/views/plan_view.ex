@@ -2,7 +2,7 @@ defmodule TossBountyWeb.PlanView do
   use TossBountyWeb.Web, :view
   use JaSerializer.PhoenixView
 
-  attributes([:uuid])
+  attributes([:uuid, :amount, :interval, :name, :currency])
 
   has_one(
     :reward,
