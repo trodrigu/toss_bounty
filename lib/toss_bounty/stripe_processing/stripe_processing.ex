@@ -119,6 +119,24 @@ defmodule TossBounty.StripeProcessing do
   end
 
   @doc """
+  Updates a plan.
+
+  ## Examples
+
+  iex> update_plan(plan, %{field: new_value})
+  {:ok, Plan{}}
+
+  iex> update_plan(plan, %{field: bad_value})
+  {:error, %Ecto.Changeset{}}
+
+  """
+  def update_plan(%Plan{} = plan, attrs) do
+    plan
+    |> Plan.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
   Creates a subscription record which stores a subscription uuid
   resulting from associating a customer with a plan.
 

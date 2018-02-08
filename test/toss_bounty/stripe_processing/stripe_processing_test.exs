@@ -85,6 +85,13 @@ defmodule TossBounty.StripeProcessingTest do
       name: "the gold plan",
       currency: "usd"
     }
+    @update_attrs %{
+      uuid: "plan_CDYHNRRzrjnVTO",
+      amount: 1100.00,
+      interval: "month",
+      name: "another name",
+      currency: "usd"
+    }
     @invalid_attrs %{
       uuid: nil
     }
@@ -106,6 +113,29 @@ defmodule TossBounty.StripeProcessingTest do
 
     test "create_plan/1 with invalid data returns error changeset" do
       assert {:error, %Ecto.Changeset{}} = StripeProcessing.create_plan(@invalid_attrs)
+    end
+
+    setup [
+      :create_fixture_token,
+      :create_fixture_customer,
+      :create_fixture_github_repo,
+      :create_fixture_campaign,
+      :create_fixture_reward,
+      :create_fixture_plan
+    ]
+
+    test "update_plan/2 with valid data updates the plan", %{plan: plan} do
+      assert {:ok, plan} = StripeProcessing.update_plan(plan, @update_attrs)
+      assert %Plan{} = plan
+      assert plan.uuid == "plan_CDYHNRRzrjnVTO"
+      assert plan.interval == "month"
+      assert plan.name == "another name"
+      assert plan.currency == "usd"
+    end
+
+    test "update_plan/2 with invalid data returns error changeset", %{plan: plan} do
+      assert {:error, %Ecto.Changeset{}} = StripeProcessing.update_plan(plan, @invalid_attrs)
+      assert plan == StripeProcessing.get_plan!(plan.id)
     end
 
     setup [
