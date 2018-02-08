@@ -20,6 +20,7 @@ defmodule TossBounty.StripeProcessing.Plan do
   def changeset(%Plan{} = plan, attrs) do
     plan
     |> cast(attrs, [:uuid, :amount, :interval, :name, :currency, :reward_id])
-    |> validate_required([:uuid, :amount, :interval, :name, :currency, :reward_id])
+    |> validate_required([:uuid, :amount, :interval, :name, :currency])
+    |> assoc_constraint(:reward)
   end
 end
