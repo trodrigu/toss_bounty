@@ -5,10 +5,11 @@ defmodule TossBountyWeb.RewardController do
   alias TossBounty.Incentive.Reward
   alias JaSerializer.Params
 
-  action_fallback TossBountyWeb.FallbackController
+  action_fallback(TossBountyWeb.FallbackController)
 
   def index(conn, %{"campaign_id" => campaign_id}) do
     rewards = Incentive.list_rewards(%{"campaign_id" => campaign_id})
+
     render(conn, "index.json-api", rewards: rewards)
   end
 
@@ -19,25 +20,37 @@ defmodule TossBountyWeb.RewardController do
 
   def create(conn, %{"data" => data = %{"type" => "reward", "attributes" => reward_params}}) do
     attrs = Params.to_attributes(data)
+
     with {:ok, %Reward{} = reward} <- Incentive.create_reward(attrs) do
+      preloaded_reward =
+        reward
+        |> Repo.preload(:plan)
+
       conn
       |> put_status(:created)
-      |> put_resp_header("location", reward_path(conn, :show, reward))
-      |> render("show.json-api", reward: reward)
+      |> put_resp_header("location", reward_path(conn, :show, preloaded_reward))
+      |> render("show.json-api", reward: preloaded_reward)
     end
   end
 
   def show(conn, %{"id" => id}) do
-    reward = Incentive.get_reward!(id)
+    reward =
+      id
+      |> Incentive.get_reward!()
+      |> Repo.preload(:plan)
+      |> IO.inspect()
+
     render(conn, "show.json-api", reward: reward)
   end
 
-  def update(conn, %{"id" => id, "data" => data = %{"type" => "reward", "attributes" => reward_params}}) do
+  def update(conn, %{
+        "id" => id,
+        "data" => data = %{"type" => "reward", "attributes" => reward_params}
+      }) do
     reward = Incentive.get_reward!(id)
     attrs = Params.to_attributes(data)
 
-    current_user =
-      conn.assigns[:current_user]
+    current_user = conn.assigns[:current_user]
 
     case TossBounty.Policy.authorize(current_user, :administer, reward, attrs) do
       {:ok, :authorized} ->
@@ -48,7 +61,7 @@ defmodule TossBountyWeb.RewardController do
       {:error, :not_authorized} ->
         message =
           "User with id: #{current_user.id} is not authorized " <>
-          "to administer reward with id: #{reward.id}"
+            "to administer reward with id: #{reward.id}"
 
         conn
         |> put_status(403)
@@ -59,8 +72,7 @@ defmodule TossBountyWeb.RewardController do
   def delete(conn, %{"id" => id}) do
     reward = Incentive.get_reward!(id)
 
-    current_user =
-      conn.assigns[:current_user]
+    current_user = conn.assigns[:current_user]
 
     case TossBounty.Policy.authorize(current_user, :administer, reward) do
       {:ok, :authorized} ->
@@ -71,7 +83,7 @@ defmodule TossBountyWeb.RewardController do
       {:error, :not_authorized} ->
         message =
           "User with id: #{current_user.id} is not authorized " <>
-          "to administer reward with id: #{reward.id}"
+            "to administer reward with id: #{reward.id}"
 
         conn
         |> put_status(403)

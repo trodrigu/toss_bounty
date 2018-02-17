@@ -17,10 +17,11 @@ defmodule TossBounty.Incentive do
       [%Reward{}, ...]
 
   """
-  def list_rewards(%{ "campaign_id" => campaign_id }) do
+  def list_rewards(%{"campaign_id" => campaign_id}) do
     Reward
     |> Ecto.Query.where(campaign_id: ^campaign_id)
-    |> Repo.all
+    |> Repo.all()
+    |> Repo.preload(:plan)
   end
 
   def list_rewards do

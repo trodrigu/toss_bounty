@@ -3,11 +3,11 @@ defmodule TossBounty.Incentive.Reward do
   import Ecto.Changeset
   alias TossBounty.Incentive.Reward
 
-
   schema "rewards" do
-    field :description, :string
-    field :donation_level, :float
-    belongs_to :campaign, TossBounty.Campaigns.Campaign
+    field(:description, :string)
+    field(:donation_level, :float)
+    belongs_to(:campaign, TossBounty.Campaigns.Campaign)
+    has_one(:plan, TossBounty.StripeProcessing.Plan)
 
     timestamps()
   end

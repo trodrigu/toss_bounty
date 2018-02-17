@@ -4,6 +4,7 @@ defmodule TossBountyWeb.CustomerController do
   alias TossBounty.Accounts.CurrentUser
   alias TossBounty.StripeProcessing
   alias TossBounty.StripeProcessing.Customer
+  alias TossBounty.StripeProcessing.Token
   action_fallback(TossBountyWeb.FallbackController)
   @customer_creator Application.fetch_env!(:toss_bounty, :customer_creator)
 
@@ -31,8 +32,13 @@ defmodule TossBountyWeb.CustomerController do
   end
 
   defp create_customer_in_stripe(attrs) do
-    source = attrs[:uuid]
-    {:ok, stripe_customer} = @customer_creator.create(%{source: source})
+    IO.puts("#####################")
+    IO.inspect(attrs)
+    IO.puts("#####################")
+    token_id = attrs["token_id"]
+    token = Repo.get_by(Token, id: token_id)
+    uuid = token.uuid
+    {:ok, stripe_customer} = @customer_creator.create(%{source: uuid})
 
     attrs
     |> Enum.into(%{"uuid" => stripe_customer.id})

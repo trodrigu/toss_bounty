@@ -15,6 +15,14 @@ defmodule TossBountyWeb.PlanController do
 
   action_fallback(TossBountyWeb.FallbackController)
 
+  def show(conn, %{"id" => id}) do
+    plan =
+      id
+      |> StripeProcessing.get_plan!()
+
+    render(conn, "show.json-api", plan: plan)
+  end
+
   def create(conn, %{"data" => data = %{"type" => "plan", "relationships" => _relationships}}) do
     attrs =
       data

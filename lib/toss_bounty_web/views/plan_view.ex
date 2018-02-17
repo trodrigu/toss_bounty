@@ -4,12 +4,6 @@ defmodule TossBountyWeb.PlanView do
 
   attributes([:uuid, :amount, :interval, :name, :currency])
 
-  has_one(
-    :reward,
-    field: :reward_id,
-    type: "reward"
-  )
-
   def render("404.json-api", %{message: message}) do
     %{
       errors: [

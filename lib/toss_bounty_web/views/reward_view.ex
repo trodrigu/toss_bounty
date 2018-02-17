@@ -1,7 +1,14 @@
 defmodule TossBountyWeb.RewardView do
   use TossBountyWeb.Web, :view
   use JaSerializer.PhoenixView
-  attributes [:description, :donation_level]
+  attributes([:description, :donation_level])
+
+  has_one(
+    :plan,
+    include: true,
+    serializer: TossBountyWeb.PlanView,
+    type: "plan"
+  )
 
   # def render("index.json-api", %{rewards: rewards}) do
   #   %{data: render_many(rewards, RewardView, "reward.json")}
@@ -23,7 +30,7 @@ defmodule TossBountyWeb.RewardView do
           id: "FORBIDDEN",
           title: "403 Forbidden",
           detail: message,
-          status: 403,
+          status: 403
         }
       ]
     }
