@@ -38,7 +38,6 @@ defmodule TossBountyWeb.RewardController do
       id
       |> Incentive.get_reward!()
       |> Repo.preload(:plan)
-      |> IO.inspect()
 
     render(conn, "show.json-api", reward: reward)
   end
@@ -47,7 +46,10 @@ defmodule TossBountyWeb.RewardController do
         "id" => id,
         "data" => data = %{"type" => "reward", "attributes" => reward_params}
       }) do
-    reward = Incentive.get_reward!(id)
+    reward =
+      Incentive.get_reward!(id)
+      |> Repo.preload(:plan)
+
     attrs = Params.to_attributes(data)
 
     current_user = conn.assigns[:current_user]
