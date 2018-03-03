@@ -15,7 +15,7 @@ defmodule TossBounty.StripeProcessing.Token do
   def changeset(%Token{} = token, attrs) do
     token
     |> cast(attrs, [:user_id, :uuid])
-    |> validate_required([:user_id, :uuid])
+    |> validate_required([:uuid])
     |> assoc_constraint(:user)
   end
 end
