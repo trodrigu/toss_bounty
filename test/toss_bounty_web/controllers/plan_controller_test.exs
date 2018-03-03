@@ -3,8 +3,14 @@ defmodule TossBountyWeb.PlanControllerTest do
   alias TossBounty.Github.GithubRepo
   alias TossBounty.Campaigns
   alias TossBounty.Incentive
+  alias TossBounty.Incentive.Reward
   alias TossBounty.StripeProcessing
+  alias TossBounty.StripeProcessing.Plan
+  alias TossBounty.StripeProcessing.Token
+  alias TossBounty.StripeProcessing.Customer
+  alias TossBounty.StripeProcessing.Subscription
   alias TossBounty.Accounts.User
+  alias TossBounty.Campaigns.Campaign
 
   setup config = %{conn: conn, current_user: current_user} do
     user =
@@ -55,7 +61,7 @@ defmodule TossBountyWeb.PlanControllerTest do
   end
 
   def create_fixture_token(attrs \\ %{}) do
-    user = attrs[:user]
+    user = attrs[:current_user]
 
     token_attrs = %{
       uuid: "some-token-1",
@@ -162,6 +168,178 @@ defmodule TossBountyWeb.PlanControllerTest do
     {:ok, plan} = StripeProcessing.create_plan(updated_plan_attrs)
 
     {:ok, user: user, github_repo: github_repo, campaign: campaign, reward: reward, plan: plan}
+  end
+
+  def create_fixture_subscription(attrs \\ %{}) do
+    user = attrs[:user]
+    reward = attrs[:reward]
+    campaign = attrs[:campaign]
+    github_repo = attrs[:github_repo]
+    plan = attrs[:plan]
+    token = attrs[:token]
+    customer = attrs[:customer]
+
+    subscription_attrs = %{
+      uuid: "some-subscription-1",
+      plan_id: plan.id,
+      customer_id: customer.id
+    }
+
+    {:ok, subscription} = StripeProcessing.create_subscription(subscription_attrs)
+
+    {:ok,
+     user: user,
+     token: token,
+     customer: customer,
+     github_repo: github_repo,
+     campaign: campaign,
+     reward: reward,
+     plan: plan,
+     subscription: subscription}
+  end
+
+  describe "index plan" do
+    setup [
+      :create_fixture_github_repo,
+      :create_fixture_campaign,
+      :create_fixture_reward,
+      :create_fixture_plan
+    ]
+
+    @tag :authenticated
+    test "renders index of plans", %{conn: conn} do
+      conn = get(conn, github_issue_path(conn, :index))
+      assert conn |> json_response(200)
+    end
+
+    @tag :authenticated
+    test "renders index of plans filtered by user id" do
+      other_repo = Repo.insert!(%GithubRepo{name: "foobar"})
+
+      other_campaign =
+        Repo.insert!(%Campaign{
+          current_funding: 100.0,
+          funding_end_date: Timex.parse!("Tue, 06 Mar 2013 01:25:19 +0200", "{RFC1123}"),
+          funding_goal: 100.0,
+          github_repo_id: other_repo.id
+        })
+
+      other_reward =
+        Repo.insert!(%Reward{
+          description: "description",
+          donation_level: 100.0,
+          campaign_id: other_campaign.id
+        })
+
+      other_plan =
+        Repo.insert!(%Plan{
+          uuid: "12jfklsdf",
+          amount: 100.0,
+          interval: "month",
+          name: "some name",
+          currency: "usd",
+          reward_id: other_reward.id
+        })
+
+      user = Repo.one(from(u in User, limit: 1))
+      {:ok, jwt, _} = Guardian.encode_and_sign(user)
+
+      conn =
+        conn()
+        |> put_req_header("authorization", "Bearer #{jwt}")
+        |> get(plan_path(conn, :index), %{user_id: user.id})
+
+      response = json_response(conn, 200)
+
+      plan_from_response =
+        response["data"]
+        |> Enum.at(0)
+
+      plans_title = plan_from_response["attributes"]["uuid"]
+      assert plans_title != "12jfklsdf"
+      assert plans_title == "some-plan-1"
+    end
+
+    setup [
+      :create_fixture_token,
+      :create_fixture_customer,
+      :create_fixture_subscription
+    ]
+
+    @tag :authenticated
+    test "renders index of plans filtered by subscription id", %{subscription: subscription} do
+      other_user = insert_user(email: "another_email@test.com")
+
+      other_repo = Repo.insert!(%GithubRepo{name: "foobar"})
+
+      other_campaign =
+        Repo.insert!(%Campaign{
+          current_funding: 100.0,
+          funding_end_date: Timex.parse!("Tue, 06 Mar 2013 01:25:19 +0200", "{RFC1123}"),
+          funding_goal: 100.0,
+          github_repo_id: other_repo.id
+        })
+
+      other_reward =
+        Repo.insert!(%Reward{
+          description: "description",
+          donation_level: 100.0,
+          campaign_id: other_campaign.id
+        })
+
+      other_plan =
+        Repo.insert!(%Plan{
+          uuid: "12jfklsdf",
+          amount: 100.0,
+          interval: "month",
+          name: "some name",
+          currency: "usd",
+          reward_id: other_reward.id
+        })
+
+      other_token =
+        Repo.insert!(%Token{
+          uuid: "jkl342sdf",
+          user_id: other_user.id
+        })
+
+      other_customer =
+        Repo.insert!(%Customer{
+          uuid: "23sdfommsd",
+          token_id: other_token.id
+        })
+
+      other_subcription =
+        Repo.insert!(%Subscription{
+          uuid: "234sdfasd",
+          customer_id: other_customer.id,
+          plan_id: other_plan.id
+        })
+
+      user = Repo.one(from(u in User, limit: 1))
+      {:ok, jwt, _} = Guardian.encode_and_sign(user)
+
+      conn =
+        conn()
+        |> put_req_header("authorization", "Bearer #{jwt}")
+        |> get(plan_path(conn, :index), %{subscriber_id: user.id})
+
+      response = json_response(conn, 200)
+
+      plans_from_response = response["data"]
+
+      plans_count =
+        plans_from_response
+        |> Enum.count()
+
+      assert plans_count == 1
+
+      plan_response =
+        plans_from_response
+        |> Enum.at(0)
+
+      assert plan_response["attributes"]["uuid"] != "12jfklsdf"
+    end
   end
 
   describe "create plan" do
