@@ -2,9 +2,11 @@ defmodule TossBountyWeb.SubscriptionControllerTest do
   use TossBountyWeb.ApiCase, resource_name: :subscription
   alias TossBounty.Github.GithubRepo
   alias TossBounty.Campaigns
+  alias TossBounty.Campaigns.Campaign
   alias TossBounty.Incentive
   alias TossBounty.StripeProcessing
   alias TossBounty.Accounts.User
+  alias TossBounty.StripeProcessing.Subscription
 
   setup config = %{conn: conn, current_user: current_user} do
     user =
@@ -193,6 +195,42 @@ defmodule TossBountyWeb.SubscriptionControllerTest do
      subscription: subscription}
   end
 
+  describe "index" do
+    setup [
+      :create_fixture_token,
+      :create_fixture_customer,
+      :create_fixture_github_repo,
+      :create_fixture_campaign,
+      :create_fixture_reward,
+      :create_fixture_plan,
+      :create_fixture_subscription
+    ]
+
+    @tag :authenticated
+    test "lists all subscriptions", %{conn: conn, subscription: subscription} do
+      conn = get(conn, subscription_path(conn, :index))
+      assert Enum.count(json_response(conn, 200)["data"]) == 1
+    end
+
+    @tag :authenticated
+    test "lists subscriptions filtered by user id", %{
+      conn: conn,
+      user: user,
+      subscription: subscription
+    } do
+      other_subscription = Repo.insert!(%TossBounty.StripeProcessing.Subscription{})
+      conn = get(conn, subscription_path(conn, :index, %{user_id: user.id}))
+      data = json_response(conn, 200)["data"]
+      assert Enum.count(data) == 1
+    end
+
+    test "renders 401 when not authenticated", %{conn: conn} do
+      conn
+      |> request_index
+      |> json_response(401)
+    end
+  end
+
   describe "create subscription" do
     setup [
       :create_fixture_token,
@@ -215,6 +253,28 @@ defmodule TossBountyWeb.SubscriptionControllerTest do
         })
 
       assert %{"id" => id} = json_response(conn, 201)["data"]
+    end
+
+    @tag :authenticated
+    test "updates the campaign current funding attr", %{
+      conn: conn,
+      campaign: campaign,
+      customer: customer,
+      plan: plan
+    } do
+      conn =
+        post(conn, subscription_path(conn, :create), %{
+          "meta" => %{},
+          "data" => %{
+            "type" => "subscription",
+            "relationships" => relationships(customer, plan)
+          }
+        })
+
+      data = json_response(conn, 201)["data"]
+
+      updatedCampaign = Repo.get_by(Campaign, id: campaign.id)
+      assert updatedCampaign.current_funding == 20.00
     end
 
     @tag :authenticated

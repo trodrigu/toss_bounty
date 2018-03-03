@@ -130,6 +130,34 @@ defmodule TossBounty.StripeProcessing do
     Repo.all(Plan)
   end
 
+  @doc """
+  Returns the list of subscriptions.
+
+  ## Examples
+
+  iex> list_subscriptions()
+  [%Subscription{}, ...]
+
+  """
+
+  def list_subscriptions do
+    Repo.all(Subscription)
+  end
+
+  def list_subscriptions(%{"user_id" => user_id}) do
+    query =
+      from(
+        s in Subscription,
+        join: c in assoc(s, :customer),
+        join: t in assoc(c, :token),
+        where: t.user_id == ^user_id
+      )
+
+    query
+    |> Repo.all()
+  end
+
+  @doc """
   Deletes a Plan.
 
   ## Examples

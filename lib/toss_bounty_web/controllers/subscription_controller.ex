@@ -1,6 +1,7 @@
 defmodule TossBountyWeb.SubscriptionController do
   use TossBountyWeb.Web, :controller
   alias TossBounty.StripeProcessing.Subscription
+  alias TossBounty.Campaigns
   alias TossBounty.StripeProcessing
   alias JaSerializer.Params
 
@@ -14,6 +15,16 @@ defmodule TossBountyWeb.SubscriptionController do
 
   action_fallback(TossBountyWeb.FallbackController)
 
+  def index(conn, %{"user_id" => user_id}) do
+    subscriptions = StripeProcessing.list_subscriptions(%{"user_id" => user_id})
+    render(conn, "index.json-api", data: subscriptions)
+  end
+
+  def index(conn, _params) do
+    subscriptions = StripeProcessing.list_subscriptions()
+    render(conn, "index.json-api", data: subscriptions)
+  end
+
   def create(conn, %{
         "data" => data = %{"type" => "subscription", "relationships" => _relationships}
       }) do
@@ -23,6 +34,8 @@ defmodule TossBountyWeb.SubscriptionController do
       |> create_subscription_in_stripe
 
     with {:ok, %Subscription{} = subscription} <- StripeProcessing.create_subscription(attrs) do
+      update_campaign(subscription)
+
       conn
       |> put_status(:created)
       |> render("show.json-api", data: subscription)
@@ -42,6 +55,28 @@ defmodule TossBountyWeb.SubscriptionController do
     |> Enum.into(%{"uuid" => stripe_subscription.id})
   end
 
+  defp update_campaign(subscription) do
+    preloaded_subscription = Repo.preload(subscription, [:plan])
+
+    plan = preloaded_subscription.plan
+
+    preloaded_plan = Repo.preload(plan, [:reward])
+
+    reward = preloaded_plan.reward
+
+    preloaded_reward = Repo.preload(reward, [:campaign])
+
+    donation_level = reward.donation_level
+
+    campaign = preloaded_reward.campaign
+
+    campaign_current_funding = campaign.current_funding
+
+    updated_current_funding = campaign_current_funding + donation_level
+
+    Campaigns.update_campaign(campaign, %{current_funding: updated_current_funding})
+  end
+
   defp delete_subscription_in_stripe(conn, subscription_id) do
     @subscription_deleter.delete(conn, subscription_id)
   end
@@ -51,28 +86,28 @@ defmodule TossBountyWeb.SubscriptionController do
 
     current_user = conn.assigns[:current_user]
 
-    case delete_subscription_in_stripe(conn, id) do
-      {:error, %Stripe.APIErrorResponse{} = response} ->
-        conn
-        |> put_status(404)
-        |> render("404.json-api", %{message: response.message})
+    case TossBounty.Policy.authorize(current_user, :administer, subscription) do
+      {:ok, :authorized} ->
+        case delete_subscription_in_stripe(conn, subscription.uuid) do
+          {:error, %Stripe.APIErrorResponse{} = response} ->
+            conn
+            |> put_status(404)
+            |> render("404.json-api", %{message: response.message})
 
-      {:ok, %{deleted: true, id: id}} ->
-        case TossBounty.Policy.authorize(current_user, :administer, subscription) do
-          {:ok, :authorized} ->
+          {:ok, _stripe_subscription} ->
             with {:ok, %Subscription{}} <- StripeProcessing.delete_subscription(subscription) do
               send_resp(conn, :no_content, "")
             end
-
-          {:error, :not_authorized} ->
-            message =
-              "User with id: #{current_user.id} is not authorized " <>
-                "to administer subscription with id: #{subscription.id}"
-
-            conn
-            |> put_status(403)
-            |> render("403.json-api", %{message: message})
         end
+
+      {:error, :not_authorized} ->
+        message =
+          "User with id: #{current_user.id} is not authorized " <>
+            "to administer subscription with id: #{subscription.id}"
+
+        conn
+        |> put_status(403)
+        |> render("403.json-api", %{message: message})
     end
   end
 end
