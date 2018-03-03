@@ -5,18 +5,17 @@ defmodule TossBountyWeb.RewardControllerTest do
   alias TossBounty.Incentive.Reward
   alias TossBounty.Accounts.User
 
-
   @create_attrs %{
     description: "some description",
-    donation_level: 120.5,
+    donation_level: 120.5
   }
   @update_attrs %{
     description: "some updated description",
-    donation_level: 456.7,
+    donation_level: 456.7
   }
   @invalid_attrs %{
     description: nil,
-    donation_level: nil,
+    donation_level: nil
   }
 
   def fixture(:reward, user) do
@@ -25,6 +24,7 @@ defmodule TossBountyWeb.RewardControllerTest do
     {:ok, reward} = Incentive.create_reward(attrs)
     reward
   end
+
   def fixture(:reward) do
     campaign = Repo.insert!(%TossBounty.Campaigns.Campaign{})
     attrs = Map.put(@create_attrs, :campaign_id, campaign.id)
@@ -51,9 +51,10 @@ defmodule TossBountyWeb.RewardControllerTest do
   end
 
   setup %{conn: conn} do
-    conn = conn
-    |> put_req_header("accept", "application/vnd.api+json")
-    |> put_req_header("content-type", "application/vnd.api+json")
+    conn =
+      conn
+      |> put_req_header("accept", "application/vnd.api+json")
+      |> put_req_header("content-type", "application/vnd.api+json")
 
     campaign = Repo.insert!(%TossBounty.Campaigns.Campaign{})
     {:ok, conn: conn, campaign_id: campaign.id}
@@ -62,7 +63,7 @@ defmodule TossBountyWeb.RewardControllerTest do
   describe "index" do
     @tag :authenticated
     test "lists all rewards", %{conn: conn} do
-      conn = get conn, reward_path(conn, :index)
+      conn = get(conn, reward_path(conn, :index))
       assert json_response(conn, 200)["data"] == []
     end
 
@@ -70,52 +71,57 @@ defmodule TossBountyWeb.RewardControllerTest do
     test "lists rewards filtered by campaign id", %{conn: conn, campaign_id: campaign_id} do
       reward = Repo.insert!(%TossBounty.Incentive.Reward{campaign_id: campaign_id})
       other_reward = Repo.insert!(%TossBounty.Incentive.Reward{})
-      conn = get conn, reward_path(conn, :index, %{"campaign_id" => campaign_id})
+      conn = get(conn, reward_path(conn, :index, %{"campaign_id" => campaign_id}))
       data = json_response(conn, 200)["data"]
-      assert Enum.count( data ) == 1
+      assert Enum.count(data) == 1
     end
   end
 
   describe "create reward" do
     @tag :authenticated
     test "renders reward when data is valid", %{conn: conn} do
-      conn = post conn, reward_path(conn, :create), %{
-        "meta" => %{},
-        "data" => %{
-          "type" => "reward",
-          "attributes" => dasherize_keys(@create_attrs),
-          "relationships" => relationships
-        }
-      }
+      conn =
+        post(conn, reward_path(conn, :create), %{
+          "meta" => %{},
+          "data" => %{
+            "type" => "reward",
+            "attributes" => dasherize_keys(@create_attrs),
+            "relationships" => relationships
+          }
+        })
+
       assert %{"id" => id} = json_response(conn, 201)["data"]
 
-      user = Repo.one(from u in User, limit: 1)
+      user = Repo.one(from(u in User, limit: 1))
       {:ok, jwt, _} = Guardian.encode_and_sign(user)
 
       build_conn()
       |> put_req_header("authorization", "Bearer #{jwt}")
-      |> get( reward_path(conn, :show, id) )
+      |> get(reward_path(conn, :show, id))
 
       assert json_response(conn, 201)["data"] == %{
-        "id" => id,
-        "type" => "reward",
-        "attributes" => %{
-          "description" => "some description",
-          "donation-level" => 120.5
-          }
-        }
+               "id" => id,
+               "type" => "reward",
+               "attributes" => %{
+                 "description" => "some description",
+                 "donation-level" => 120.5
+               },
+               "relationships" => %{"plan" => %{"data" => nil}}
+             }
     end
 
     @tag :authenticated
     test "renders errors when data is invalid", %{conn: conn} do
-      conn = post conn, reward_path(conn, :create), %{
-        "meta" => %{},
-        "data" => %{
-          "type" => "reward",
-          "attributes" => dasherize_keys(@invalid_attrs),
-          "relationships" => relationships
-        }
-      }
+      conn =
+        post(conn, reward_path(conn, :create), %{
+          "meta" => %{},
+          "data" => %{
+            "type" => "reward",
+            "attributes" => dasherize_keys(@invalid_attrs),
+            "relationships" => relationships
+          }
+        })
+
       assert json_response(conn, 422)["errors"] != %{}
     end
   end
@@ -125,14 +131,16 @@ defmodule TossBountyWeb.RewardControllerTest do
 
     @tag :authenticated
     test "renders reward when data is valid", %{conn: conn, reward: %Reward{id: id} = reward} do
-      conn = put conn, reward_path(conn, :update, reward), %{
-        "meta" => %{},
-        "data" => %{
-          "type" => "reward",
-          "attributes" => dasherize_keys(@update_attrs),
-          "relationships" => relationships
-        }
-      }
+      conn =
+        put(conn, reward_path(conn, :update, reward), %{
+          "meta" => %{},
+          "data" => %{
+            "type" => "reward",
+            "attributes" => dasherize_keys(@update_attrs),
+            "relationships" => relationships
+          }
+        })
+
       data = json_response(conn, 200)["data"]
       assert data["id"] == "#{id}"
       assert data["type"] == "reward"
@@ -142,30 +150,34 @@ defmodule TossBountyWeb.RewardControllerTest do
 
     @tag :authenticated
     test "renders errors when data is invalid", %{conn: conn, reward: reward} do
-      conn = put conn, reward_path(conn, :update, reward), %{
-        "meta" => %{},
-        "data" => %{
-          "type" => "reward",
-          "attributes" => dasherize_keys(@invalid_attrs),
-          "relationships" => relationships
-        }
-      }
+      conn =
+        put(conn, reward_path(conn, :update, reward), %{
+          "meta" => %{},
+          "data" => %{
+            "type" => "reward",
+            "attributes" => dasherize_keys(@invalid_attrs),
+            "relationships" => relationships
+          }
+        })
+
       assert json_response(conn, 422)["errors"] != %{}
     end
 
     @tag :authenticated
     test "renders errors when not authorized", %{conn: conn, reward: reward} do
       another_user = insert_user(email: "test2@test.com")
-      another_reward_from_different_user =
-        fixture(:reward, another_user)
-      conn = put conn, reward_path(conn, :update, another_reward_from_different_user), %{
-        "meta" => %{},
-        "data" => %{
-          "type" => "reward",
-          "attributes" => dasherize_keys(@update_attrs),
-          "relationships" => relationships
-        }
-      }
+      another_reward_from_different_user = fixture(:reward, another_user)
+
+      conn =
+        put(conn, reward_path(conn, :update, another_reward_from_different_user), %{
+          "meta" => %{},
+          "data" => %{
+            "type" => "reward",
+            "attributes" => dasherize_keys(@update_attrs),
+            "relationships" => relationships
+          }
+        })
+
       assert json_response(conn, 403)["errors"] != %{}
     end
   end
@@ -175,24 +187,24 @@ defmodule TossBountyWeb.RewardControllerTest do
 
     @tag :authenticated
     test "deletes chosen reward", %{conn: conn, reward: reward} do
-      conn = delete conn, reward_path(conn, :delete, reward)
+      conn = delete(conn, reward_path(conn, :delete, reward))
       assert response(conn, 204)
 
-      user = Repo.one(from u in User, limit: 1)
+      user = Repo.one(from(u in User, limit: 1))
       {:ok, jwt, _} = Guardian.encode_and_sign(user)
-      assert_error_sent 404, fn ->
+
+      assert_error_sent(404, fn ->
         build_conn()
         |> put_req_header("authorization", "Bearer #{jwt}")
-        |> get( reward_path(conn, :show, reward) )
-      end
+        |> get(reward_path(conn, :show, reward))
+      end)
     end
 
     @tag :authenticated
     test "renders errors when not authorized", %{conn: conn, reward: reward} do
       another_user = insert_user(email: "test2@test.com")
-      another_reward_from_different_user =
-        fixture(:reward, another_user)
-      conn = delete conn, reward_path(conn, :delete, another_reward_from_different_user)
+      another_reward_from_different_user = fixture(:reward, another_user)
+      conn = delete(conn, reward_path(conn, :delete, another_reward_from_different_user))
       assert json_response(conn, 403)["errors"] != %{}
     end
   end
@@ -201,6 +213,7 @@ defmodule TossBountyWeb.RewardControllerTest do
     reward = fixture(:reward, attrs[:current_user])
     {:ok, reward: reward}
   end
+
   defp create_reward(_) do
     reward = fixture(:reward)
     {:ok, reward: reward}

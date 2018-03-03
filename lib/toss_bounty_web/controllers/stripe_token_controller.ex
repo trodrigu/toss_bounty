@@ -7,9 +7,7 @@ defmodule TossBountyWeb.StripeTokenController do
   action_fallback(TossBountyWeb.FallbackController)
 
   def create(conn, %{"data" => data = %{"type" => "token", "attributes" => token_params}}) do
-    attrs =
-      Params.to_attributes(data)
-      |> IO.inspect()
+    attrs = Params.to_attributes(data)
 
     with {:ok, %Token{} = token} <- StripeProcessing.create_token(attrs) do
       conn
