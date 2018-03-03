@@ -4,18 +4,21 @@ defmodule TossBounty.Accounts.User do
   alias TossBounty.Accounts.User
 
   @doc """
-  Schema for users which includes a type reflecting the following.
+  Schema for users which includes a role reflecting the following.
 
   ## Examples
 
-      iex> user.type
-      0 # :contributor
+      iex> user.role
+      0 # :none
 
-      iex> user.type
-      1 # :maintainer
+      iex> user.role
+      1 # :contributor
 
-      iex> user.type
-      2 # :both
+      iex> user.role
+      2 # :maintainer
+
+      iex> user.role
+      3 # :both
 
   """
   schema "users" do
@@ -26,7 +29,7 @@ defmodule TossBounty.Accounts.User do
     field(:github_token, :string)
     field(:stripe_access_token, :string)
     field(:stripe_external_id, :string)
-    field(:type, :integer)
+    field(:role, :integer)
     timestamps
   end
 
@@ -39,9 +42,7 @@ defmodule TossBounty.Accounts.User do
 
   def changeset(%User{} = user, params \\ %{}) do
     user
-    |> cast(params, [:email, :stripe_external_id, :stripe_access_token, :type])
-    |> validate_required([:email])
-    |> unique_constraint(:email)
+    |> cast(params, [:email, :stripe_external_id, :stripe_access_token, :role])
   end
 
   def registration_changeset(%User{} = user, params) do

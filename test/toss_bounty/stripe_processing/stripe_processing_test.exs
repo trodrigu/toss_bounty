@@ -18,64 +18,15 @@ defmodule TossBounty.StripeProcessingTest do
     {:ok, user: user}
   end
 
-  describe "subscriptions" do
-    @valid_attrs %{
-      uuid: "some-subscription-1"
-    }
-    @invalid_attrs %{
-      uuid: nil
-    }
-
-    setup [
-      :create_fixture_token,
-      :create_fixture_customer,
-      :create_fixture_github_repo,
-      :create_fixture_campaign,
-      :create_fixture_reward,
-      :create_fixture_plan
-    ]
-
-    test "create_subscription/1 returns the subscription with given id", %{
-      plan: plan,
-      customer: customer
-    } do
-      attrs =
-        @valid_attrs
-        |> Map.put(:plan_id, plan.id)
-        |> Map.put(:customer_id, customer.id)
-
-      assert {:ok, %Subscription{} = subscription} = StripeProcessing.create_subscription(attrs)
-      assert subscription.uuid == "some-subscription-1"
-    end
-
-    test "create_subscription/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = StripeProcessing.create_subscription(@invalid_attrs)
-    end
-
-    setup [
-      :create_fixture_token,
-      :create_fixture_customer,
-      :create_fixture_github_repo,
-      :create_fixture_campaign,
-      :create_fixture_reward,
-      :create_fixture_plan,
-      :create_fixture_subscription
-    ]
-
-    test "get_subscription!/1 returns the subscription with given id", %{
-      subscription: subscription
-    } do
-      assert StripeProcessing.get_subscription!(subscription.id) == subscription
-    end
-
-    test "delete_subscription/1 deletes the subscription", %{subscription: subscription} do
-      assert {:ok, %Subscription{}} = StripeProcessing.delete_subscription(subscription)
-
-      assert_raise Ecto.NoResultsError, fn ->
-        StripeProcessing.get_subscription!(subscription.id)
-      end
-    end
-  end
+  setup [
+    :create_fixture_github_repo,
+    :create_fixture_campaign,
+    :create_fixture_reward,
+    :create_fixture_plan,
+    :create_fixture_token,
+    :create_fixture_customer,
+    :create_fixture_subscription
+  ]
 
   describe "plans" do
     @valid_attrs %{
@@ -96,8 +47,6 @@ defmodule TossBounty.StripeProcessingTest do
       uuid: nil
     }
 
-    setup [:create_fixture_github_repo, :create_fixture_campaign, :create_fixture_reward]
-
     test "create_plan/1 returns the plan with given id", %{reward: reward} do
       attrs =
         @valid_attrs
@@ -115,15 +64,6 @@ defmodule TossBounty.StripeProcessingTest do
       assert {:error, %Ecto.Changeset{}} = StripeProcessing.create_plan(@invalid_attrs)
     end
 
-    setup [
-      :create_fixture_token,
-      :create_fixture_customer,
-      :create_fixture_github_repo,
-      :create_fixture_campaign,
-      :create_fixture_reward,
-      :create_fixture_plan
-    ]
-
     test "update_plan/2 with valid data updates the plan", %{plan: plan} do
       assert {:ok, plan} = StripeProcessing.update_plan(plan, @update_attrs)
       assert %Plan{} = plan
@@ -138,48 +78,43 @@ defmodule TossBounty.StripeProcessingTest do
       assert plan == StripeProcessing.get_plan!(plan.id)
     end
 
-    setup [
-      :create_fixture_token,
-      :create_fixture_customer,
-      :create_fixture_github_repo,
-      :create_fixture_campaign,
-      :create_fixture_reward,
-      :create_fixture_plan
-    ]
+    test "list_plans/0 returns all plans", %{plan: plan} do
+      assert StripeProcessing.list_plans() == [plan]
+    end
 
     test "get_plan!/1 returns the plan with given id", %{plan: plan} do
       assert StripeProcessing.get_plan!(plan.id) == plan
     end
 
     test "delete_plan/1 deletes the plan", %{plan: plan} do
+      Repo.delete_all(Subscription)
       assert {:ok, %Plan{}} = StripeProcessing.delete_plan(plan)
       assert_raise Ecto.NoResultsError, fn -> StripeProcessing.get_plan!(plan.id) end
     end
-  end
 
-  describe "customers" do
-    @valid_attrs %{
-      uuid: "some-customer-1"
-    }
-    @invalid_attrs %{
-      uuid: nil
-    }
-
-    setup [:create_fixture_token]
-
-    test "create_customer/1 returns the customer with given id", %{
-      token: token
+    test "list_plans/1 returns the correct plans when sorted by subscriber", %{
+      subscription: subscription,
+      plan: plan
     } do
-      attrs =
-        @valid_attrs
-        |> Map.put(:token_id, token.id)
+      preloaded_subscription =
+        subscription
+        |> Repo.preload([:customer])
 
-      assert {:ok, %Customer{} = customer} = StripeProcessing.create_customer(attrs)
-      assert customer.uuid == "some-customer-1"
-    end
+      customer = preloaded_subscription.customer
 
-    test "create_customer/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = StripeProcessing.create_customer(@invalid_attrs)
+      preloaded_customer =
+        customer
+        |> Repo.preload([:token])
+
+      token = preloaded_customer.token
+
+      preloaded_token =
+        token
+        |> Repo.preload([:user])
+
+      user = preloaded_token.user
+
+      assert StripeProcessing.list_plans(%{"subscriber_id" => user.id}) == [plan]
     end
   end
 
@@ -217,8 +152,6 @@ defmodule TossBounty.StripeProcessingTest do
       message: nil
     }
 
-    setup [:create_fixture_token]
-
     test "create_charge/1 returns the charge with given id", %{
       token: token
     } do
@@ -237,6 +170,81 @@ defmodule TossBounty.StripeProcessingTest do
 
     test "create_charge/1 with invalid data returns error changeset" do
       assert {:error, %Ecto.Changeset{}} = StripeProcessing.create_charge(@invalid_attrs)
+    end
+  end
+
+  describe "customers" do
+    @valid_attrs %{
+      uuid: "some-customer-1"
+    }
+    @invalid_attrs %{
+      uuid: nil
+    }
+
+    test "create_customer/1 returns the customer with given id", %{
+      token: token
+    } do
+      attrs =
+        @valid_attrs
+        |> Map.put(:token_id, token.id)
+
+      assert {:ok, %Customer{} = customer} = StripeProcessing.create_customer(attrs)
+      assert customer.uuid == "some-customer-1"
+    end
+
+    test "create_customer/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = StripeProcessing.create_customer(@invalid_attrs)
+    end
+  end
+
+  describe "subscriptions" do
+    @valid_attrs %{
+      uuid: "some-subscription-1"
+    }
+    @invalid_attrs %{
+      uuid: nil
+    }
+
+    test "create_subscription/1 returns the subscription with given id", %{
+      plan: plan,
+      customer: customer
+    } do
+      attrs =
+        @valid_attrs
+        |> Map.put(:plan_id, plan.id)
+        |> Map.put(:customer_id, customer.id)
+
+      assert {:ok, %Subscription{} = subscription} = StripeProcessing.create_subscription(attrs)
+      assert subscription.uuid == "some-subscription-1"
+    end
+
+    test "create_subscription/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = StripeProcessing.create_subscription(@invalid_attrs)
+    end
+
+    test "get_subscription!/1 returns the subscription with given id", %{
+      subscription: subscription
+    } do
+      assert StripeProcessing.get_subscription!(subscription.id) == subscription
+    end
+
+    test "list_subscriptions/0 returns all subscriptions", %{subscription: subscription} do
+      assert StripeProcessing.list_subscriptions() == [subscription]
+    end
+
+    test "list_subscriptions/1 returns the correct subscriptions", %{
+      user: user,
+      subscription: subscription
+    } do
+      assert StripeProcessing.list_subscriptions(%{"user_id" => user.id}) == [subscription]
+    end
+
+    test "delete_subscription/1 deletes the subscription", %{subscription: subscription} do
+      assert {:ok, %Subscription{}} = StripeProcessing.delete_subscription(subscription)
+
+      assert_raise Ecto.NoResultsError, fn ->
+        StripeProcessing.get_subscription!(subscription.id)
+      end
     end
   end
 

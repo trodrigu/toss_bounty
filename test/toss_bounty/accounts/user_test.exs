@@ -3,7 +3,7 @@ defmodule TossBounty.Accounts.UserModelTest do
   alias TossBounty.Accounts.User
 
   describe "github registration changeset" do
-    @valid_attrs %{github_token: "323jklsdfjklasdf", email: "test@test.com", user_type: 0}
+    @valid_attrs %{github_token: "323jklsdfjklasdf", email: "test@test.com", role: 0}
     @invalid_attrs %{}
 
     test "changeset with valid attributes" do
@@ -24,11 +24,6 @@ defmodule TossBounty.Accounts.UserModelTest do
     test "changeset with valid attributes" do
       changeset = User.changeset(%User{}, @valid_attrs)
       assert changeset.valid?
-    end
-
-    test "changeset with invalid attributes" do
-      changeset = User.changeset(%User{}, @invalid_attrs)
-      refute changeset.valid?
     end
   end
 
