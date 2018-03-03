@@ -32,9 +32,6 @@ defmodule TossBountyWeb.CustomerController do
   end
 
   defp create_customer_in_stripe(attrs) do
-    IO.puts("#####################")
-    IO.inspect(attrs)
-    IO.puts("#####################")
     token_id = attrs["token_id"]
     token = Repo.get_by(Token, id: token_id)
     uuid = token.uuid
