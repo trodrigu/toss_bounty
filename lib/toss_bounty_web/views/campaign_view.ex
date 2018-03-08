@@ -11,14 +11,19 @@ defmodule TossBountyWeb.CampaignView do
     :updated_at
   ])
 
-  has_one :user,
-    field: :user_id,
+  has_one(
+    :user,
+    include: true,
+    serializer: TossBountyWeb.MaintainerUserView,
     type: "user"
+  )
 
-  has_one :github_repo,
+  has_one(
+    :github_repo,
     include: true,
     serializer: TossBountyWeb.GithubRepoView,
     type: "github_repo"
+  )
 
   def render("403.json-api", %{message: message}) do
     %{
@@ -27,7 +32,7 @@ defmodule TossBountyWeb.CampaignView do
           id: "FORBIDDEN",
           title: "403 Forbidden",
           detail: message,
-          status: 403,
+          status: 403
         }
       ]
     }

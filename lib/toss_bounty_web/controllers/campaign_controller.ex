@@ -10,17 +10,19 @@ defmodule TossBountyWeb.CampaignController do
 
   def index(conn, %{"user_id" => user_id}) do
     campaigns = Campaigns.list_campaigns(%{"user_id" => user_id})
+
     render(conn, "index.json-api", data: campaigns)
   end
 
   def index(conn, _params) do
     campaigns = Campaigns.list_campaigns()
+
     render(conn, "index.json-api", data: campaigns)
   end
 
   def create(conn, %{"data" => data = %{"type" => "campaign", "attributes" => campaign_params}}) do
-    attrs =
-      Params.to_attributes(data)
+    attrs = Params.to_attributes(data)
+
     with {:ok, %Campaign{} = campaign} <- Campaigns.create_campaign(attrs) do
       preloaded_campaign = Repo.preload(campaign, :github_repo)
 
@@ -32,9 +34,11 @@ defmodule TossBountyWeb.CampaignController do
   end
 
   def show(conn, %{"id" => id}) do
-    campaign = Campaigns.get_campaign!(id)
-    preloaded_campaign = Repo.preload(campaign, :github_repo)
-    render(conn, "show.json-api", data: preloaded_campaign)
+    campaign =
+      Campaigns.get_campaign!(id)
+      |> Repo.preload([:github_repo, :user])
+
+    render(conn, "show.json-api", data: campaign)
   end
 
   def update(conn, %{
