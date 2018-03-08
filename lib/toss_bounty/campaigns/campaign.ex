@@ -11,7 +11,6 @@ defmodule TossBounty.Campaigns.Campaign do
     field(:funding_end_date, Timex.Ecto.DateTimeWithTimezone)
     field(:funding_goal, :float)
     field(:long_description, :binary)
-    field(:short_description, :string)
     belongs_to(:user, User)
     belongs_to(:github_repo, GithubRepo)
 
@@ -22,7 +21,6 @@ defmodule TossBounty.Campaigns.Campaign do
   def changeset(%Campaign{} = campaign, attrs) do
     campaign
     |> cast(attrs, [
-      :short_description,
       :long_description,
       :funding_goal,
       :current_funding,
@@ -31,7 +29,6 @@ defmodule TossBounty.Campaigns.Campaign do
       :github_repo_id
     ])
     |> validate_required([
-      :short_description,
       :long_description,
       :funding_goal,
       :funding_end_date,

@@ -19,8 +19,7 @@ defmodule TossBounty.Policy.RewardTest do
     current_funding: 120.5,
     funding_end_date: Timex.parse!("Tue, 06 Mar 2013 01:25:19 +0200", "{RFC1123}"),
     funding_goal: 120.5,
-    long_description: "some long_description",
-    short_description: "some short_description"
+    long_description: "some long_description"
   }
 
   setup do

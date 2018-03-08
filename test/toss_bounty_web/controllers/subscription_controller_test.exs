@@ -98,7 +98,6 @@ defmodule TossBountyWeb.SubscriptionControllerTest do
     token = attrs[:token]
 
     campaign_attrs = %{
-      short_description: "a short description",
       long_description: "a longer description",
       funding_goal: 20000.00,
       funding_end_date: Timex.parse!("Tue, 06 Mar 2013 01:25:19 +0200", "{RFC1123}"),

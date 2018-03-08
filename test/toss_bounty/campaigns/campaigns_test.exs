@@ -28,22 +28,19 @@ defmodule TossBounty.CampaignsTest do
       current_funding: 120.5,
       funding_end_date: Timex.parse!("Tue, 06 Mar 2013 01:25:19 +0200", "{RFC1123}"),
       funding_goal: 120.5,
-      long_description: "some long_description",
-      short_description: "some short_description"
+      long_description: "some long_description"
     }
     @update_attrs %{
       current_funding: 456.7,
       funding_end_date: Timex.parse!("Tue, 06 Mar 2013 01:25:19 +0200", "{RFC1123}"),
       funding_goal: 456.7,
-      long_description: "some updated long_description",
-      short_description: "some updated short_description"
+      long_description: "some updated long_description"
     }
     @invalid_attrs %{
       current_funding: nil,
       funding_end_date: nil,
       funding_goal: nil,
-      long_description: nil,
-      short_description: nil
+      long_description: nil
     }
 
     def campaign_fixture(attrs \\ %{}) do
@@ -91,7 +88,6 @@ defmodule TossBounty.CampaignsTest do
 
       assert campaign.funding_goal == 120.5
       assert campaign.long_description == "some long_description"
-      assert campaign.short_description == "some short_description"
     end
 
     test "create_campaign/1 with invalid data returns error changeset" do
@@ -112,7 +108,6 @@ defmodule TossBounty.CampaignsTest do
 
       assert campaign.funding_goal == 456.7
       assert campaign.long_description == "some updated long_description"
-      assert campaign.short_description == "some updated short_description"
       assert campaign.github_repo_id == github_repo.id
     end
 

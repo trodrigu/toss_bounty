@@ -7,7 +7,6 @@ defmodule TossBounty.Repo.Migrations.CreateCampaigns do
   # ex: :nothing, :delete_all, :nilify_all, :restrict
   def change do
     create table(:campaigns) do
-      add(:short_description, :string)
       add(:long_description, :binary)
       add(:funding_goal, :float)
       add(:current_funding, :float, default: 0.0)
