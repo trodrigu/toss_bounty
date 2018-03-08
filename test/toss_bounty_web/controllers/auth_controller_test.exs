@@ -156,7 +156,7 @@ defmodule TossBountyWeb.AuthControllerTest do
       code: "some-code",
       provider: "stripe"
     }
-    test "when stripe it updates the stripe token", %{conn: conn} do
+    test "when stripe updates the stripe token", %{conn: conn} do
       user = with {:ok, user} <- Repo.insert!(%User{email: "trodriguez91@icloud.com"}), do: user
       {:ok, jwt, _} = Guardian.encode_and_sign(user)
 

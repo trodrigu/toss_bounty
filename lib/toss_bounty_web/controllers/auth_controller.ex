@@ -31,35 +31,48 @@ defmodule TossBountyWeb.AuthController do
   defp callback_for("github", code, conn) do
     client = get_token!("github", code)
 
-    user_data_from_response = get_user!("github", client)
+    user_data_from_response =
+      get_user!("github", client)
+      |> IO.inspect()
 
     email = user_data_from_response[:email]
-    github_token = client.token.access_token
 
-    user_from_db = Repo.get_by(User, email: email)
-    user = sign_up_or_return_user(user_from_db, email)
-
-    user_with_updated_github_token = update_user_with_github_token(user, github_token)
-
-    sellable_repos = SellableRepos.call(user)
-    save_new_repos(sellable_repos, user)
-
-    repos_and_sellable_issues = find_sellable_issues(sellable_repos, user)
-    save_new_issues(repos_and_sellable_issues)
-
-    {:ok, token, _claims} =
-      user_with_updated_github_token
-      |> Guardian.encode_and_sign(:token)
-
-    user_id = user_with_updated_github_token.id
     front_end_url = Application.fetch_env!(:toss_bounty, :front_end_url)
 
-    total_redirect_url =
-      front_end_url <> "/#/save-session/?token=#{token}&email=#{email}&user_id=#{user_id}"
+    case email do
+      nil ->
+        total_redirect_url = front_end_url <> "/#/github-oops"
 
-    conn
-    |> Plug.Conn.assign(:current_user, user_with_updated_github_token)
-    |> redirect(external: total_redirect_url)
+        conn
+        |> redirect(external: total_redirect_url)
+
+      _ ->
+        github_token = client.token.access_token
+
+        user_from_db = Repo.get_by(User, email: email)
+        user = sign_up_or_return_user(user_from_db, email)
+
+        user_with_updated_github_token = update_user_with_github_token(user, github_token)
+
+        sellable_repos = SellableRepos.call(user)
+        save_new_repos(sellable_repos, user)
+
+        repos_and_sellable_issues = find_sellable_issues(sellable_repos, user)
+        save_new_issues(repos_and_sellable_issues)
+
+        {:ok, token, _claims} =
+          user_with_updated_github_token
+          |> Guardian.encode_and_sign(:token)
+
+        user_id = user_with_updated_github_token.id
+
+        total_redirect_url =
+          front_end_url <> "/#/save-session/?token=#{token}&email=#{email}&user_id=#{user_id}"
+
+        conn
+        |> Plug.Conn.assign(:current_user, user_with_updated_github_token)
+        |> redirect(external: total_redirect_url)
+    end
   end
 
   defp update_user_with_github_token(user, github_token) do
