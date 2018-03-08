@@ -7,6 +7,11 @@ defmodule TossBounty.StripeProcessing.StripeSubscriptionCreator do
   def create(%{"customer_id" => customer_id, "plan_id" => plan_id, "type" => "subscription"}) do
     customer = Repo.get_by(Customer, id: customer_id)
     plan = Repo.get_by(Plan, id: plan_id)
-    Stripe.Subscription.create(%{customer: customer.uuid, plan: plan.uuid})
+
+    Stripe.Subscription.create(%{
+      customer: customer.uuid,
+      plan: plan.uuid,
+      application_fee_percent: "10"
+    })
   end
 end
