@@ -182,14 +182,17 @@ defmodule TossBounty.StripeProcessingTest do
     }
 
     test "create_customer/1 returns the customer with given id", %{
-      token: token
+      token: token,
+      campaign: campaign
     } do
       attrs =
         @valid_attrs
         |> Map.put(:token_id, token.id)
+        |> Map.put(:campaign_id, campaign.id)
 
       assert {:ok, %Customer{} = customer} = StripeProcessing.create_customer(attrs)
       assert customer.uuid == "some-customer-1"
+      assert customer.campaign_id == campaign.id
     end
 
     test "create_customer/1 with invalid data returns error changeset" do

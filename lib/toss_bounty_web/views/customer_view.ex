@@ -5,6 +5,12 @@ defmodule TossBountyWeb.CustomerView do
   attributes([:uuid])
 
   has_one(
+    :campaign,
+    field: :campaign_id,
+    type: "campaign"
+  )
+
+  has_one(
     :user,
     field: :user_id,
     type: "user"
