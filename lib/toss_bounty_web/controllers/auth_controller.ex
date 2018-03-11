@@ -18,8 +18,7 @@ defmodule TossBountyWeb.AuthController do
   end
 
   defp callback_for("stripe", code, conn) do
-    token_response =
-      get_token!("stripe", code)
+    token_response = get_token!("stripe", code)
 
     stripe_access_token = token_response.stripe_user_id
     front_end_url = Application.fetch_env!(:toss_bounty, :front_end_url)
@@ -32,9 +31,7 @@ defmodule TossBountyWeb.AuthController do
   defp callback_for("github", code, conn) do
     client = get_token!("github", code)
 
-    user_data_from_response =
-      get_user!("github", client)
-      |> IO.inspect()
+    user_data_from_response = get_user!("github", client)
 
     email = user_data_from_response[:email]
 
@@ -55,10 +52,12 @@ defmodule TossBountyWeb.AuthController do
 
         user_with_updated_github_token = update_user_with_github_token(user, github_token)
 
-        sellable_repos = SellableRepos.call(user)
+        sellable_repos = SellableRepos.call(user_with_updated_github_token)
         save_new_repos(sellable_repos, user)
 
-        repos_and_sellable_issues = find_sellable_issues(sellable_repos, user)
+        repos_and_sellable_issues =
+          find_sellable_issues(sellable_repos, user_with_updated_github_token)
+
         save_new_issues(repos_and_sellable_issues)
 
         {:ok, token, _claims} =
