@@ -26,6 +26,7 @@ defmodule TossBounty.Incentive do
 
   def list_rewards do
     Repo.all(Reward)
+    |> Repo.preload(:plan)
   end
 
   @doc """
