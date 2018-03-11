@@ -4,14 +4,23 @@ defmodule TossBounty.StripeProcessing.StripeSubscriptionCreator do
   alias TossBounty.StripeProcessing.Customer
   alias TossBounty.Repo
 
-  def create(%{"customer_id" => customer_id, "plan_id" => plan_id, "type" => "subscription"}) do
+  def create(%{
+        "customer_id" => customer_id,
+        "plan_id" => plan_id,
+        "stripe_external_id" => stripe_external_id,
+        "type" => "subscription"
+      }) do
     customer = Repo.get_by(Customer, id: customer_id)
     plan = Repo.get_by(Plan, id: plan_id)
 
-    Stripe.Subscription.create(%{
-      customer: customer.uuid,
-      plan: plan.uuid,
-      application_fee_percent: "10"
-    })
+    Stripe.Subscription.create(
+      %{
+        customer: customer.uuid,
+        plan: plan.uuid,
+        application_fee_percent: "10"
+      },
+      connect_account: stripe_external_id
+    )
+    |> IO.inspect()
   end
 end

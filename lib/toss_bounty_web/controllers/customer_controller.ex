@@ -2,6 +2,7 @@ defmodule TossBountyWeb.CustomerController do
   use TossBountyWeb.Web, :controller
   alias JaSerializer.Params
   alias TossBounty.Accounts.CurrentUser
+  alias TossBounty.Campaigns.Campaign
   alias TossBounty.StripeProcessing
   alias TossBounty.StripeProcessing.Customer
   alias TossBounty.StripeProcessing.Token
@@ -33,9 +34,22 @@ defmodule TossBountyWeb.CustomerController do
 
   defp create_customer_in_stripe(attrs) do
     token_id = attrs["token_id"]
+    campaign_id = attrs["campaign_id"]
     token = Repo.get_by(Token, id: token_id)
+    campaign = Repo.get_by(Campaign, id: campaign_id)
+
     uuid = token.uuid
-    {:ok, stripe_customer} = @customer_creator.create(%{source: uuid})
+
+    preloaded_campaign =
+      campaign
+      |> Repo.preload([:user])
+
+    user = preloaded_campaign.user
+
+    stripe_external_id = user.stripe_external_id
+
+    {:ok, stripe_customer} =
+      @customer_creator.create(%{source: uuid, stripe_external_id: stripe_external_id})
 
     attrs
     |> Enum.into(%{"uuid" => stripe_customer.id})

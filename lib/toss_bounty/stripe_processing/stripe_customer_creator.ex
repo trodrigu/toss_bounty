@@ -3,7 +3,7 @@ defmodule TossBounty.StripeProcessing.StripeCustomerCreator do
 
   alias Stripe.Source
 
-  def create(%{source: source}) do
-    Stripe.Customer.create(%{source: source})
+  def create(%{source: source, stripe_external_id: stripe_external_id}) do
+    Stripe.Customer.create(%{source: source}, connect_account: stripe_external_id)
   end
 end

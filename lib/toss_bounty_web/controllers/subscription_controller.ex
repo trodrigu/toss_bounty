@@ -1,7 +1,9 @@
 defmodule TossBountyWeb.SubscriptionController do
   use TossBountyWeb.Web, :controller
   alias TossBounty.StripeProcessing.Subscription
+  alias TossBounty.StripeProcessing.Plan
   alias TossBounty.Campaigns
+  alias TossBounty.Accounts.User
   alias TossBounty.StripeProcessing
   alias JaSerializer.Params
 
@@ -48,8 +50,29 @@ defmodule TossBountyWeb.SubscriptionController do
     |> render("relationships-errors.json-api")
   end
 
+  defp user_from_plan(attrs) do
+    plan_id = attrs["plan_id"]
+
+    query =
+      from(
+        u in User,
+        join: c in assoc(u, :campaigns),
+        join: r in assoc(c, :rewards),
+        join: p in assoc(r, :plan),
+        where: p.id == ^plan_id
+      )
+
+    Repo.one(query)
+  end
+
   defp create_subscription_in_stripe(attrs) do
-    {:ok, stripe_subscription} = @subscription_creator.create(attrs)
+    user = user_from_plan(attrs)
+
+    updated_attrs =
+      attrs
+      |> Enum.into(%{"stripe_external_id" => user.stripe_external_id})
+
+    {:ok, stripe_subscription} = @subscription_creator.create(updated_attrs)
 
     attrs
     |> Enum.into(%{"uuid" => stripe_subscription.id})
