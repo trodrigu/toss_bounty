@@ -24,7 +24,7 @@ defmodule TossBountyWeb.CampaignController do
     attrs = Params.to_attributes(data)
 
     with {:ok, %Campaign{} = campaign} <- Campaigns.create_campaign(attrs) do
-      preloaded_campaign = Repo.preload(campaign, :github_repo)
+      preloaded_campaign = Repo.preload(campaign, [:github_repo, :user])
 
       conn
       |> put_status(:created)
@@ -45,7 +45,10 @@ defmodule TossBountyWeb.CampaignController do
         "id" => id,
         "data" => data = %{"type" => "campaign", "attributes" => campaign_params}
       }) do
-    campaign = Campaigns.get_campaign!(id)
+    campaign =
+      Campaigns.get_campaign!(id)
+      |> Repo.preload([:github_repo, :user])
+
     attrs = Params.to_attributes(data)
 
     current_user = conn.assigns[:current_user]

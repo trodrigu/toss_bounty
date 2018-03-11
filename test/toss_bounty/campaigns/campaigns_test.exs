@@ -60,7 +60,7 @@ defmodule TossBounty.CampaignsTest do
 
     test "list_campaigns/0 returns all campaigns", %{user: user, github_repo: github_repo} do
       campaign = campaign_fixture(%{user: user, github_repo: github_repo})
-      preloaded_campaign = Repo.preload(campaign, :github_repo)
+      preloaded_campaign = Repo.preload(campaign, [:github_repo, :user])
       assert Campaigns.list_campaigns() == [preloaded_campaign]
     end
 

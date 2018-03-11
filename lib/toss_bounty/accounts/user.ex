@@ -2,6 +2,7 @@ defmodule TossBounty.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
   alias TossBounty.Accounts.User
+  alias TossBounty.Campaigns.Campaign
 
   @doc """
   Schema for users which includes a role reflecting the following.
@@ -31,6 +32,7 @@ defmodule TossBounty.Accounts.User do
     field(:stripe_external_id, :string)
     field(:role, :integer)
     timestamps
+    has_many(:campaigns, Campaign)
   end
 
   def github_registration_changeset(%User{} = user, params \\ %{}) do

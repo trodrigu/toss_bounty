@@ -5,6 +5,7 @@ defmodule TossBounty.Campaigns.Campaign do
   use Timex.Ecto.Timestamps
   alias TossBounty.Github.GithubRepo
   alias TossBounty.Accounts.User
+  alias TossBounty.Incentive.Reward
 
   schema "campaigns" do
     field(:current_funding, :float)
@@ -14,6 +15,7 @@ defmodule TossBounty.Campaigns.Campaign do
     belongs_to(:user, User)
     belongs_to(:github_repo, GithubRepo)
 
+    has_many(:rewards, Reward)
     timestamps()
   end
 
