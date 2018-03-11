@@ -3,7 +3,7 @@ defmodule TossBountyWeb.MaintainerUserView do
   use JaSerializer.PhoenixView
 
   attributes([
-    :name,
+    :email,
     :stripe_external_id
   ])
 end
