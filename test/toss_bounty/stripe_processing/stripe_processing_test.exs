@@ -116,6 +116,25 @@ defmodule TossBounty.StripeProcessingTest do
 
       assert StripeProcessing.list_plans(%{"subscriber_id" => user.id}) == [plan]
     end
+
+    test "list_plans/1 returns the correct plans when sorted by campaign", %{
+      subscription: subscription,
+      plan: plan
+    } do
+      preloaded_plan =
+        plan
+        |> Repo.preload([:reward])
+
+      reward = preloaded_plan.reward
+
+      preloaded_reward =
+        reward
+        |> Repo.preload([:campaign])
+
+      campaign = preloaded_reward.campaign
+
+      assert StripeProcessing.list_plans(%{"campaign_id" => campaign.id}) == [plan]
+    end
   end
 
   describe "tokens" do

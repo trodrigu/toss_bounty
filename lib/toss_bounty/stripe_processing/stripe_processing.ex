@@ -126,6 +126,19 @@ defmodule TossBounty.StripeProcessing do
     |> Repo.all()
   end
 
+  def list_plans(%{"campaign_id" => campaign_id}) do
+    query =
+      from(
+        p in Plan,
+        join: r in assoc(p, :reward),
+        join: c in assoc(r, :campaign),
+        where: c.id == ^campaign_id
+      )
+
+    query
+    |> Repo.all()
+  end
+
   def list_plans do
     Repo.all(Plan)
   end

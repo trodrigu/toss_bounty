@@ -16,6 +16,12 @@ defmodule TossBountyWeb.PlanController do
 
   action_fallback(TossBountyWeb.FallbackController)
 
+  def index(conn, %{"campaign_id" => campaign_id}) do
+    plans = StripeProcessing.list_plans(%{"campaign_id" => campaign_id})
+
+    render(conn, "index.json-api", plans: plans)
+  end
+
   def index(conn, %{"subscriber_id" => subscriber_id}) do
     plans = StripeProcessing.list_plans(%{"subscriber_id" => subscriber_id})
 

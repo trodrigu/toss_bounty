@@ -212,7 +212,7 @@ defmodule TossBountyWeb.PlanControllerTest do
     end
 
     @tag :authenticated
-    test "renders index of plans filtered by user id" do
+    test "renders index of plans filtered by campaign id", %{campaign: campaign} do
       other_repo = Repo.insert!(%GithubRepo{name: "foobar"})
 
       other_campaign =
@@ -246,7 +246,7 @@ defmodule TossBountyWeb.PlanControllerTest do
       conn =
         conn()
         |> put_req_header("authorization", "Bearer #{jwt}")
-        |> get(plan_path(conn, :index), %{user_id: user.id})
+        |> get(plan_path(conn, :index), %{campaign_id: campaign.id})
 
       response = json_response(conn, 200)
 
@@ -257,6 +257,7 @@ defmodule TossBountyWeb.PlanControllerTest do
       plans_title = plan_from_response["attributes"]["uuid"]
       assert plans_title != "12jfklsdf"
       assert plans_title == "some-plan-1"
+      assert Enum.count(response["data"]) == 1
     end
 
     setup [
