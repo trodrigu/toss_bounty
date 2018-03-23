@@ -93,10 +93,19 @@ defmodule TossBountyWeb.PlanController do
       }) do
     plan = StripeProcessing.get_plan!(id)
 
+    preloaded_plan = Repo.preload(plan, [:reward])
+    reward = preloaded_plan.reward
+    preloaded_reward = Repo.preload(reward, [:campaign])
+    campaign = preloaded_reward.campaign
+    preloaded_campaign = Repo.preload(campaign, [:user])
+    user = preloaded_campaign.user
+    connect_account = user.stripe_external_id
+
     attrs =
       data
       |> Params.to_attributes()
-      |> update_plan_in_stripe(conn)
+
+    update_plan_in_stripe(attrs, plan.uuid, connect_account)
 
     current_user = conn.assigns[:current_user]
 
@@ -117,8 +126,8 @@ defmodule TossBountyWeb.PlanController do
     end
   end
 
-  defp update_plan_in_stripe(attrs, conn) do
-    {:ok, stripe_plan} = @plan_updater.update(conn, attrs)
+  defp update_plan_in_stripe(attrs, uuid, connect_account) do
+    {:ok, stripe_plan} = @plan_updater.update(attrs, uuid, connect_account)
 
     attrs
     |> Enum.into(%{"uuid" => stripe_plan.id})
@@ -129,7 +138,9 @@ defmodule TossBountyWeb.PlanController do
 
     current_user = conn.assigns[:current_user]
 
-    case delete_plan_in_stripe(conn, plan.uuid) do
+    connect_account = current_user.stripe_external_id
+
+    case delete_plan_in_stripe(conn, plan.uuid, connect_account) do
       {:error, %Stripe.APIErrorResponse{} = response} ->
         conn
         |> put_status(404)
@@ -154,7 +165,7 @@ defmodule TossBountyWeb.PlanController do
     end
   end
 
-  defp delete_plan_in_stripe(conn, plan_id) do
-    @plan_deleter.delete(conn, plan_id)
+  defp delete_plan_in_stripe(conn, plan_id, connect_account) do
+    @plan_deleter.delete(conn, plan_id, connect_account)
   end
 end

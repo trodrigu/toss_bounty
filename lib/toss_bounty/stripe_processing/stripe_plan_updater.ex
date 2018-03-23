@@ -1,7 +1,9 @@
 defmodule TossBounty.StripeProcessing.StripePlanUpdater do
   @behaviour TossBountyWeb.PlanController.Behaviour
 
-  def update(attrs) do
-    Stripe.Plan.update(attrs)
+  def update(attrs, uuid, connect_account) do
+    name = attrs["name"]
+
+    Stripe.Plan.update(uuid, %{name: name}, connect_account: connect_account)
   end
 end

@@ -2,7 +2,7 @@ defmodule TossBountyWeb.PlanView do
   use TossBountyWeb.Web, :view
   use JaSerializer.PhoenixView
 
-  attributes([:uuid, :amount, :interval, :name, :currency])
+  attributes([:uuid, :amount, :interval, :name, :currency, :reward_id])
 
   def render("404.json-api", %{message: message}) do
     %{
