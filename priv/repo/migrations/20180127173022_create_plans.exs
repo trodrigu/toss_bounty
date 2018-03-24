@@ -8,7 +8,7 @@ defmodule TossBounty.Repo.Migrations.CreatePlans do
       add(:interval, :string)
       add(:name, :string)
       add(:currency, :string)
-      add(:reward_id, references(:rewards))
+      add(:reward_id, references(:rewards, on_delete: :delete_all))
     end
   end
 end

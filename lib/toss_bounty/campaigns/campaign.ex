@@ -15,7 +15,7 @@ defmodule TossBounty.Campaigns.Campaign do
     belongs_to(:user, User)
     belongs_to(:github_repo, GithubRepo)
 
-    has_many(:rewards, Reward)
+    has_many(:rewards, Reward, on_delete: :delete_all)
     timestamps()
   end
 

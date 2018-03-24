@@ -7,7 +7,7 @@ defmodule TossBounty.Incentive.Reward do
     field(:description, :string)
     field(:donation_level, :float)
     belongs_to(:campaign, TossBounty.Campaigns.Campaign)
-    has_one(:plan, TossBounty.StripeProcessing.Plan)
+    has_one(:plan, TossBounty.StripeProcessing.Plan, on_delete: :delete_all)
 
     timestamps()
   end
