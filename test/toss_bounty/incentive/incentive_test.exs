@@ -8,20 +8,21 @@ defmodule TossBounty.IncentiveTest do
 
     @valid_attrs %{
       description: "some description",
-      donation_level: 120.5,
+      donation_level: 120.5
     }
     @update_attrs %{
       description: "some updated description",
-      donation_level: 456.7,
+      donation_level: 456.7
     }
     @invalid_attrs %{
       description: nil,
-      donation_level: nil,
+      donation_level: nil
     }
 
     def reward_fixture(attrs \\ %{}) do
       campaign = Repo.insert!(%TossBounty.Campaigns.Campaign{})
       attrs = Map.put(attrs, :campaign_id, campaign.id)
+
       {:ok, reward} =
         attrs
         |> Enum.into(@valid_attrs)
@@ -31,7 +32,10 @@ defmodule TossBounty.IncentiveTest do
     end
 
     test "list_rewards/0 returns all rewards" do
-      reward = reward_fixture()
+      reward =
+        reward_fixture()
+        |> Repo.preload([:plan])
+
       assert Incentive.list_rewards() == [reward]
     end
 
