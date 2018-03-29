@@ -1,7 +1,7 @@
 defmodule TossBounty.StripeProcessing.MockStripePlanUpdater do
   @behaviour TossBountyWeb.PlanController.Behaviour
 
-  def update(conn, plan_id) do
+  def update(conn, attrs, plan_id, connect_account) do
     errors = conn.assigns[:errors]
 
     case errors do

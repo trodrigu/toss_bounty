@@ -1,7 +1,7 @@
 defmodule TossBounty.StripeProcessing.MockStripePlanDeleter do
   @behaviour TossBountyWeb.PlanController.Behaviour
 
-  def delete(conn, plan_id) do
+  def delete(conn, plan_id, _connect_account) do
     errors = conn.assigns[:errors]
 
     case errors do

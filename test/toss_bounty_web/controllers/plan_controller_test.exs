@@ -61,7 +61,7 @@ defmodule TossBountyWeb.PlanControllerTest do
   end
 
   def create_fixture_token(attrs \\ %{}) do
-    user = attrs[:current_user]
+    user = attrs[:user]
 
     token_attrs = %{
       uuid: "some-token-1",
@@ -458,13 +458,28 @@ defmodule TossBountyWeb.PlanControllerTest do
       :create_fixture_github_repo,
       :create_fixture_campaign,
       :create_fixture_reward,
-      :create_fixture_plan
+      :create_fixture_plan,
+      :create_fixture_token,
+      :create_fixture_customer,
+      :create_fixture_subscription
     ]
 
     @tag :authenticated
     test "deletes chosen plan", %{conn: conn, plan: plan} do
       conn = delete(conn, plan_path(conn, :delete, plan))
       assert response(conn, 204)
+    end
+
+    @tag :authenticated
+    test "deletes dependent subscriptions", %{conn: conn, plan: plan} do
+      conn = delete(conn, plan_path(conn, :delete, plan))
+
+      subscription_count =
+        Subscription
+        |> Repo.all()
+        |> Enum.count()
+
+      assert subscription_count == 0
     end
 
     @tag :authenticated

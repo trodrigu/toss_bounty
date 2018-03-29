@@ -4,6 +4,7 @@ defmodule TossBountyWeb.PlanController do
   alias TossBounty.StripeProcessing
   alias TossBounty.Accounts.User
   alias JaSerializer.Params
+  alias TossBounty.SubscriptionController
 
   @plan_creator Application.fetch_env!(:toss_bounty, :plan_creator)
   @plan_deleter Application.fetch_env!(:toss_bounty, :plan_deleter)
@@ -105,7 +106,7 @@ defmodule TossBountyWeb.PlanController do
       data
       |> Params.to_attributes()
 
-    update_plan_in_stripe(attrs, plan.uuid, connect_account)
+    update_plan_in_stripe(conn, attrs, plan.uuid, connect_account)
 
     current_user = conn.assigns[:current_user]
 
@@ -126,17 +127,28 @@ defmodule TossBountyWeb.PlanController do
     end
   end
 
-  defp update_plan_in_stripe(attrs, uuid, connect_account) do
-    {:ok, stripe_plan} = @plan_updater.update(attrs, uuid, connect_account)
+  defp update_plan_in_stripe(conn, attrs, uuid, connect_account) do
+    {:ok, stripe_plan} = @plan_updater.update(conn, attrs, uuid, connect_account)
 
     attrs
     |> Enum.into(%{"uuid" => stripe_plan.id})
   end
 
   def delete(conn, %{"id" => id}) do
-    plan = StripeProcessing.get_plan!(id)
+    plan =
+      StripeProcessing.get_plan!(id)
+      |> IO.inspect()
 
     current_user = conn.assigns[:current_user]
+
+    preloaded_plan =
+      plan
+      |> Repo.preload([:subscriptions])
+
+    subscriptions = preloaded_plan.subscriptions
+
+    subscriptions
+    |> Enum.each(fn subscription -> delete_subscriptions_in_stripe(conn, subscription) end)
 
     connect_account = current_user.stripe_external_id
 
@@ -167,5 +179,9 @@ defmodule TossBountyWeb.PlanController do
 
   defp delete_plan_in_stripe(conn, plan_id, connect_account) do
     @plan_deleter.delete(conn, plan_id, connect_account)
+  end
+
+  def delete_subscriptions_in_stripe(conn, subscription) do
+    TossBountyWeb.SubscriptionController.delete(conn, %{"id" => subscription.id})
   end
 end

@@ -12,7 +12,7 @@ defmodule TossBounty.StripeProcessing.Plan do
     field(:interval, :string)
     field(:name, :string)
     field(:currency, :string)
-    has_many(:subscriptions, Subscription)
+    has_many(:subscriptions, Subscription, on_delete: :delete_all)
     belongs_to(:reward, Reward)
   end
 

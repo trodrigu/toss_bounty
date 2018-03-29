@@ -1,7 +1,7 @@
 defmodule TossBountyWeb.RewardView do
   use TossBountyWeb.Web, :view
   use JaSerializer.PhoenixView
-  attributes([:description, :donation_level])
+  attributes([:description, :donation_level, :plan_id])
 
   has_one(
     :plan,
