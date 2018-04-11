@@ -5,13 +5,29 @@ defmodule TossBountyWeb.CampaignController do
   alias TossBounty.Campaigns.Campaign
   alias TossBounty.Accounts.CurrentUser
   alias JaSerializer.Params
+  require Ecto.Query
 
   action_fallback(TossBountyWeb.FallbackController)
 
-  def index(conn, %{"user_id" => user_id}) do
-    campaigns = Campaigns.list_campaigns(%{"user_id" => user_id})
+  def index(conn, params = %{"user_id" => user_id, "page" => page, "page_size" => page_size}) do
+    page =
+      TossBounty.Campaigns.Campaign
+      |> Ecto.Query.where(user_id: ^user_id)
+      |> Repo.paginate(params)
 
-    render(conn, "index.json-api", data: campaigns)
+    entries =
+      page.entries
+      |> Repo.preload(:github_repo)
+      |> Repo.preload(:user)
+
+    meta_data = %{
+      "page_number" => page.page_number,
+      "page_size" => page.page_size,
+      "total_pages" => page.total_pages,
+      "total_entries" => page.total_entries
+    }
+
+    render(conn, "index.json-api", data: entries, opts: [meta: meta_data])
   end
 
   def index(conn, _params) do

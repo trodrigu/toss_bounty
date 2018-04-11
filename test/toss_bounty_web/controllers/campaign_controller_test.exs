@@ -97,6 +97,15 @@ defmodule TossBountyWeb.CampaignControllerTest do
       assert Enum.count(data) == 1
     end
 
+    @tag :authenticated
+    test "allows pagination of campaigns", %{conn: conn, user_id: user_id} do
+      for _ <- 1..10, do: Repo.insert!(%TossBounty.Campaigns.Campaign{user_id: user_id})
+
+      conn = get(conn, campaign_path(conn, :index, %{user_id: user_id, page: 1, page_size: 5}))
+      data = json_response(conn, 200)["data"]
+      assert Enum.count(data) == 5
+    end
+
     test "renders 401 when not authenticated", %{conn: conn} do
       conn
       |> request_index

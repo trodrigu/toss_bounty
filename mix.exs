@@ -41,7 +41,8 @@ defmodule TossBounty.Mixfile do
         :timex,
         :timex_ecto,
         :stripity_stripe,
-        :oauth2
+        :oauth2,
+        :scrivener_ecto
       ]
     ]
   end
@@ -77,7 +78,8 @@ defmodule TossBounty.Mixfile do
       {:timex, "~> 3.1"},
       {:timex_ecto, "~> 3.2"},
       {:stripity_stripe, "~> 2.0.0-beta"},
-      {:oauth2, "~> 0.9"}
+      {:oauth2, "~> 0.9"},
+      {:scrivener_ecto, "~> 1.0"}
     ]
   end
 
