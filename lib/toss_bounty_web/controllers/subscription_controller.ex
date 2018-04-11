@@ -100,18 +100,36 @@ defmodule TossBountyWeb.SubscriptionController do
     Campaigns.update_campaign(campaign, %{current_funding: updated_current_funding})
   end
 
-  defp delete_subscription_in_stripe(conn, subscription_id) do
-    @subscription_deleter.delete(conn, subscription_id)
+  defp delete_subscription_in_stripe(conn, subscription_id, connect_account) do
+    @subscription_deleter.delete(conn, subscription_id, connect_account)
   end
 
   def delete(conn, %{"id" => id}) do
     subscription = StripeProcessing.get_subscription!(id)
 
+    subscription_uuid = subscription.uuid
+
+    query =
+      from(
+        u in User,
+        join: c in assoc(u, :campaigns),
+        join: r in assoc(c, :rewards),
+        join: p in assoc(r, :plan),
+        join: s in assoc(p, :subscriptions),
+        where: s.uuid == ^subscription_uuid
+      )
+
+    connect_account = Repo.one(query)
+
     current_user = conn.assigns[:current_user]
 
     case TossBounty.Policy.authorize(current_user, :administer, subscription) do
       {:ok, :authorized} ->
-        case delete_subscription_in_stripe(conn, subscription.uuid) do
+        case delete_subscription_in_stripe(
+               conn,
+               subscription.uuid,
+               connect_account.stripe_external_id
+             ) do
           {:error, %Stripe.APIErrorResponse{} = response} ->
             conn
             |> put_status(404)
