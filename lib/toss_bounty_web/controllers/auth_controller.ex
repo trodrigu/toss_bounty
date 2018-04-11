@@ -22,7 +22,10 @@ defmodule TossBountyWeb.AuthController do
 
     stripe_access_token = token_response.stripe_user_id
     front_end_url = Application.fetch_env!(:toss_bounty, :front_end_url)
-    total_redirect_url = front_end_url <> "/#/save-stripe?stripe_id=#{stripe_access_token}"
+
+    total_redirect_url =
+      (front_end_url <> "/#/save-stripe?stripe_id=#{stripe_access_token}")
+      |> IO.inspect()
 
     conn
     |> redirect(external: total_redirect_url)
