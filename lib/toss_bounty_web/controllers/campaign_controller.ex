@@ -9,6 +9,27 @@ defmodule TossBountyWeb.CampaignController do
 
   action_fallback(TossBountyWeb.FallbackController)
 
+  def index(conn, params = %{"page" => page, "page_size" => page_size}) do
+    IO.inspect "page: #{page}"
+    page =
+      TossBounty.Campaigns.Campaign
+      |> Repo.paginate(params)
+
+    entries =
+      page.entries
+      |> Repo.preload(:github_repo)
+      |> Repo.preload(:user)
+
+    meta_data = %{
+      "page_number" => page.page_number,
+      "page_size" => page.page_size,
+      "total_pages" => page.total_pages,
+      "total_entries" => page.total_entries
+    }
+
+    render(conn, "index.json-api", data: entries, opts: [meta: meta_data])
+  end
+
   def index(conn, params = %{"user_id" => user_id, "page" => page, "page_size" => page_size}) do
     page =
       TossBounty.Campaigns.Campaign
