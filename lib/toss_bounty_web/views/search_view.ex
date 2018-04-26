@@ -1,9 +1,9 @@
-defmodule TossBountyWeb.CampaignView do
+defmodule TossBountyWeb.SearchView do
   use TossBountyWeb.Web, :view
   use JaSerializer.PhoenixView
 
   attributes([
-    :current_funding,
+    :funding_end_date,
     :funding_goal,
     :long_description,
     :inserted_at,

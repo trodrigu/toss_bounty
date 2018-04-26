@@ -61,5 +61,6 @@ defmodule TossBountyWeb.Router do
     resources("/customers", CustomerController, only: [:create])
     resources("/plans", PlanController, only: [:create, :delete, :update, :show, :index])
     resources("/subscriptions", SubscriptionController, only: [:index, :create, :delete])
+    resources("/search", SearchController, only: [:index])
   end
 end

@@ -9,7 +9,6 @@ defmodule TossBounty.Campaigns.Campaign do
 
   schema "campaigns" do
     field(:current_funding, :float)
-    field(:funding_end_date, Timex.Ecto.DateTimeWithTimezone)
     field(:funding_goal, :float)
     field(:long_description, :binary)
     belongs_to(:user, User)
@@ -26,14 +25,12 @@ defmodule TossBounty.Campaigns.Campaign do
       :long_description,
       :funding_goal,
       :current_funding,
-      :funding_end_date,
       :user_id,
       :github_repo_id
     ])
     |> validate_required([
       :long_description,
       :funding_goal,
-      :funding_end_date,
       :user_id,
       :github_repo_id
     ])
