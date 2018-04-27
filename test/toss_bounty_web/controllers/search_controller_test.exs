@@ -25,6 +25,7 @@ defmodule TossBountyWeb.SearchControllerTest do
   }
 
   setup config = %{conn: conn, current_user: current_user} do
+    IO.inspect current_user
     user =
       case current_user do
         %User{} ->
@@ -79,7 +80,7 @@ defmodule TossBountyWeb.SearchControllerTest do
   describe "index" do
     setup [:create_fixture_github_repo, :create_fixture_campaign]
     @tag :authenticated
-    test "renders index of resources", %{conn: conn, user: user} do
+    test "renders index of resources matching github repo name", %{conn: conn, user: user} do
       github_repo_attrs = %{
         name: "dude",
         owner: "dude",
@@ -105,6 +106,41 @@ defmodule TossBountyWeb.SearchControllerTest do
         |> Campaigns.create_campaign()
 
       conn = get(conn, search_path(conn, :index, %{page: 1, page_size: 5, search: "name"}))
+      assert conn |> json_response(200)
+      data = json_response(conn, 200)["data"]
+      assert Enum.count(data) == 1
+    end
+
+    @tag :authenticated
+    test "renders index of resources matching user name", %{conn: conn, user: user} do
+      other_user = insert_user(name: "another dev", email: "some_other_email@test.com")
+
+      github_repo_attrs = %{
+        name: "dude",
+        owner: "dude",
+        bountiful_score: 5,
+        image: "an-img-path",
+        user_id: other_user.id
+      }
+
+      {:ok, github_repo} =
+        %GithubRepo{}
+        |> GithubRepo.changeset(github_repo_attrs)
+        |> Repo.insert()
+
+      updated_campaign_attrs = %{
+        long_description: "a longer description",
+        funding_goal: 20000.00,
+        user_id: user.id,
+        github_repo_id: github_repo.id
+      }
+
+      {:ok, campaign} =
+        updated_campaign_attrs
+        |> Campaigns.create_campaign()
+
+      conn = get(conn, search_path(conn, :index, %{page: 1, page_size: 5, search: "another"}))
+      IO.inspect( Repo.all User )
       assert conn |> json_response(200)
       data = json_response(conn, 200)["data"]
       assert Enum.count(data) == 1

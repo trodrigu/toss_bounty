@@ -10,19 +10,20 @@ defmodule TossBountyWeb.SearchController do
   action_fallback(TossBountyWeb.FallbackController)
 
   def index(conn, params = %{"page" => page, "page_size" => page_size, "search" => search}) do
+    IO.inspect search
+
+    search_result =
+      TossBountySearch.run(Campaign, search)
+
     page =
-      TossBounty.Campaigns.Campaign
+      search_result
       |> Repo.paginate(params)
 
     entries =
       page.entries
       |> Repo.preload(:github_repo)
       |> Repo.preload(:user)
-
-    IO.inspect entries
-
-    search_result =
-      TossBountySearch.run(search: search)
+      |> IO.inspect
 
     meta_data = %{
       "page_number" => page.page_number,
