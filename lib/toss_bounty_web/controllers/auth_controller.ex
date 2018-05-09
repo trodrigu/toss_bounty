@@ -69,8 +69,12 @@ defmodule TossBountyWeb.AuthController do
 
         user_id = user_with_updated_github_token.id
 
+        IO.inspect("user_id: #{user_id}")
+
         total_redirect_url =
           front_end_url <> "/#/save-session/?token=#{token}&email=#{email}&user_id=#{user_id}"
+
+        IO.inspect("total redirect url: #{total_redirect_url}")
 
         conn
         |> Plug.Conn.assign(:current_user, user_with_updated_github_token)
