@@ -334,6 +334,54 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
       hidden: false,
       to: "toss_bounty.github_strategy"
     ],
+    "toss_bounty.customer_creator": [
+      commented: false,
+      datatype: :atom,
+      default: TossBounty.StripeProcessing.StripeCustomerCreator,
+      doc: "Provide documentation for toss_bounty.customer_creator here.",
+      hidden: false,
+      to: "toss_bounty.customer_creator"
+    ],
+    "toss_bounty.plan_creator": [
+      commented: false,
+      datatype: :atom,
+      default: TossBounty.StripeProcessing.StripePlanCreator,
+      doc: "Provide documentation for toss_bounty.plan_creator here.",
+      hidden: false,
+      to: "toss_bounty.plan_creator"
+    ],
+    "toss_bounty.plan_deleter": [
+      commented: false,
+      datatype: :atom,
+      default: TossBounty.StripeProcessing.StripePlanDeleter,
+      doc: "Provide documentation for toss_bounty.plan_deleter here.",
+      hidden: false,
+      to: "toss_bounty.plan_deleter"
+    ],
+    "toss_bounty.plan_updater": [
+      commented: false,
+      datatype: :atom,
+      default: TossBounty.StripeProcessing.StripePlanUpdater,
+      doc: "Provide documentation for toss_bounty.plan_updater here.",
+      hidden: false,
+      to: "toss_bounty.plan_updater"
+    ],
+    "toss_bounty.subscription_creator": [
+      commented: false,
+      datatype: :atom,
+      default: TossBounty.StripeProcessing.StripeSubscriptionCreator,
+      doc: "Provide documentation for toss_bounty.subscription_creator here.",
+      hidden: false,
+      to: "toss_bounty.subscription_creator"
+    ],
+    "toss_bounty.subscription_deleter": [
+      commented: false,
+      datatype: :atom,
+      default: TossBounty.StripeProcessing.StripeSubscriptionCreator,
+      doc: "Provide documentation for toss_bounty.subscription_deleter here.",
+      hidden: false,
+      to: "toss_bounty.subscription_deleter"
+    ],
     "oauth2.Elixir.Github.client_id": [
       commented: false,
       datatype: :atom,
