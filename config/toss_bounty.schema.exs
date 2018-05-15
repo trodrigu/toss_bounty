@@ -289,26 +289,26 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
       hidden: false,
       to: "toss_bounty.guardian_secret_key"
     ],
-    "toss_bounty.Elixir.Github.client_id": [
+    "oauth2.Github.client_id": [
       commented: false,
       datatype: :atom,
-      doc: "Provide documentation for toss_bounty.Elixir.Github.client_id here.",
+      doc: "Provide documentation for oauth2.Github.client_id here.",
       hidden: false,
-      to: "toss_bounty.Elixir.Github.client_id"
+      to: "oauth2.Github.client_id"
     ],
-    "toss_bounty.Elixir.Github.client_secret": [
+    "oauth2.Github.client_secret": [
       commented: false,
       datatype: :atom,
-      doc: "Provide documentation for toss_bounty.Elixir.Github.client_secret here.",
+      doc: "Provide documentation for oauth2.Github.client_secret here.",
       hidden: false,
-      to: "toss_bounty.Elixir.Github.client_secret"
+      to: "oauth2.Github.client_secret"
     ],
-    "toss_bounty.Elixir.Github.redirect_uri": [
+    "oauth2.Github.redirect_uri": [
       commented: false,
       datatype: :atom,
-      doc: "Provide documentation for toss_bounty.Elixir.Github.redirect_uri here.",
+      doc: "Provide documentation for oauth2.Github.redirect_uri here.",
       hidden: false,
-      to: "toss_bounty.Elixir.Github.redirect_uri"
+      to: "oauth2.Github.redirect_uri"
     ],
     "toss_bounty.repo_grabber": [
       commented: false,
