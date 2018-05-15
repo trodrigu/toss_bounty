@@ -432,17 +432,17 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
       hidden: false,
       to: "toss_bounty.front_end_url"
     ],
-    "stripity_stripe.secret_key": [
+    "stripity_stripe.api_key": [
       commented: false,
-      doc: "The stripe secret key",
+      doc: "The stripe api key",
       hidden: false,
-      to: "stripity_stripe.secret_key"
+      to: "stripity_stripe.api_key"
     ],
-    "stripity_stripe.platform_client_id": [
+    "stripity_stripe.connect_client_id": [
       commented: false,
       doc: "The stripe client id",
       hidden: false,
-      to: "stripity_stripe.platform_client_id"
+      to: "stripity_stripe.connect_client_id"
     ]
   ],
   transforms: [],
