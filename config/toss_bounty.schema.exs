@@ -431,6 +431,18 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
       doc: "The front end url of the TossBounty website",
       hidden: false,
       to: "toss_bounty.front_end_url"
+    ],
+    "stripity_stripe.secret_key": [
+      commented: false,
+      doc: "The stripe secret key",
+      hidden: false,
+      to: "stripity_stripe.secret_key"
+    ],
+    "stripity_stripe.platform_client_id": [
+      commented: false,
+      doc: "The stripe client id",
+      hidden: false,
+      to: "stripity_stripe.platform_client_id"
     ]
   ],
   transforms: [],
