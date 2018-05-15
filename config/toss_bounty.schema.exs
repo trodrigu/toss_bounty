@@ -398,20 +398,20 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
       hidden: false,
       to: "guardian.Elixir.Guardian.issuer"
     ],
-    "guardian.Elixir.Guardian.secret_key": [
+    "guardian.Guardian.secret_key": [
       commented: false,
       datatype: :binary,
-      doc: "Provide documentation for guardian.Elixir.Guardian.secret_key here.",
+      doc: "Provide documentation for guardian.Guardian.secret_key here.",
       hidden: false,
-      to: "guardian.Elixir.Guardian.secret_key"
+      to: "guardian.Guardian.secret_key"
     ],
-    "guardian.Elixir.Guardian.serializer": [
+    "guardian.Guardian.serializer": [
       commented: false,
       datatype: :atom,
       default: TossBounty.GuardianSerializer,
       doc: "Provide documentation for guardian.Elixir.Guardian.serializer here.",
       hidden: false,
-      to: "guardian.Elixir.Guardian.serializer"
+      to: "guardian.Guardian.serializer"
     ],
     "tentacat.extra_headers": [
       commented: false,
