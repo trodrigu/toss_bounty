@@ -382,27 +382,6 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
       hidden: false,
       to: "toss_bounty.subscription_deleter"
     ],
-    "oauth2.Elixir.Github.client_id": [
-      commented: false,
-      datatype: :atom,
-      doc: "Provide documentation for oauth2.Elixir.Github.client_id here.",
-      hidden: false,
-      to: "oauth2.Elixir.Github.client_id"
-    ],
-    "oauth2.Elixir.Github.client_secret": [
-      commented: false,
-      datatype: :atom,
-      doc: "Provide documentation for oauth2.Elixir.Github.client_secret here.",
-      hidden: false,
-      to: "oauth2.Elixir.Github.client_secret"
-    ],
-    "oauth2.Elixir.Github.redirect_uri": [
-      commented: false,
-      datatype: :atom,
-      doc: "Provide documentation for oauth2.Elixir.Github.redirect_uri here.",
-      hidden: false,
-      to: "oauth2.Elixir.Github.redirect_uri"
-    ],
     "ja_resource.repo": [
       commented: false,
       datatype: :atom,
