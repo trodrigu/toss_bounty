@@ -1,3 +1,5 @@
+require Logger
+
 defmodule TossBountyWeb.AuthController do
   use TossBountyWeb.Web, :controller
   alias TossBounty.Accounts.User
@@ -69,8 +71,16 @@ defmodule TossBountyWeb.AuthController do
 
         user_id = user_with_updated_github_token.id
 
+        Logger.info(fn ->
+          "user id: #{user_id}"
+        end)
+
         total_redirect_url =
           front_end_url <> "/#/save-session/?token=#{token}&email=#{email}&user_id=#{user_id}"
+
+        Logger.info(fn ->
+          "total redirect url: #{total_redirect_url}"
+        end)
 
         conn
         |> Plug.Conn.assign(:current_user, user_with_updated_github_token)

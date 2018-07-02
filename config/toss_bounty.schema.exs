@@ -289,26 +289,26 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
       hidden: false,
       to: "toss_bounty.guardian_secret_key"
     ],
-    "toss_bounty.Elixir.Github.client_id": [
+    "oauth2.Github.client_id": [
       commented: false,
       datatype: :atom,
-      doc: "Provide documentation for toss_bounty.Elixir.Github.client_id here.",
+      doc: "Provide documentation for oauth2.Github.client_id here.",
       hidden: false,
-      to: "toss_bounty.Elixir.Github.client_id"
+      to: "oauth2.Github.client_id"
     ],
-    "toss_bounty.Elixir.Github.client_secret": [
+    "oauth2.Github.client_secret": [
       commented: false,
       datatype: :atom,
-      doc: "Provide documentation for toss_bounty.Elixir.Github.client_secret here.",
+      doc: "Provide documentation for oauth2.Github.client_secret here.",
       hidden: false,
-      to: "toss_bounty.Elixir.Github.client_secret"
+      to: "oauth2.Github.client_secret"
     ],
-    "toss_bounty.Elixir.Github.redirect_uri": [
+    "oauth2.Github.redirect_uri": [
       commented: false,
       datatype: :atom,
-      doc: "Provide documentation for toss_bounty.Elixir.Github.redirect_uri here.",
+      doc: "Provide documentation for oauth2.Github.redirect_uri here.",
       hidden: false,
-      to: "toss_bounty.Elixir.Github.redirect_uri"
+      to: "oauth2.Github.redirect_uri"
     ],
     "toss_bounty.repo_grabber": [
       commented: false,
@@ -334,26 +334,53 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
       hidden: false,
       to: "toss_bounty.github_strategy"
     ],
-    "oauth2.Elixir.Github.client_id": [
+    "toss_bounty.customer_creator": [
       commented: false,
       datatype: :atom,
-      doc: "Provide documentation for oauth2.Elixir.Github.client_id here.",
+      default: TossBounty.StripeProcessing.StripeCustomerCreator,
+      doc: "Provide documentation for toss_bounty.customer_creator here.",
       hidden: false,
-      to: "oauth2.Elixir.Github.client_id"
+      to: "toss_bounty.customer_creator"
     ],
-    "oauth2.Elixir.Github.client_secret": [
+    "toss_bounty.plan_creator": [
       commented: false,
       datatype: :atom,
-      doc: "Provide documentation for oauth2.Elixir.Github.client_secret here.",
+      default: TossBounty.StripeProcessing.StripePlanCreator,
+      doc: "Provide documentation for toss_bounty.plan_creator here.",
       hidden: false,
-      to: "oauth2.Elixir.Github.client_secret"
+      to: "toss_bounty.plan_creator"
     ],
-    "oauth2.Elixir.Github.redirect_uri": [
+    "toss_bounty.plan_deleter": [
       commented: false,
       datatype: :atom,
-      doc: "Provide documentation for oauth2.Elixir.Github.redirect_uri here.",
+      default: TossBounty.StripeProcessing.StripePlanDeleter,
+      doc: "Provide documentation for toss_bounty.plan_deleter here.",
       hidden: false,
-      to: "oauth2.Elixir.Github.redirect_uri"
+      to: "toss_bounty.plan_deleter"
+    ],
+    "toss_bounty.plan_updater": [
+      commented: false,
+      datatype: :atom,
+      default: TossBounty.StripeProcessing.StripePlanUpdater,
+      doc: "Provide documentation for toss_bounty.plan_updater here.",
+      hidden: false,
+      to: "toss_bounty.plan_updater"
+    ],
+    "toss_bounty.subscription_creator": [
+      commented: false,
+      datatype: :atom,
+      default: TossBounty.StripeProcessing.StripeSubscriptionCreator,
+      doc: "Provide documentation for toss_bounty.subscription_creator here.",
+      hidden: false,
+      to: "toss_bounty.subscription_creator"
+    ],
+    "toss_bounty.subscription_deleter": [
+      commented: false,
+      datatype: :atom,
+      default: TossBounty.StripeProcessing.StripeSubscriptionCreator,
+      doc: "Provide documentation for toss_bounty.subscription_deleter here.",
+      hidden: false,
+      to: "toss_bounty.subscription_deleter"
     ],
     "ja_resource.repo": [
       commented: false,
@@ -371,20 +398,20 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
       hidden: false,
       to: "guardian.Elixir.Guardian.issuer"
     ],
-    "guardian.Elixir.Guardian.secret_key": [
+    "guardian.Guardian.secret_key": [
       commented: false,
       datatype: :binary,
-      doc: "Provide documentation for guardian.Elixir.Guardian.secret_key here.",
+      doc: "Provide documentation for guardian.Guardian.secret_key here.",
       hidden: false,
-      to: "guardian.Elixir.Guardian.secret_key"
+      to: "guardian.Guardian.secret_key"
     ],
-    "guardian.Elixir.Guardian.serializer": [
+    "guardian.Guardian.serializer": [
       commented: false,
       datatype: :atom,
       default: TossBounty.GuardianSerializer,
       doc: "Provide documentation for guardian.Elixir.Guardian.serializer here.",
       hidden: false,
-      to: "guardian.Elixir.Guardian.serializer"
+      to: "guardian.Guardian.serializer"
     ],
     "tentacat.extra_headers": [
       commented: false,
@@ -404,6 +431,18 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
       doc: "The front end url of the TossBounty website",
       hidden: false,
       to: "toss_bounty.front_end_url"
+    ],
+    "stripity_stripe.api_key": [
+      commented: false,
+      doc: "The stripe api key",
+      hidden: false,
+      to: "stripity_stripe.api_key"
+    ],
+    "stripity_stripe.connect_client_id": [
+      commented: false,
+      doc: "The stripe client id",
+      hidden: false,
+      to: "stripity_stripe.connect_client_id"
     ]
   ],
   transforms: [],
