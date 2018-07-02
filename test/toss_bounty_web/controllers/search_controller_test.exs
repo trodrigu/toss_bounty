@@ -25,7 +25,6 @@ defmodule TossBountyWeb.SearchControllerTest do
   }
 
   setup config = %{conn: conn, current_user: current_user} do
-    IO.inspect current_user
     user =
       case current_user do
         %User{} ->
@@ -140,7 +139,6 @@ defmodule TossBountyWeb.SearchControllerTest do
         |> Campaigns.create_campaign()
 
       conn = get(conn, search_path(conn, :index, %{page: 1, page_size: 5, search: "another"}))
-      IO.inspect( Repo.all User )
       assert conn |> json_response(200)
       data = json_response(conn, 200)["data"]
       assert Enum.count(data) == 1
