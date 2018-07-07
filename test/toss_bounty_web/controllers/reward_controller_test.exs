@@ -104,7 +104,8 @@ defmodule TossBountyWeb.RewardControllerTest do
                "type" => "reward",
                "attributes" => %{
                  "description" => "some description",
-                 "donation-level" => 120.5
+                 "donation-level" => 120.5,
+                 "plan-id" => nil
                },
                "relationships" => %{"plan" => %{"data" => nil}}
              }
