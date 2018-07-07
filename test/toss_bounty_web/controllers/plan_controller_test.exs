@@ -117,7 +117,6 @@ defmodule TossBountyWeb.PlanControllerTest do
       |> Enum.into(%{
         long_description: "a longer description",
         funding_goal: 20000.00,
-        funding_end_date: Timex.parse!("Tue, 06 Mar 2013 01:25:19 +0200", "{RFC1123}"),
         user_id: user.id,
         github_repo_id: github_repo.id
       })
@@ -218,7 +217,6 @@ defmodule TossBountyWeb.PlanControllerTest do
       other_campaign =
         Repo.insert!(%Campaign{
           current_funding: 100.0,
-          funding_end_date: Timex.parse!("Tue, 06 Mar 2013 01:25:19 +0200", "{RFC1123}"),
           funding_goal: 100.0,
           github_repo_id: other_repo.id
         })
@@ -275,7 +273,6 @@ defmodule TossBountyWeb.PlanControllerTest do
       other_campaign =
         Repo.insert!(%Campaign{
           current_funding: 100.0,
-          funding_end_date: Timex.parse!("Tue, 06 Mar 2013 01:25:19 +0200", "{RFC1123}"),
           funding_goal: 100.0,
           github_repo_id: other_repo.id
         })
