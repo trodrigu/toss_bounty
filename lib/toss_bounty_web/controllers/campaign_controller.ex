@@ -9,10 +9,10 @@ defmodule TossBountyWeb.CampaignController do
 
   action_fallback(TossBountyWeb.FallbackController)
 
-  def index(conn, params = %{"page" => page, "page_size" => page_size}) do
-    IO.inspect "page: #{page}"
+  def index(conn, params = %{"user_id" => user_id, "page" => page, "page_size" => page_size}) do
     page =
       TossBounty.Campaigns.Campaign
+      |> Ecto.Query.where(user_id: ^user_id)
       |> Repo.paginate(params)
 
     entries =
@@ -30,10 +30,10 @@ defmodule TossBountyWeb.CampaignController do
     render(conn, "index.json-api", data: entries, opts: [meta: meta_data])
   end
 
-  def index(conn, params = %{"user_id" => user_id, "page" => page, "page_size" => page_size}) do
+  def index(conn, params = %{"page" => page, "page_size" => page_size}) do
+    IO.inspect "page: #{page}"
     page =
       TossBounty.Campaigns.Campaign
-      |> Ecto.Query.where(user_id: ^user_id)
       |> Repo.paginate(params)
 
     entries =
