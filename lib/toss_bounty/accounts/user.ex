@@ -50,7 +50,7 @@ defmodule TossBounty.Accounts.User do
   def registration_changeset(%User{} = user, params) do
     user
     |> changeset(params)
-    |> cast(params, [:password, :email])
+    |> cast(params, [:password, :email, :name])
     |> validate_required(:password)
     |> validate_length(:password, min: 6, max: 100)
     |> validate_confirmation(:password, message: "does not match password!")
