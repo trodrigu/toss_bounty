@@ -1,0 +1,52 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "npm",
+            "script": "build",
+            "path": "deps/phoenix/",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "taskName": "Run Focused Test",
+            "command": "mix test ${relativeFile}:${lineNumber}",
+            "type": "shell",
+            "group": "test",
+            "presentation": {
+            "echo": true,
+            "reveal": "always",
+            "focus": false,
+            "panel": "shared"
+            }
+            },
+            {
+            "taskName": "Test Current File",
+            "command": "mix test ${relativeFile}",
+            "group": "test",
+            "type": "shell",
+            "presentation": {
+            "echo": true,
+            "reveal": "always",
+            "focus": false,
+            "panel": "shared"
+            }
+            },
+            {
+            "taskName": "Run All Tests",
+            "command": "mix test",
+            "type": "shell",
+            "group": "test",
+            "presentation": {
+            "echo": true,
+            "reveal": "always",
+            "focus": false,
+            "panel": "shared"
+            }
+        }
+    ]
+}
