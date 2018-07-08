@@ -63,4 +63,8 @@ defmodule TossBountyWeb.Router do
     resources("/subscriptions", SubscriptionController, only: [:index, :create, :delete])
     resources("/search", SearchController, only: [:index])
   end
+  if Mix.env == :dev do
+    # If using Phoenix
+    forward "/sent_emails", Bamboo.SentEmailViewerPlug
+  end
 end
