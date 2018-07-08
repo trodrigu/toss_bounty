@@ -42,7 +42,8 @@ defmodule TossBounty.Mixfile do
         :timex_ecto,
         :stripity_stripe,
         :oauth2,
-        :scrivener_ecto
+        :scrivener_ecto,
+        :bamboo
       ]
     ]
   end
@@ -79,7 +80,8 @@ defmodule TossBounty.Mixfile do
       {:timex_ecto, "~> 3.2"},
       {:stripity_stripe, "~> 2.0.0-beta"},
       {:oauth2, "~> 0.9"},
-      {:scrivener_ecto, "~> 1.0"}
+      {:scrivener_ecto, "~> 1.0"},
+      {:bamboo, github: "thoughtbot/bamboo"}
     ]
   end
 

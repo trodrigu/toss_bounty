@@ -7,6 +7,8 @@ defmodule TossBountyWeb.AuthController do
   alias TossBounty.Github.SellableIssues
   alias TossBounty.Github.GithubRepo
   alias TossBounty.Github.GithubIssue
+  alias TossBountyWeb.Mailer
+  alias TossBountyWeb.Email
 
   @doc """
   This action is reached via `/auth/:provider/callback` is the callback URL that
@@ -74,6 +76,9 @@ defmodule TossBountyWeb.AuthController do
         Logger.info(fn ->
           "user id: #{user_id}"
         end)
+
+        Email.welcome_email(user)
+        |> Mailer.deliver_now()
 
         total_redirect_url =
           front_end_url <> "/#/save-session/?token=#{token}&email=#{email}&user_id=#{user_id}"
