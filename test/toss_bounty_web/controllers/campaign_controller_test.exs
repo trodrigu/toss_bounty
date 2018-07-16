@@ -89,7 +89,7 @@ defmodule TossBountyWeb.CampaignControllerTest do
     test "lists campaigns filtered by user id", %{conn: conn, user_id: user_id} do
       campaign = Repo.insert!(%TossBounty.Campaigns.Campaign{user_id: user_id})
       other_campaign = Repo.insert!(%TossBounty.Campaigns.Campaign{})
-      conn = get(conn, campaign_path(conn, :index, %{user_id: user_id, page: 1, page_size: 5}))
+      conn = get(conn, campaign_path(conn, :index, %{user_id: user_id, page: 1, page_size: 10}))
       data = json_response(conn, 200)["data"]
       assert Enum.count(data) == 1
     end

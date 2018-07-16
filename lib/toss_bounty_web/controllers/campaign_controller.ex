@@ -31,6 +31,7 @@ defmodule TossBountyWeb.CampaignController do
   end
 
   def index(conn, params = %{"page" => page, "page_size" => page_size}) do
+    IO.inspect "page: #{page}"
     page =
       TossBounty.Campaigns.Campaign
       |> Repo.paginate(params)

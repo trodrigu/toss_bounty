@@ -61,3 +61,6 @@ config :stripity_stripe, api_key: System.get_env("STRIPE_SECRET_KEY")
 config :stripity_stripe, connect_client_id: System.get_env("STRIPE_CONNECT_CLIENT_ID")
 
 config :toss_bounty, stripe_strategy: TossBountyWeb.StripeClientStrategy
+
+config :toss_bounty, TossBountyWeb.Mailer,
+  adapter: Bamboo.LocalAdapter

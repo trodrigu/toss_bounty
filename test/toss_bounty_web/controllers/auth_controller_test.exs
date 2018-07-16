@@ -1,5 +1,6 @@
 defmodule TossBountyWeb.AuthControllerTest do
   use TossBountyWeb.ApiCase
+  use Bamboo.Test
   import TossBountyWeb.AuthenticationTestHelpers
   alias TossBounty.Accounts.User
   alias TossBounty.Repo
@@ -9,6 +10,7 @@ defmodule TossBountyWeb.AuthControllerTest do
   alias TossBounty.Github.SellableIssues.MockIssuesGrabber
   alias TossBounty.Github.GithubRepo
   alias TossBounty.Github.GithubIssue
+  alias TossBountyWeb.Email
 
   setup do
     conn = build_conn()
@@ -27,6 +29,12 @@ defmodule TossBountyWeb.AuthControllerTest do
       assert redirected_to(conn) =~ "email"
       assert redirected_to(conn) =~ "token"
       assert redirected_to(conn) =~ "user_id"
+    end
+
+    test "when github returns the email we send out a welcome email", %{conn: conn} do
+      conn = get(conn, "/auth/github/callback?code=stuff")
+      user = Repo.one(from(u in User))
+      assert_delivered_email(TossBountyWeb.Email.welcome_email(user))
     end
 
     test "when github creates user if one not found", %{conn: conn} do
