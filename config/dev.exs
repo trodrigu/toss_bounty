@@ -62,5 +62,4 @@ config :stripity_stripe, connect_client_id: System.get_env("STRIPE_CONNECT_CLIEN
 
 config :toss_bounty, stripe_strategy: TossBountyWeb.StripeClientStrategy
 
-config :toss_bounty, TossBountyWeb.Mailer,
-  adapter: Bamboo.LocalAdapter
+config :toss_bounty, TossBountyWeb.Mailer, adapter: Bamboo.LocalAdapter
