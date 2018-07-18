@@ -15,7 +15,20 @@ defmodule TossBounty.StripeProcessing.MockStripePlanDeleter do
          }}
 
       _ ->
-        {:ok, %{deleted: true, id: "plan_CDYHNRRzrjnVTO"}}
+        {:ok,
+         %Stripe.Plan{
+           amount: nil,
+           created: nil,
+           currency: nil,
+           id: "plan_DFqHYy1R501ENI",
+           interval_count: nil,
+           livemode: nil,
+           metadata: nil,
+           name: nil,
+           object: "plan",
+           statement_descriptor: nil,
+           trial_period_days: nil
+         }}
     end
   end
 end

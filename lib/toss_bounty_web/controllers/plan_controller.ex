@@ -158,7 +158,7 @@ defmodule TossBountyWeb.PlanController do
         |> put_status(404)
         |> render("404.json-api", %{message: response.message})
 
-      {:ok, %{deleted: true, id: id}} ->
+      {:ok, %Stripe.Plan{id: id}} ->
         case TossBounty.Policy.authorize(current_user, :administer, plan) do
           {:ok, :authorized} ->
             with {:ok, %Plan{}} <- StripeProcessing.delete_plan(plan) do
