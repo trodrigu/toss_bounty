@@ -43,6 +43,15 @@ defmodule TossBountyWeb.AuthControllerTest do
       assert user_count == 1
     end
 
+    test "when github returns the email, sends welcome email", %{conn: conn} do
+      conn = get(conn, "/auth/github/callback?code=stuff")
+      user =
+        User
+        |> Ecto.Query.first
+        |> Repo.one
+      assert_delivered_email TossBountyWeb.Email.welcome_email(user)
+    end
+
     test "when github updates the user's github token if already in db", %{conn: conn} do
       Repo.insert!(%User{email: "test@test.com", github_token: "different-token"})
       conn = get(conn, "/auth/github/callback?code=stuff")
