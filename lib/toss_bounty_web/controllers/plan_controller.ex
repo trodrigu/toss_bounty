@@ -106,32 +106,36 @@ defmodule TossBountyWeb.PlanController do
       data
       |> Params.to_attributes()
 
-    update_plan_in_stripe(conn, attrs, plan.uuid, connect_account)
-
     current_user = conn.assigns[:current_user]
 
-    case TossBounty.Policy.authorize(current_user, :administer, plan, attrs) do
-      {:ok, :authorized} ->
-        with {:ok, %Plan{} = plan} <- StripeProcessing.update_plan(plan, plan_params) do
-          render(conn, "show.json-api", plan: plan)
-        end
-
-      {:error, :not_authorized} ->
-        message =
-          "User with id: #{current_user.id} is not authorized " <>
-            "to administer plan with id: #{plan.id}"
-
+    case update_plan_in_stripe(conn, attrs, plan.uuid, connect_account) do
+      {:error, %Stripe.APIErrorResponse{} = response} ->
         conn
-        |> put_status(403)
-        |> render("403.json-api", %{message: message})
+        |> put_status(404)
+        |> render("404.json-api", %{message: response.message})
+
+      {:ok, %Stripe.Plan{id: id}} ->
+        case TossBounty.Policy.authorize(current_user, :administer, plan, attrs) do
+          {:ok, :authorized} ->
+
+            with {:ok, %Plan{} = plan} <- StripeProcessing.update_plan(plan, plan_params) do
+              render(conn, "show.json-api", plan: plan)
+            end
+
+          {:error, :not_authorized} ->
+            message =
+              "User with id: #{current_user.id} is not authorized " <>
+                "to administer plan with id: #{plan.id}"
+
+            conn
+            |> put_status(403)
+            |> render("403.json-api", %{message: message})
+        end
     end
   end
 
   defp update_plan_in_stripe(conn, attrs, uuid, connect_account) do
-    {:ok, stripe_plan} = @plan_updater.update(conn, attrs, uuid, connect_account)
-
-    attrs
-    |> Enum.into(%{"uuid" => stripe_plan.id})
+    @plan_updater.update(conn, attrs, uuid, connect_account)
   end
 
   def delete(conn, %{"id" => id}) do
