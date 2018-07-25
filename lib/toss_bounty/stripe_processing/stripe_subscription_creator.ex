@@ -17,7 +17,7 @@ defmodule TossBounty.StripeProcessing.StripeSubscriptionCreator do
       %{
         customer: customer.uuid,
         plan: plan.uuid,
-        application_fee_percent: "10"
+        application_fee_percent: "4"
       },
       connect_account: stripe_external_id
     )
