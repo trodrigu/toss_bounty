@@ -29,7 +29,6 @@ defmodule TossBountyWeb.AuthController do
 
     total_redirect_url =
       (front_end_url <> "/#/save-stripe?stripe_id=#{stripe_access_token}")
-      |> IO.inspect()
 
     conn
     |> redirect(external: total_redirect_url)
@@ -77,8 +76,10 @@ defmodule TossBountyWeb.AuthController do
           "user id: #{user_id}"
         end)
 
-        Email.welcome_email(user)
-        |> Mailer.deliver_now()
+        if user_from_db == nil do
+          Email.welcome_email(user)
+          |> Mailer.deliver_now()
+        end
 
         total_redirect_url =
           front_end_url <> "/#/save-session/?token=#{token}&email=#{email}&user_id=#{user_id}"

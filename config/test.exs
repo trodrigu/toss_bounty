@@ -44,3 +44,4 @@ config :stripity_stripe, platform_client_id: System.get_env("STRIPE_PLATFORM_CLI
 config :toss_bounty, stripe_strategy: TossBountyWeb.MockStripeClientStrategy
 
 config :toss_bounty, TossBountyWeb.Mailer, adapter: Bamboo.TestAdapter
+config :bamboo, :refute_timeout, 10
