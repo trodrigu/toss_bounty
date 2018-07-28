@@ -388,14 +388,14 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
     ],
     "toss_bounty.Elixir.TossBountyWeb.Mailer.api_key": [
       commented: false,
-      datatype: :atom,
+      datatype: :binary,
       doc: "Provide documentation for toss_bounty.Elixir.TossBountyWeb.Mailer.api_key here.",
       hidden: false,
       to: "toss_bounty.Elixir.TossBountyWeb.Mailer.api_key"
     ],
     "toss_bounty.Elixir.TossBountyWeb.Mailer.domain": [
       commented: false,
-      datatype: :atom,
+      datatype: :binary,
       doc: "Provide documentation for toss_bounty.Elixir.TossBountyWeb.Mailer.domain here.",
       hidden: false,
       to: "toss_bounty.Elixir.TossBountyWeb.Mailer.domain"
