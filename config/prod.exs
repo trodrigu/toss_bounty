@@ -76,8 +76,16 @@ config :toss_bounty, customer_creator: TossBounty.StripeProcessing.StripeCustome
 config :toss_bounty, plan_creator: TossBounty.StripeProcessing.StripePlanCreator
 config :toss_bounty, plan_deleter: TossBounty.StripeProcessing.StripePlanDeleter
 config :toss_bounty, plan_updater: TossBounty.StripeProcessing.StripePlanUpdater
+config :toss_bounty, subscription_creator: TossBounty.StripeProcessing.StripeSubscriptionCreator
+config :toss_bounty, subscription_deleter: TossBounty.StripeProcessing.StripeSubscriptionDeleter
+config :toss_bounty, stripe_strategy: TossBountyWeb.StripeClientStrategy
 
 config :oauth2, Github,
   client_id: System.get_env("GITHUB_CLIENT_ID"),
   client_secret: System.get_env("GITHUB_CLIENT_SECRET"),
   redirect_uri: System.get_env("GITHUB_REDIRECT_URI")
+
+config :toss_bounty, TossBountyWeb.Mailer,
+  adapter: Bamboo.MailgunAdapter,
+  api_key: System.get_env("MAILGUN_API_KEY"),
+  domain: System.get_env("MAILGUN_DOMAIN")

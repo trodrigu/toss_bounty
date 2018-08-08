@@ -37,6 +37,13 @@ defmodule TossBountyWeb.AuthControllerTest do
       assert_delivered_email(TossBountyWeb.Email.welcome_email(user))
     end
 
+    test "when github returns and already received the email", %{conn: conn} do
+      insert_user(email: "test@test.com")
+      conn = get(conn, "/auth/github/callback?code=stuff")
+      user = Repo.one(from(u in User))
+      refute_delivered_email(TossBountyWeb.Email.welcome_email(user))
+    end
+
     test "when github creates user if one not found", %{conn: conn} do
       conn = get(conn, "/auth/github/callback?code=stuff")
       user_count = Repo.one(from(u in User, select: count("*")))
