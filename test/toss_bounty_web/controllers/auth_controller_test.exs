@@ -52,11 +52,13 @@ defmodule TossBountyWeb.AuthControllerTest do
 
     test "when github returns the email, sends welcome email", %{conn: conn} do
       conn = get(conn, "/auth/github/callback?code=stuff")
+
       user =
         User
-        |> Ecto.Query.first
-        |> Repo.one
-      assert_delivered_email TossBountyWeb.Email.welcome_email(user)
+        |> Ecto.Query.first()
+        |> Repo.one()
+
+      assert_delivered_email(TossBountyWeb.Email.welcome_email(user))
     end
 
     test "when github updates the user's github token if already in db", %{conn: conn} do
@@ -192,6 +194,31 @@ defmodule TossBountyWeb.AuthControllerTest do
       get(updatedConn, "/auth/stripe/callback?code=stuff")
       user = Repo.one(User)
       assert user.stripe_access_token != "different-token"
+    end
+
+    test "when there are multiple github repos with the same name", %{conn: conn} do
+      user = with {:ok, user} <- Repo.insert!(%User{email: "trodriguez91@icloud.com"}), do: user
+      other_user = with {:ok, user} <- Repo.insert!(%User{email: "another@icloud.com"}), do: user
+
+      MockReposGrabber.clear()
+
+      MockReposGrabber.insert_repo(%{
+        "name" => "foobar",
+        "open_issues_count" => 3,
+        "owner" => %{"login" => "trodrigu"}
+      })
+
+      {:ok, jwt, _} = Guardian.encode_and_sign(user)
+
+      repo = Repo.insert!(%GithubRepo{name: "foobar", user_id: user.id})
+      other_repo = Repo.insert!(%GithubRepo{name: "foobar", user_id: other_user.id})
+
+      updatedConn =
+        conn
+        |> put_req_header("authorization", "Bearer #{jwt}")
+        |> Plug.Conn.assign(:current_user, user)
+
+      get(updatedConn, "/auth/github/callback?code=stuff")
     end
   end
 end

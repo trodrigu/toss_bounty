@@ -27,8 +27,7 @@ defmodule TossBountyWeb.AuthController do
     stripe_access_token = token_response.stripe_user_id
     front_end_url = Application.fetch_env!(:toss_bounty, :front_end_url)
 
-    total_redirect_url =
-      (front_end_url <> "/#/save-stripe?stripe_id=#{stripe_access_token}")
+    total_redirect_url = front_end_url <> "/#/save-stripe?stripe_id=#{stripe_access_token}"
 
     conn
     |> redirect(external: total_redirect_url)
@@ -54,17 +53,19 @@ defmodule TossBountyWeb.AuthController do
         github_token = client.token.access_token
 
         user_from_db = Repo.get_by(User, email: email)
+
         user = sign_up_or_return_user(user_from_db, email)
 
         user_with_updated_github_token = update_user_with_github_token(user, github_token)
 
         sellable_repos = SellableRepos.call(user_with_updated_github_token)
+
         save_new_repos(sellable_repos, user)
 
         repos_and_sellable_issues =
           find_sellable_issues(sellable_repos, user_with_updated_github_token)
 
-        save_new_issues(repos_and_sellable_issues)
+        save_new_issues(repos_and_sellable_issues, user)
 
         {:ok, token, _claims} =
           user_with_updated_github_token
@@ -143,15 +144,26 @@ defmodule TossBountyWeb.AuthController do
     end)
   end
 
-  defp save_new_issues(repos_and_sellable_issues) do
+  defp save_new_issues(repos_and_sellable_issues, user) do
     Enum.each(repos_and_sellable_issues, fn repo_and_sellable_issues ->
-      save_or_return_issues(repo_and_sellable_issues)
+      save_or_return_issues(repo_and_sellable_issues, user)
     end)
   end
 
-  defp save_or_return_issues(repo_and_sellable_issues) do
+  defp save_or_return_issues(repo_and_sellable_issues, user) do
     name = repo_and_sellable_issues[:name]
-    repo = Repo.get_by(GithubRepo, name: name)
+
+    query =
+      from(
+        g in GithubRepo,
+        join: u in assoc(g, :user),
+        where: g.name == ^name,
+        where: u.id == ^user.id
+      )
+
+    repo =
+      Repo.one(query)
+      |> IO.inspect()
 
     issues =
       repo_and_sellable_issues[:issues]
