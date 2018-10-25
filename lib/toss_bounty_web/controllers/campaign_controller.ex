@@ -51,6 +51,33 @@ defmodule TossBountyWeb.CampaignController do
     render(conn, "index.json-api", data: entries, opts: [meta: meta_data])
   end
 
+  def index(conn, params = %{"user_id" => user_id}) do
+    page_params = %{ "page" => 1, "page_size" => 10 }
+    total_params =
+        page_params
+        |> Enum.into params
+        |> IO.inspect
+
+    page =
+      TossBounty.Campaigns.Campaign
+      |> Ecto.Query.where(user_id: ^user_id)
+      |> Repo.paginate(total_params)
+
+    entries =
+      page.entries
+      |> Repo.preload(:github_repo)
+      |> Repo.preload(:user)
+
+    meta_data = %{
+      "page_number" => page.page_number,
+      "page_size" => page.page_size,
+      "total_pages" => page.total_pages,
+      "total_entries" => page.total_entries
+    }
+
+    render(conn, "index.json-api", data: entries, opts: [meta: meta_data])
+  end
+
   def index(conn, _params) do
     campaigns = Campaigns.list_campaigns()
 
