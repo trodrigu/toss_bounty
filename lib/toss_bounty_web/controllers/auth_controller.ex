@@ -27,7 +27,7 @@ defmodule TossBountyWeb.AuthController do
     stripe_access_token = token_response.stripe_user_id
     front_end_url = Application.fetch_env!(:toss_bounty, :front_end_url)
 
-    total_redirect_url = front_end_url <> "/#/save-stripe?stripe_id=#{stripe_access_token}"
+    total_redirect_url = front_end_url <> "/save-stripe?stripe_id=#{stripe_access_token}"
 
     conn
     |> redirect(external: total_redirect_url)
@@ -44,7 +44,7 @@ defmodule TossBountyWeb.AuthController do
 
     case email do
       nil ->
-        total_redirect_url = front_end_url <> "/#/github-oops"
+        total_redirect_url = front_end_url <> "/github-oops"
 
         conn
         |> redirect(external: total_redirect_url)
@@ -83,7 +83,7 @@ defmodule TossBountyWeb.AuthController do
         end
 
         total_redirect_url =
-          front_end_url <> "/#/save-session/?token=#{token}&email=#{email}&user_id=#{user_id}"
+          front_end_url <> "/save-session/?token=#{token}&email=#{email}&user_id=#{user_id}"
 
         Logger.info(fn ->
           "total redirect url: #{total_redirect_url}"
