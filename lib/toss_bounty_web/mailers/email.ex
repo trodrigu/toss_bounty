@@ -9,8 +9,8 @@ defmodule TossBountyWeb.Email do
     |> html_body(
       """
       <span>Welcome, <strong>#{user.email}</strong>.
-      Get started by adding your <a href="https://tossbounty.com/#/create-campaign">campaigns</a>
-      or discover other peoples at <a href="https://tossbounty.com/#/discover">discover</a>.
+      Get started by adding your <a href="https://tossbounty.com/create-campaign">campaigns</a>
+      or discover other peoples at <a href="https://tossbounty.com/discover">discover</a>.
 
       <br/>
       <br/>
