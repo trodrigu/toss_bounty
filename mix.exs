@@ -4,8 +4,8 @@ defmodule TossBounty.Mixfile do
   def project do
     [
       app: :toss_bounty,
-      version: "0.3.2",
-      elixir: "~> 1.2",
+      version: "0.3.3",
+      elixir: "~> 1.6",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       build_embedded: Mix.env() == :prod,
@@ -72,9 +72,9 @@ defmodule TossBounty.Mixfile do
       {:ja_serializer, "~> 0.12.0"},
       {:ja_resource, "~> 0.3.0"},
       {:corsica, "~> 1.0"},
-      {:distillery, "~> 1.4", runtime: false},
+      {:distillery, "~> 2.0", runtime: false},
       {:tentacat, github: "trodrigu/tentacat"},
-      {:conform, "~> 2.2"},
+      {:conform, "~> 2.5.2"},
       {:phoenix_custom_generators, "~> 1.0.6"},
       {:timex, "~> 3.1"},
       {:timex_ecto, "~> 3.2"},
