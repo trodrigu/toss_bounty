@@ -81,7 +81,7 @@ defmodule TossBounty.Mixfile do
       {:oauth2, "~> 0.9"},
       {:scrivener_ecto, "~> 1.0"},
       {:bamboo, "~> 1.0"},
-      {:toml, "~> 0.3"}
+      {:toml, "~> 0.5.1"}
     ]
   end
 
