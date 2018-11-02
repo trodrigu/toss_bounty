@@ -43,7 +43,8 @@ defmodule TossBounty.Mixfile do
         :stripity_stripe,
         :oauth2,
         :scrivener_ecto,
-        :bamboo
+        :bamboo,
+        :toml
       ]
     ]
   end
