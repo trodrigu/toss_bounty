@@ -39,7 +39,7 @@ environment :prod do
 
   set(
     config_providers: [
-      {Toml.Provider, [path: "${RELEASE_ROOT_DIR}/config.toml"]}
+      {Toml.Provider, [path: "/srv/apps/toss_bounty/config.toml"]}
     ]
   )
 end
