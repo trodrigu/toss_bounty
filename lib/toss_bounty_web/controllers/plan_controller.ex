@@ -117,7 +117,6 @@ defmodule TossBountyWeb.PlanController do
       {:ok, %Stripe.Plan{id: id}} ->
         case TossBounty.Policy.authorize(current_user, :administer, plan, attrs) do
           {:ok, :authorized} ->
-
             with {:ok, %Plan{} = plan} <- StripeProcessing.update_plan(plan, plan_params) do
               render(conn, "show.json-api", plan: plan)
             end
@@ -139,11 +138,11 @@ defmodule TossBountyWeb.PlanController do
   end
 
   def delete(conn, %{"id" => id}) do
-    plan =
-      StripeProcessing.get_plan!(id)
-      |> IO.inspect()
+    plan = StripeProcessing.get_plan!(id)
 
-    current_user = conn.assigns[:current_user]
+    current_user =
+      conn
+      |> TossBounty.UserManager.Guardian.Plug.current_resource()
 
     preloaded_plan =
       plan

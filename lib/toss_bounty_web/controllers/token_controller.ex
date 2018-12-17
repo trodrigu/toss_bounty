@@ -4,32 +4,39 @@ defmodule TossBountyWeb.TokenController do
   alias TossBounty.GuardianSerializer
   alias TossBounty.Repo
   alias TossBounty.Accounts.User
+  alias TossBounty.UserManager.Guardian
 
   def create(conn, params = %{"email" => _, "password" => _}) do
     case login_by_email_and_password(params) do
       {:ok, user} ->
         {:ok, token, _claims} =
           user
-            |> Guardian.encode_and_sign(:token)
+          |> TossBounty.UserManager.Guardian.encode_and_sign()
+
         conn
         |> Plug.Conn.assign(:current_user, user)
         |> put_status(:created)
         |> render("show.json", token: token, user_id: user.id)
 
-      {:error, reason} -> handle_unauthenticated(conn, reason)
+      {:error, reason} ->
+        handle_unauthenticated(conn, reason)
     end
   end
+
   def create(conn, %{"email" => ""}) do
     handle_unauthenticated(conn, "Please enter your email and password.")
   end
+
   def create(conn, _) do
     handle_unauthenticated(conn, "Please enter your password.")
   end
 
   def refresh(conn, %{"token" => current_token}) do
-    with {:ok, claims} <- Guardian.decode_and_verify(current_token),
-         {:ok, new_token, new_claims} <- Guardian.refresh!(current_token, claims, %{ttl: {30, :days}}),
-         {:ok, user} <- GuardianSerializer.from_token(new_claims["sub"]) do
+    with {:ok, claims} <- TossBounty.UserManager.Guardian.decode_and_verify(current_token),
+         {:ok, _old_stuff, {new_token, new_claims}} <-
+           TossBounty.UserManager.Guardian.refresh(current_token),
+         {:ok, user, _claims} <-
+           TossBounty.UserManager.Guardian.resource_from_token(current_token) do
       conn
       |> Plug.Conn.assign(:current_user, user)
       |> put_status(:created)
@@ -47,11 +54,14 @@ defmodule TossBountyWeb.TokenController do
 
   defp login_by_email_and_password(%{"email" => email, "password" => password}) do
     user = Repo.get_by(User, email: email)
+
     cond do
       user && checkpw(password, user.password_hash) ->
         {:ok, user}
+
       user ->
         {:error, "Your password doesn't match the email #{email}."}
+
       true ->
         dummy_checkpw()
         {:error, "We couldn't find a user with the email #{email}."}

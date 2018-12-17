@@ -66,9 +66,9 @@ defmodule TossBounty.Mixfile do
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:gettext, "~> 0.11"},
       {:cowboy, "~> 1.0"},
-      {:comeonin, "~> 2.0"},
+      {:comeonin, "~> 4.0"},
       {:joken, "~> 1.1"},
-      {:guardian, "~> 0.13"},
+      {:guardian, "~> 1.0"},
       # JSON API
       {:ja_serializer, "~> 0.12.0"},
       {:ja_resource, "~> 0.3.0"},
@@ -82,7 +82,10 @@ defmodule TossBounty.Mixfile do
       {:oauth2, "~> 0.9"},
       {:scrivener_ecto, "~> 1.0"},
       {:bamboo, "~> 1.0"},
-      {:toml, "~> 0.5.1"}
+      {:toml, "~> 0.5.1"},
+      {:plug_cowboy, "~> 1.0"},
+      {:bcrypt_elixir, "~> 0.12"},
+      {:jason, "~> 1.1"}
     ]
   end
 

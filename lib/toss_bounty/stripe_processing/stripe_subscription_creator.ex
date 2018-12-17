@@ -21,6 +21,5 @@ defmodule TossBounty.StripeProcessing.StripeSubscriptionCreator do
       },
       connect_account: stripe_external_id
     )
-    |> IO.inspect()
   end
 end

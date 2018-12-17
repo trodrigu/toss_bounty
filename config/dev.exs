@@ -63,3 +63,8 @@ config :stripity_stripe, connect_client_id: System.get_env("STRIPE_CONNECT_CLIEN
 config :toss_bounty, stripe_strategy: TossBountyWeb.StripeClientStrategy
 
 config :toss_bounty, TossBountyWeb.Mailer, adapter: Bamboo.LocalAdapter
+
+config :toss_bounty, TossBounty.Guardian,
+  issuer: "TossBounty",
+  ttl: {30, :days},
+  secret_key: System.get_env("GUARDIAN_SECRET_KEY")

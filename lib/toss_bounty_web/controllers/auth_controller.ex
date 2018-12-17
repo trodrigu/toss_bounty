@@ -69,7 +69,7 @@ defmodule TossBountyWeb.AuthController do
 
         {:ok, token, _claims} =
           user_with_updated_github_token
-          |> Guardian.encode_and_sign(:token)
+          |> TossBounty.UserManager.Guardian.encode_and_sign()
 
         user_id = user_with_updated_github_token.id
 
@@ -123,7 +123,8 @@ defmodule TossBountyWeb.AuthController do
     save_or_return_github_repo(repo_from_db, repo, user)
   end
 
-  defp save_or_return_github_repo(repo_from_db, repo_from_service, user) when is_nil(repo_from_db) do
+  defp save_or_return_github_repo(repo_from_db, repo_from_service, user)
+       when is_nil(repo_from_db) do
     changeset =
       GithubRepo.changeset(%GithubRepo{}, %{
         name: repo_from_service[:name],
@@ -163,7 +164,6 @@ defmodule TossBountyWeb.AuthController do
 
     repo =
       Repo.one(query)
-      |> IO.inspect()
 
     issues =
       repo_and_sellable_issues[:issues]

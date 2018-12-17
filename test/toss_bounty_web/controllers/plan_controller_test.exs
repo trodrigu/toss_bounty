@@ -239,7 +239,7 @@ defmodule TossBountyWeb.PlanControllerTest do
         })
 
       user = Repo.one(from(u in User, limit: 1))
-      {:ok, jwt, _} = Guardian.encode_and_sign(user)
+      {:ok, jwt, _} = TossBounty.UserManager.Guardian.encode_and_sign(user)
 
       conn =
         conn()
@@ -314,7 +314,7 @@ defmodule TossBountyWeb.PlanControllerTest do
         })
 
       user = Repo.one(from(u in User, limit: 1))
-      {:ok, jwt, _} = Guardian.encode_and_sign(user)
+      {:ok, jwt, _} = TossBounty.UserManager.Guardian.encode_and_sign(user)
 
       conn =
         conn()
@@ -455,13 +455,15 @@ defmodule TossBountyWeb.PlanControllerTest do
         conn
         |> add_stripe_client_none_found
 
-      final_conn = put(conn_with_errors, plan_path(conn_with_errors, :delete, plan), %{
+      final_conn =
+        put(conn_with_errors, plan_path(conn_with_errors, :delete, plan), %{
           "meta" => %{},
           "data" => %{
             "type" => "plan",
             "attributes" => dasherize_keys(@update_attrs)
           }
-      })
+        })
+
       assert response(final_conn, 404)
     end
   end
@@ -496,16 +498,36 @@ defmodule TossBountyWeb.PlanControllerTest do
     end
 
     @tag :authenticated
-    test "renders errors when not authorized", %{conn: conn, plan: plan} do
+    test "renders errors when not authorized", %{
+      conn: conn,
+      plan: plan,
+      current_user: current_user
+    } do
       another_user = insert_user(email: "test2@test.com")
 
-      {:ok, jwt, _} = Guardian.encode_and_sign(another_user)
+      {:ok, user: _user, github_repo: github_repo} =
+        create_fixture_github_repo(%{user: another_user})
+
+      {:ok, user: _user, github_repo: _github_repo, campaign: campaign} =
+        create_fixture_campaign(%{github_repo: github_repo, user: another_user})
+
+      {:ok, user: _user, github_repo: _github_repo, campaign: _campaign, reward: reward} =
+        create_fixture_reward(%{campaign: campaign})
+
+      {:ok,
+       user: _user,
+       github_repo: _github_repo,
+       campaign: _campaign,
+       reward: _reward,
+       plan: another_plan_from_different_user} = create_fixture_plan(%{reward: reward})
+
+      {:ok, jwt, _} = TossBounty.UserManager.Guardian.encode_and_sign(current_user)
 
       delete_conn =
         conn()
         |> put_req_header("authorization", "Bearer #{jwt}")
 
-      conn = delete(delete_conn, plan_path(conn, :delete, plan))
+      conn = delete(delete_conn, plan_path(conn, :delete, another_plan_from_different_user))
       assert json_response(conn, 403)["errors"] != %{}
     end
 

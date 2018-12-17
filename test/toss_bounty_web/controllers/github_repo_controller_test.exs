@@ -51,7 +51,7 @@ defmodule TossBountyWeb.GithubRepoControllerTest do
       Repo.insert!(%GithubIssue{title: "great title", body: "body", github_repo_id: repo.id})
 
       user = Repo.one(from(u in User, limit: 1))
-      {:ok, jwt, _} = Guardian.encode_and_sign(user)
+      {:ok, jwt, _} = TossBounty.UserManager.Guardian.encode_and_sign(user)
 
       conn =
         build_conn()

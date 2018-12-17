@@ -324,7 +324,7 @@ defmodule TossBountyWeb.SubscriptionControllerTest do
     test "renders errors when not authorized", %{conn: conn, subscription: subscription} do
       another_user = insert_user(email: "test2@test.com")
 
-      {:ok, jwt, _} = Guardian.encode_and_sign(another_user)
+      {:ok, jwt, _} = TossBounty.UserManager.Guardian.encode_and_sign(another_user)
 
       delete_conn =
         conn()

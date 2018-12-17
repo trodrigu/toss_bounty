@@ -5,9 +5,10 @@ defmodule TossBounty.Accounts.CurrentUser do
   def init(opts), do: opts
 
   def call(conn, _opts) do
-    case Guardian.Plug.current_resource(conn) do
+    case TossBounty.UserManager.Guardian.Plug.current_resource(conn) do
       user = %TossBounty.Accounts.User{} ->
         Plug.Conn.assign(conn, :current_user, user)
+
       nil ->
         conn
     end

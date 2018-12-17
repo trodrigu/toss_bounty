@@ -1,6 +1,14 @@
 defmodule TossBountyWeb.Router do
   use TossBountyWeb.Web, :router
 
+  pipeline :auth do
+    plug(TossBounty.UserManager.Pipeline)
+  end
+
+  pipeline :ensure_auth do
+    plug(Guardian.Plug.EnsureAuthenticated)
+  end
+
   pipeline :browser do
     plug(:accepts, ["html"])
     plug(:fetch_session)
@@ -14,17 +22,8 @@ defmodule TossBountyWeb.Router do
     plug(JaSerializer.Deserializer)
   end
 
-  pipeline :bearer_auth do
-    plug(Guardian.Plug.VerifyHeader, realm: "Bearer")
-    plug(Guardian.Plug.LoadResource)
-  end
-
   pipeline :current_user do
     plug(TossBounty.Accounts.CurrentUser)
-  end
-
-  pipeline :ensure_auth do
-    plug(Guardian.Plug.EnsureAuthenticated)
   end
 
   scope "/", TossBountyWeb do
@@ -41,7 +40,7 @@ defmodule TossBountyWeb.Router do
   end
 
   scope "/", TossBountyWeb do
-    pipe_through([:api, :bearer_auth, :current_user])
+    pipe_through([:api, :auth, :current_user])
 
     post("/token", TokenController, :create)
     post("/token/refresh", TokenController, :refresh)
@@ -50,7 +49,7 @@ defmodule TossBountyWeb.Router do
   end
 
   scope "/", TossBountyWeb do
-    pipe_through([:api, :bearer_auth, :current_user, :ensure_auth])
+    pipe_through([:api, :auth, :current_user, :ensure_auth])
 
     resources("/users", UserController, only: [:create, :show, :update])
     resources("/github_repos", GithubRepoController, only: [:index, :show])
@@ -63,8 +62,9 @@ defmodule TossBountyWeb.Router do
     resources("/subscriptions", SubscriptionController, only: [:index, :create, :delete])
     resources("/search", SearchController, only: [:index])
   end
-  if Mix.env == :dev do
+
+  if Mix.env() == :dev do
     # If using Phoenix
-    forward "/sent_emails", Bamboo.SentEmailViewerPlug
+    forward("/sent_emails", Bamboo.SentEmailViewerPlug)
   end
 end

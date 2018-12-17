@@ -4,6 +4,7 @@ defmodule TossBountyWeb.CampaignController do
   alias TossBounty.Campaigns
   alias TossBounty.Campaigns.Campaign
   alias TossBounty.Accounts.CurrentUser
+  alias TossBounty.UserManager
   alias JaSerializer.Params
   require Ecto.Query
 
@@ -31,7 +32,6 @@ defmodule TossBountyWeb.CampaignController do
   end
 
   def index(conn, params = %{"page" => page, "page_size" => page_size}) do
-    IO.inspect "page: #{page}"
     page =
       TossBounty.Campaigns.Campaign
       |> Repo.paginate(params)
@@ -52,11 +52,11 @@ defmodule TossBountyWeb.CampaignController do
   end
 
   def index(conn, params = %{"user_id" => user_id}) do
-    page_params = %{ "page" => 1, "page_size" => 10 }
+    page_params = %{"page" => 1, "page_size" => 10}
+
     total_params =
-        page_params
-        |> Enum.into params
-        |> IO.inspect
+      page_params
+      |> Enum.into(params)
 
     page =
       TossBounty.Campaigns.Campaign
@@ -86,6 +86,9 @@ defmodule TossBountyWeb.CampaignController do
 
   def create(conn, %{"data" => data = %{"type" => "campaign", "attributes" => campaign_params}}) do
     attrs = Params.to_attributes(data)
+
+    conn
+    |> UserManager.Guardian.Plug.current_resource()
 
     with {:ok, %Campaign{} = campaign} <- Campaigns.create_campaign(attrs) do
       preloaded_campaign = Repo.preload(campaign, [:github_repo, :user])

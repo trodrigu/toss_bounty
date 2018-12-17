@@ -184,7 +184,7 @@ defmodule TossBountyWeb.AuthControllerTest do
     }
     test "when stripe updates the stripe token", %{conn: conn} do
       user = with {:ok, user} <- Repo.insert!(%User{email: "trodriguez91@icloud.com"}), do: user
-      {:ok, jwt, _} = Guardian.encode_and_sign(user)
+      {:ok, jwt, _} = TossBounty.UserManager.Guardian.encode_and_sign(user)
 
       updatedConn =
         conn
@@ -208,7 +208,7 @@ defmodule TossBountyWeb.AuthControllerTest do
         "owner" => %{"login" => "trodrigu"}
       })
 
-      {:ok, jwt, _} = Guardian.encode_and_sign(user)
+      {:ok, jwt, _} = TossBounty.UserManager.Guardian.encode_and_sign(user)
 
       repo = Repo.insert!(%GithubRepo{name: "foobar", user_id: user.id})
       other_repo = Repo.insert!(%GithubRepo{name: "foobar", user_id: other_user.id})

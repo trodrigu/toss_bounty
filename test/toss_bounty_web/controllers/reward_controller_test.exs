@@ -93,7 +93,7 @@ defmodule TossBountyWeb.RewardControllerTest do
       assert %{"id" => id} = json_response(conn, 201)["data"]
 
       user = Repo.one(from(u in User, limit: 1))
-      {:ok, jwt, _} = Guardian.encode_and_sign(user)
+      {:ok, jwt, _} = TossBounty.UserManager.Guardian.encode_and_sign(user)
 
       build_conn()
       |> put_req_header("authorization", "Bearer #{jwt}")
@@ -192,7 +192,7 @@ defmodule TossBountyWeb.RewardControllerTest do
       assert response(conn, 204)
 
       user = Repo.one(from(u in User, limit: 1))
-      {:ok, jwt, _} = Guardian.encode_and_sign(user)
+      {:ok, jwt, _} = TossBounty.UserManager.Guardian.encode_and_sign(user)
 
       assert_error_sent(404, fn ->
         build_conn()
